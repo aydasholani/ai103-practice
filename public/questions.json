@@ -15,7 +15,7 @@
           {
             "id": "A",
             "text": "Standard",
-            "explanation": "Standard deployment scales dynamically for variable traffic without requiring reserved provisioned throughput. It also processes requests in the selected Azure region, which supports the EU data-residency requirement."
+            "explanation": "Regional Standard provides consumption-based dynamic scaling without reserved PTUs and keeps processing tied to the selected region. Opting out of automatic upgrades keeps the deployed model version stable until the team changes it deliberately."
           },
           {
             "id": "B",
@@ -43,7 +43,7 @@
           {
             "id": "B",
             "text": "Opt out of automatic model version upgrades",
-            "explanation": "Opting out of automatic upgrades keeps the selected model version fixed until the team deliberately changes it, providing the response consistency required by the scenario."
+            "explanation": "Regional Standard provides consumption-based dynamic scaling without reserved PTUs and keeps processing tied to the selected region. Opting out of automatic upgrades keeps the deployed model version stable until the team changes it deliberately."
           },
           {
             "id": "C",
@@ -53,7 +53,14 @@
         ],
         "correctAnswer": "B"
       }
-    ]
+    ],
+    "communityNotes": {
+      "summary": "The discussion distinguishes regional Standard from Global Standard and provisioned deployments. Standard is the defensible choice because the workload must scale without reserved throughput while processing remains in the selected EU region.",
+      "caveats": [
+        "Global Standard offers highly elastic throughput, but it can route inference outside the selected region.",
+        "Data Zone Standard could be relevant in a different option set, but it is not offered in this question."
+      ]
+    }
   },
   {
     "id": 2,
@@ -76,7 +83,7 @@
       {
         "id": "C",
         "text": "Personally identifiable information (PII) Detection",
-        "explanation": "Personally identifiable information (PII) Detection directly provides the capability or configuration requested for implement responsible ai across generative ai and agentic systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "PII Detection identifies sensitive personal information so it can be removed or blocked before customer data is exposed. Content-category filters and Prompt Shields address different risks."
       },
       {
         "id": "D",
@@ -86,7 +93,14 @@
     ],
     "correctAnswers": [
       "C"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "The case contains two different security concerns. PII Detection addresses the explicit requirement that customer information must never be revealed, while Prompt Shields address malicious instructions hidden in retrieved content.",
+      "caveats": [
+        "Because the question asks for one control while the case lists both concerns, readers reasonably interpret the intended requirement differently."
+      ],
+      "answerDisputed": true
+    }
   },
   {
     "id": 3,
@@ -108,7 +122,7 @@
       {
         "id": "C",
         "text": "Add a connection to the Azure AI Search resource.",
-        "explanation": "Add a connection to the Azure AI Search resource directly provides the capability or configuration requested for manage, monitor, and secure ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "A project connection stores the endpoint and authentication configuration once and allows every agent in the project to reuse it. RBAC and private endpoints solve authorization and networking concerns rather than central connection management."
       },
       {
         "id": "D",
@@ -192,13 +206,13 @@
             "id": "target1",
             "prompt": "Pipeline1",
             "correctAnswer": "Single-file task in standard mode",
-            "explanation": "Single-file task in standard mode is the correct match for pipeline1 because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "Single-file task in standard mode is the correct match for pipeline1 because it provides the capability required by that target. The remaining choices apply to different tasks or stages. Standard mode is optimized for cost-effective single-file extraction. Pro mode supports multi-document input, reference data, cross-document validation, and multi-step reasoning."
           },
           {
             "id": "target2",
             "prompt": "Pipeline2",
             "correctAnswer": "Multi-file task in pro mode",
-            "explanation": "Multi-file task in pro mode is the correct match for pipeline2 because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "Multi-file task in pro mode is the correct match for pipeline2 because it provides the capability required by that target. The remaining choices apply to different tasks or stages. Standard mode is optimized for cost-effective single-file extraction. Pro mode supports multi-document input, reference data, cross-document validation, and multi-step reasoning."
           }
         ]
       }
@@ -229,7 +243,7 @@
           {
             "id": "C",
             "text": "DefaultAzureCredential",
-            "explanation": "DefaultAzureCredential directly provides the capability or configuration requested for credential =. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "DefaultAzureCredential can obtain a managed-identity token without storing a key or client secret. responses.create is the Responses API operation that sends a new prompt."
           }
         ],
         "correctAnswer": "C"
@@ -247,7 +261,7 @@
           {
             "id": "B",
             "text": "create",
-            "explanation": "create directly provides the capability or configuration requested for openai_client.responses. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "DefaultAzureCredential can obtain a managed-identity token without storing a key or client secret. responses.create is the Responses API operation that sends a new prompt."
           },
           {
             "id": "C",
@@ -389,7 +403,7 @@
       {
         "id": "A",
         "text": "a workflow",
-        "explanation": "a workflow directly provides the capability or configuration requested for build agents by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "A Foundry workflow provides deterministic steps, conditional branches, shared state, and optional actions without requiring custom orchestration code."
       },
       {
         "id": "B",
@@ -426,7 +440,7 @@
       {
         "id": "B",
         "text": "the custom speech project ID",
-        "explanation": "the custom speech project ID directly provides the capability or configuration requested for implement speech solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "The project property must identify the Custom Speech project that owns the fine-tuned model. A Foundry project ID or endpoint URL identifies a different resource."
       },
       {
         "id": "C",
@@ -518,7 +532,7 @@
       {
         "id": "C",
         "text": "Speech recognition requests will fall back to the most recent base model for the same locale.",
-        "explanation": "Speech recognition requests will fall back to the most recent base model for the same locale directly provides the capability or configuration requested for implement speech solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "For real-time recognition through a custom endpoint, an expired custom model falls back to the latest base model for the same locale. The 4xx behavior applies to batch transcription."
       },
       {
         "id": "D",
@@ -528,7 +542,10 @@
     ],
     "correctAnswers": [
       "C"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "A custom endpoint and batch transcription behave differently after model expiration. Real-time recognition through a custom endpoint falls back to the latest base model for the locale; batch transcription against an expired model fails with a 4xx response."
+    }
   },
   {
     "id": 13,
@@ -545,7 +562,7 @@
       {
         "id": "B",
         "text": "Cognitive Services OpenAI User",
-        "explanation": "Cognitive Services OpenAI User directly provides the capability or configuration requested for manage, monitor, and secure ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Authentication succeeded, so the 403 indicates missing data-plane authorization. Cognitive Services OpenAI User grants model inference with less privilege than Contributor."
       },
       {
         "id": "C",
@@ -572,7 +589,7 @@
       {
         "id": "A",
         "text": "tool_choice={“required”}",
-        "explanation": "tool_choice={“required”} directly provides the capability or configuration requested for build agents by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Setting tool_choice to required prevents the model from skipping tools and answering directly. Auto leaves that decision to the model."
       },
       {
         "id": "B",
@@ -592,7 +609,15 @@
     ],
     "correctAnswers": [
       "A"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "Microsoft documents required as the tool_choice value that forces one or more tool calls. This prevents the agent from answering directly without retrieval.",
+      "caveats": [
+        "The option is conceptually correct, but tool_choice={\"required\"} resembles a Python set. In actual Python code the documented value is normally passed as the string \"required\".",
+        "Required forces some tool call; if several tools are available, instructions or more specific configuration can still be needed to select the intended MCP tool."
+      ],
+      "answerDisputed": true
+    }
   },
   {
     "id": 15,
@@ -627,13 +652,13 @@
             "id": "target1",
             "prompt": "Unsupported responses: Observability signal",
             "correctAnswer": "Groundedness evaluation metrics",
-            "explanation": "Groundedness evaluation metrics is the correct match for unsupported responses: observability signal because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "Groundedness evaluation metrics is the correct match for unsupported responses: observability signal because it provides the capability required by that target. The remaining choices apply to different tasks or stages. Unsupported claims are measured with groundedness evaluation, while policy violations are measured with risk and safety evaluators."
           },
           {
             "id": "target2",
             "prompt": "Policy violations: Observability signal",
             "correctAnswer": "Risk and safety metrics",
-            "explanation": "Risk and safety metrics is the correct match for policy violations: observability signal because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "Risk and safety metrics is the correct match for policy violations: observability signal because it provides the capability required by that target. The remaining choices apply to different tasks or stages. Unsupported claims are measured with groundedness evaluation, while policy violations are measured with risk and safety evaluators."
           }
         ]
       }
@@ -659,7 +684,7 @@
       {
         "id": "C",
         "text": "an API key security scheme",
-        "explanation": "an API key security scheme directly provides the capability or configuration requested for build agents by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "An OpenAPI apiKey security scheme declares where the header key belongs and lets the tool inject the value from the configured project connection."
       },
       {
         "id": "D",
@@ -686,7 +711,7 @@
       {
         "id": "B",
         "text": "Use a model cascade that routes the requests to different models.",
-        "explanation": "Use a model cascade that routes the requests to different models directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "A model cascade sends routine requests to a smaller, faster model and escalates difficult requests to a stronger model, reducing average cost without sacrificing complex-answer quality."
       },
       {
         "id": "C",
@@ -793,7 +818,7 @@
       {
         "id": "D",
         "text": "token usage",
-        "explanation": "token usage directly provides the capability or configuration requested for manage, monitor, and secure ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Token analytics separates input, output, and tool-related token consumption, allowing a cost increase to be diagnosed even when request volume is unchanged."
       }
     ],
     "correctAnswers": [
@@ -825,7 +850,7 @@
           {
             "id": "C",
             "text": "required",
-            "explanation": "required directly provides the capability or configuration requested for set tool_choice to. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Required forces a tool call on every run. A distinct application-bound agent identity provides isolated, auditable access without embedding credentials in prompts."
           }
         ],
         "correctAnswer": "C"
@@ -848,7 +873,7 @@
           {
             "id": "C",
             "text": "Using a distinct agent identity bound to the client application",
-            "explanation": "Using a distinct agent identity bound to the client application directly provides the capability or configuration requested for configure the tool to authenticate by. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Required forces a tool call on every run. A distinct application-bound agent identity provides isolated, auditable access without embedding credentials in prompts."
           }
         ],
         "correctAnswer": "C"
@@ -880,7 +905,7 @@
       {
         "id": "D",
         "text": "Connect the tool to Connection1.",
-        "explanation": "Connect the tool to Connection1 directly provides the capability or configuration requested for build agents by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Binding the OpenAPI tool to Connection1 allows Foundry to inject the stored API key. Merely defining a header does not bind the secret value to the tool."
       }
     ],
     "correctAnswers": [
@@ -912,7 +937,7 @@
       {
         "id": "D",
         "text": "tracing",
-        "explanation": "tracing directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Tracing exposes the ordered spans, tool calls, model calls, exceptions, and latency for one run, making it suitable for diagnosing both slow execution and incorrect reasoning after correct tool output."
       }
     ],
     "correctAnswers": [
@@ -939,7 +964,10 @@
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "A shield configured only for user prompts detects direct malicious user input. It does not by itself cover both unsafe visual content and indirect instructions extracted from uploaded images."
+    }
   },
   {
     "id": 24,
@@ -961,7 +989,10 @@
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "Image moderation can block harmful visual content, but it does not neutralize indirect prompt-injection instructions embedded as text in the image. The complete goal contains both risks."
+    }
   },
   {
     "id": 25,
@@ -983,7 +1014,14 @@
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "Prompt Shields for Documents can inspect third-party text, including text extracted from an image, for indirect prompt injection. It does not perform visual harm classification, so it does not satisfy both parts of the stated goal by itself.",
+      "caveats": [
+        "Some participants interpreted 'unsafe images' as referring only to hidden instructions and therefore selected Yes. The scenario separately mentions unsafe images and hidden instructions, which supports No."
+      ],
+      "answerDisputed": true
+    }
   },
   {
     "id": 26,
@@ -1005,7 +1043,10 @@
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "Protected material detection concerns copyrighted or protected generated content. It does not moderate unsafe images or detect indirect prompt injection."
+    }
   },
   {
     "id": 27,
@@ -1033,7 +1074,7 @@
       {
         "id": "D",
         "text": "a groundedness evaluator",
-        "explanation": "a groundedness evaluator directly provides the capability or configuration requested for build generative applications by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Groundedness evaluation checks whether generated claims are supported by the retrieved source material. RAG evaluation is broader and fine-tuning does not directly measure factual support."
       }
     ],
     "correctAnswers": [
@@ -1051,7 +1092,7 @@
       {
         "id": "A",
         "text": "Modify the system message instructions.",
-        "explanation": "Modify the system message instructions directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "The system message defines the agent's scope and can explicitly prohibit answers outside Contoso products. Sampling parameters control variation, not topic boundaries."
       },
       {
         "id": "B",
@@ -1098,7 +1139,7 @@
       {
         "id": "D",
         "text": "a large language model (LLM)",
-        "explanation": "a large language model (LLM) directly provides the capability or configuration requested for choose the appropriate foundry services for generative ai and agents. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "An LLM is designed for long-context natural-language generation and multi-step reasoning. An SLM prioritizes efficiency, while multimodal and key-phrase models solve different tasks."
       }
     ],
     "correctAnswers": [
@@ -1130,13 +1171,13 @@
             "id": "target1",
             "prompt": "run_payload key",
             "correctAnswer": "\"tool_choice\"",
-            "explanation": "\"tool_choice\" is the correct match for run_payload key because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "\"tool_choice\" is the correct match for run_payload key because it provides the capability required by that target. The remaining choices apply to different tasks or stages. The tool_choice field with the value required makes a tool invocation mandatory instead of allowing a direct model-only response."
           },
           {
             "id": "target2",
             "prompt": "run_payload value",
             "correctAnswer": "\"required\"",
-            "explanation": "\"required\" is the correct match for run_payload value because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "\"required\" is the correct match for run_payload value because it provides the capability required by that target. The remaining choices apply to different tasks or stages. The tool_choice field with the value required makes a tool invocation mandatory instead of allowing a direct model-only response."
           }
         ]
       }
@@ -1157,7 +1198,7 @@
       {
         "id": "B",
         "text": "Configure an Azure AI Search connection in Project1 and reference the connection in each application.",
-        "explanation": "Configure an Azure AI Search connection in Project1 and reference the connection in each application directly provides the capability or configuration requested for build generative applications by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "A project-level Azure AI Search connection centralizes endpoint and authentication configuration for multiple applications and avoids duplicated per-client setup."
       },
       {
         "id": "C",
@@ -1211,19 +1252,19 @@
             "id": "target1",
             "prompt": "Access up-to-date information from public websites",
             "correctAnswer": "Grounding with Bing Search",
-            "explanation": "Grounding with Bing Search is the correct match for access up-to-date information from public websites because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "Grounding with Bing Search is the correct match for access up-to-date information from public websites because it provides the capability required by that target. The remaining choices apply to different tasks or stages. Code Interpreter executes calculations, Bing grounding retrieves current public web information, and File Search retrieves content uploaded directly to the agent."
           },
           {
             "id": "target2",
             "prompt": "Perform calculations during conversations",
             "correctAnswer": "Code interpreter",
-            "explanation": "Code interpreter is the correct match for perform calculations during conversations because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "Code interpreter is the correct match for perform calculations during conversations because it provides the capability required by that target. The remaining choices apply to different tasks or stages. Code Interpreter executes calculations, Bing grounding retrieves current public web information, and File Search retrieves content uploaded directly to the agent."
           },
           {
             "id": "target3",
             "prompt": "Retrieve information from documents uploaded directly to the agent",
             "correctAnswer": "File search",
-            "explanation": "File search is the correct match for retrieve information from documents uploaded directly to the agent because it provides the capability required by that target. The remaining choices apply to different tasks or stages."
+            "explanation": "File search is the correct match for retrieve information from documents uploaded directly to the agent because it provides the capability required by that target. The remaining choices apply to different tasks or stages. Code Interpreter executes calculations, Bing grounding retrieves current public web information, and File Search retrieves content uploaded directly to the agent."
           }
         ]
       }
@@ -1244,12 +1285,12 @@
       {
         "id": "B",
         "text": "Application Insights",
-        "explanation": "Application Insights directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "OpenTelemetry instruments and emits end-to-end spans; Application Insights receives, stores, and visualizes them. Azure Monitor Agent and Sentinel are not agent-run tracing instrumentation."
       },
       {
         "id": "C",
         "text": "OpenTelemetry",
-        "explanation": "OpenTelemetry directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "OpenTelemetry instruments and emits end-to-end spans; Application Insights receives, stores, and visualizes them. Azure Monitor Agent and Sentinel are not agent-run tracing instrumentation."
       },
       {
         "id": "D",
@@ -1277,7 +1318,7 @@
       {
         "id": "A",
         "text": "Create and reuse a conversation by storing the conversation’s ID and supplying the ID on subsequent requests.",
-        "explanation": "Create and reuse a conversation by storing the conversation’s ID and supplying the ID on subsequent requests directly provides the capability or configuration requested for build agents by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Reusing the conversation ID restores server-side messages, tool calls, and tool outputs across sessions. Storing only the last response loses most of that context."
       },
       {
         "id": "B",
@@ -1309,7 +1350,7 @@
           {
             "id": "A",
             "text": "0",
-            "explanation": "0 directly provides the capability or configuration requested for temperature. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Temperature 0 minimizes sampling variability. High reasoning effort allocates more reasoning work when response quality is more important than latency or token use."
           },
           {
             "id": "B",
@@ -1332,7 +1373,7 @@
           {
             "id": "A",
             "text": "high",
-            "explanation": "high directly provides the capability or configuration requested for output_config.effort. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Temperature 0 minimizes sampling variability. High reasoning effort allocates more reasoning work when response quality is more important than latency or token use."
           },
           {
             "id": "B",
@@ -1364,7 +1405,7 @@
       {
         "id": "B",
         "text": "agentic Retrieval Augmented Generation (RAG)",
-        "explanation": "agentic Retrieval Augmented Generation (RAG) directly provides the capability or configuration requested for build generative applications by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Agentic RAG can decompose a complex request into parallel subqueries, use conversation context to plan retrieval, and combine evidence from multiple chunks."
       },
       {
         "id": "C",
@@ -1396,7 +1437,7 @@
           {
             "id": "A",
             "text": "Agent memory that uses persistent storage",
-            "explanation": "Agent memory that uses persistent storage directly provides the capability or configuration requested for to retain user preferences across conversations, use. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Persistent agent memory carries preferences across conversations, while File Search lets users ground a conversation in uploaded documents."
           },
           {
             "id": "B",
@@ -1429,7 +1470,7 @@
           {
             "id": "C",
             "text": "File search tool",
-            "explanation": "File search tool directly provides the capability or configuration requested for to enable users to provide contextual grounding during chats, use the. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Persistent agent memory carries preferences across conversations, while File Search lets users ground a conversation in uploaded documents."
           }
         ],
         "correctAnswer": "C"
@@ -1446,7 +1487,7 @@
       {
         "id": "A",
         "text": "Add a retry evaluation before the responses are returned.",
-        "explanation": "Add a retry evaluation before the responses are returned directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "An application-side evaluation and retry loop checks completeness before returning the answer and regenerates when requirements are missing."
       },
       {
         "id": "B",
@@ -1488,7 +1529,7 @@
       {
         "id": "C",
         "text": "Implement a retry policy that uses exponential backoff and jitter.",
-        "explanation": "Implement a retry policy that uses exponential backoff and jitter directly provides the capability or configuration requested for build agents by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Exponential backoff delays retries progressively, and jitter prevents many clients from retrying simultaneously after a 429 response."
       },
       {
         "id": "D",
@@ -1525,7 +1566,7 @@
           {
             "id": "C",
             "text": "An Azure Login action that uses OpenID Connect (OIDC)",
-            "explanation": "An Azure Login action that uses OpenID Connect (OIDC) directly provides the capability or configuration requested for authentication method. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "GitHub Actions can authenticate to Azure through OIDC without storing long-lived credentials. Failing the evaluation step makes the required status check block a merge."
           }
         ],
         "correctAnswer": "C"
@@ -1548,7 +1589,7 @@
           {
             "id": "C",
             "text": "Fail",
-            "explanation": "Fail directly provides the capability or configuration requested for if the evaluation results are not met, configure the workflow to. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "GitHub Actions can authenticate to Azure through OIDC without storing long-lived credentials. Failing the evaluation step makes the required status check block a merge."
           }
         ],
         "correctAnswer": "C"
@@ -1570,12 +1611,18 @@
       {
         "id": "B",
         "text": "No",
-        "explanation": "No directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "max_tokens changes the output ceiling but does not ensure that retrieved regulatory clauses are selected and included."
       }
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "Increasing max_tokens only raises the maximum output budget. It can help when a response is truncated, but it does not force the model to select and include required clauses that it omitted despite retrieving them.",
+      "caveats": [
+        "The answer could differ only if the omission were specifically caused by output truncation, which the scenario does not state."
+      ]
+    }
   },
   {
     "id": 42,
@@ -1587,7 +1634,7 @@
       {
         "id": "A",
         "text": "Yes",
-        "explanation": "Yes directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "A reflection pass explicitly checks the draft for missing clauses and regenerates it, directly improving completeness before delivery."
       },
       {
         "id": "B",
@@ -1614,7 +1661,7 @@
       {
         "id": "B",
         "text": "No",
-        "explanation": "No directly provides the capability or configuration requested for optimize and operationalize generative ai systems. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Higher temperature increases randomness and can make required content less consistent; it is not a completeness control."
       }
     ],
     "correctAnswers": [
@@ -1636,12 +1683,19 @@
       {
         "id": "B",
         "text": "No",
-        "explanation": "No directly provides the capability or configuration requested for build generative applications by using foundry. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Scoring and blocking identify an incomplete answer but do not repair it. A retry or regeneration action is needed to produce a more complete response."
       }
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "A completeness evaluator can detect and block a deficient response, but blocking does not regenerate or repair it. The solution prevents an incomplete answer from being shown rather than improving its completeness.",
+      "caveats": [
+        "Some participants interpreted enforcement through blocking as meeting the goal. The wording asks to improve the response, which favors No unless a retry or regeneration step is included."
+      ],
+      "answerDisputed": true
+    }
   },
   {
     "id": 45,
@@ -1668,7 +1722,7 @@
       {
         "id": "D",
         "text": "Enable mask_inpainting and supply both the input image and a mask indicating which part of the image to modify.",
-        "explanation": "Enable mask_inpainting and supply both the input image and a mask indicating which part of the image to modify directly provides the capability or configuration requested for design and implement image- and video-generation solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Mask-based inpainting limits regeneration to the masked area and preserves unmasked pixels, making it appropriate for a localized edit."
       }
     ],
     "correctAnswers": [
@@ -1685,7 +1739,7 @@
       {
         "id": "A",
         "text": "Apply a mask-based inpainting edit to the part of the image that contains the logo.",
-        "explanation": "Apply a mask-based inpainting edit to the part of the image that contains the logo directly provides the capability or configuration requested for design and implement image- and video-generation solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Inpainting with a mask targets the logo region specifically. Guidance, seed, and prompt changes regenerate broader parts of the image."
       },
       {
         "id": "B",
@@ -1732,7 +1786,7 @@
       {
         "id": "D",
         "text": "prebuilt-layout",
-        "explanation": "prebuilt-layout directly provides the capability or configuration requested for extract content from documents. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "The prebuilt-layout model extracts structural elements such as tables and can detect barcodes and QR codes; prebuilt-read focuses on OCR text."
       }
     ],
     "correctAnswers": [
@@ -1749,7 +1803,7 @@
       {
         "id": "A",
         "text": "Set the input_fidelity parameter to high.",
-        "explanation": "Set the input_fidelity parameter to high directly provides the capability or configuration requested for design and implement image- and video-generation solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "High input fidelity tells the image-editing model to preserve the visual identity and characteristics of the supplied reference image."
       },
       {
         "id": "B",
@@ -1791,7 +1845,7 @@
           {
             "id": "B",
             "text": "Set action to block.",
-            "explanation": "Set action to block directly provides the capability or configuration requested for prompt shields action. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Document-attack blocking prevents detected indirect instructions from reaching the model, while spotlighting marks third-party content as lower trust."
           },
           {
             "id": "C",
@@ -1809,7 +1863,7 @@
           {
             "id": "A",
             "text": "Enable Spotlighting.",
-            "explanation": "Enable Spotlighting directly provides the capability or configuration requested for additional mitigation. It satisfies the stated requirement without relying on an unrelated feature."
+            "explanation": "Document-attack blocking prevents detected indirect instructions from reaching the model, while spotlighting marks third-party content as lower trust."
           },
           {
             "id": "B",
@@ -1851,7 +1905,7 @@
       {
         "id": "D",
         "text": "Implement image moderation.",
-        "explanation": "Implement image moderation directly provides the capability or configuration requested for implement responsible ai for multimodal content. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Image moderation classifies visual harm categories and severity. OCR keyword checks, blocklists, and Prompt Shields address text or injection rather than visual harm classification."
       }
     ],
     "correctAnswers": [
@@ -1873,7 +1927,7 @@
       {
         "id": "B",
         "text": "prompt shields for documents",
-        "explanation": "prompt shields for documents directly provides the capability or configuration requested for implement responsible ai for multimodal content. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "OCR output is third-party document content, so Prompt Shields for Documents is the relevant control for malicious instructions inside the extracted text."
       },
       {
         "id": "C",
@@ -1915,7 +1969,7 @@
       {
         "id": "D",
         "text": "an Azure Content Understanding in Foundry Tools analyzer",
-        "explanation": "an Azure Content Understanding in Foundry Tools analyzer directly provides the capability or configuration requested for extract content from documents. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Content Understanding preserves document structure and converts mixed scanned text, tables, and columns into Markdown suitable for downstream reasoning."
       }
     ],
     "correctAnswers": [
@@ -1937,7 +1991,7 @@
       {
         "id": "B",
         "text": "Azure Content Understanding in Foundry Tools",
-        "explanation": "Azure Content Understanding in Foundry Tools directly provides the capability or configuration requested for extract content from documents. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Content Understanding combines OCR, layout analysis, and schema-based extraction across varying layouts without requiring a separately trained custom model."
       },
       {
         "id": "C",
@@ -1959,7 +2013,7 @@
       {
         "id": "A",
         "text": "Use advanced data parsing to reingest the documents.",
-        "explanation": "Use advanced data parsing to reingest the documents directly provides the capability or configuration requested for build retrieval and grounding pipelines. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Advanced structure-aware parsing retains tables, headings, and page metadata instead of splitting multipage rows at arbitrary page or token boundaries."
       },
       {
         "id": "B",
@@ -1979,7 +2033,10 @@
     ],
     "correctAnswers": [
       "A"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "Page-level or fixed-size chunks can split a multipage table and destroy row context. Structure-aware parsing preserves headings, tables, row relationships, and page metadata needed for precise retrieval."
+    }
   },
   {
     "id": 55,
@@ -1991,7 +2048,7 @@
       {
         "id": "A",
         "text": "an indexer to extract image data into a normalized_images collection",
-        "explanation": "an indexer to extract image data into a normalized_images collection directly provides the capability or configuration requested for build retrieval and grounding pipelines. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "The indexer must generate normalized_images so the OCR skill receives actual image inputs. Shaper and output mappings operate later in the enrichment pipeline."
       },
       {
         "id": "B",
@@ -2034,7 +2091,7 @@
       {
         "id": "C",
         "text": "Azure Content Understanding in Foundry Tools",
-        "explanation": "Azure Content Understanding in Foundry Tools directly provides the capability or configuration requested for extract content from documents. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Content Understanding handles multimodal layout and text reasoning needed to compare varied invoices with contractual requirements; Document Intelligence primarily extracts document fields and structure."
       },
       {
         "id": "D",
@@ -2044,7 +2101,10 @@
     ],
     "correctAnswers": [
       "C"
-    ]
+    ],
+    "communityNotes": {
+      "summary": "Document Intelligence is strong for extracting fields and layout. This scenario also requires reasoning over visual and textual invoice content and validating it against contract terms, which is the broader Content Understanding use case."
+    }
   },
   {
     "id": 57,
@@ -2066,7 +2126,7 @@
       {
         "id": "C",
         "text": "Enable estimateFieldSourceAndConfidence.",
-        "explanation": "Enable estimateFieldSourceAndConfidence directly provides the capability or configuration requested for extract content from documents. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "estimateFieldSourceAndConfidence returns confidence and source grounding for extracted fields, allowing low-confidence results to be routed for review."
       },
       {
         "id": "D",
@@ -2103,7 +2163,7 @@
       {
         "id": "D",
         "text": "Use real-time speech to text to process streaming audio input.",
-        "explanation": "Use real-time speech to text to process streaming audio input directly provides the capability or configuration requested for implement speech solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Real-time speech to text is designed for continuous low-latency recognition. Batch transcription processes completed recordings and has higher latency."
       }
     ],
     "correctAnswers": [
@@ -2125,7 +2185,7 @@
       {
         "id": "B",
         "text": "Use real-time speech to text for incoming audio and text to speech for agent responses.",
-        "explanation": "Use real-time speech to text for incoming audio and text to speech for agent responses directly provides the capability or configuration requested for implement speech solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "A conversational voice agent needs streaming speech recognition for input and text-to-speech synthesis for output; embeddings and translation do not provide that turn-taking loop."
       },
       {
         "id": "C",
@@ -2157,7 +2217,7 @@
       {
         "id": "B",
         "text": "Split the mixed-language segments into single-language segments and translate each segment separately.",
-        "explanation": "Split the mixed-language segments into single-language segments and translate each segment separately directly provides the capability or configuration requested for implement speech solutions. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Splitting mixed-language input into single-language segments gives Translator a consistent source language for each request and avoids mistranslating embedded segments."
       },
       {
         "id": "C",
@@ -2185,7 +2245,7 @@
       {
         "id": "A",
         "text": "Azure OpenAI Embedding",
-        "explanation": "Azure OpenAI Embedding directly provides the capability or configuration requested for build retrieval and grounding pipelines. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Text Split creates retrieval-sized chunks, and an Azure OpenAI embedding skill converts those chunks into vectors for semantic similarity search."
       },
       {
         "id": "B",
@@ -2195,7 +2255,7 @@
       {
         "id": "C",
         "text": "Text Split",
-        "explanation": "Text Split directly provides the capability or configuration requested for build retrieval and grounding pipelines. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Text Split creates retrieval-sized chunks, and an Azure OpenAI embedding skill converts those chunks into vectors for semantic similarity search."
       },
       {
         "id": "D",
@@ -2239,7 +2299,7 @@
       {
         "id": "C",
         "text": "Azure AI Search",
-        "explanation": "Azure AI Search directly provides the capability or configuration requested for build retrieval and grounding pipelines. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "Azure AI Search supplies the private-document index and supports semantic and vector retrieval. Extraction services can prepare content but do not replace the search layer."
       },
       {
         "id": "D",
@@ -2298,7 +2358,7 @@
       {
         "id": "B",
         "text": "a custom Azure Content Understanding in Foundry Tools analyzer that defines the required fields as the extracted fields and the returned\n\n   confidence scores for routing",
-        "explanation": "a custom Azure Content Understanding in Foundry Tools analyzer that defines the required fields as the extracted fields and the returned confidence scores for routing directly provides the capability or configuration requested for extract content from documents. It satisfies the stated requirement without relying on an unrelated feature."
+        "explanation": "A custom Content Understanding analyzer defines the required invoice fields and returns extraction confidence for threshold-based human review across varying templates."
       },
       {
         "id": "C",

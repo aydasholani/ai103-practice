@@ -120,6 +120,21 @@ export function QuizView(props: QuizViewProps) {
             </div>
           )}
 
+          {submitted && question.communityNotes && (
+            <details className={`community-notes ${question.communityNotes.answerDisputed ? "disputed" : ""}`}>
+              <summary>
+                Community discussion
+                {question.communityNotes.answerDisputed && <span>Answer debated</span>}
+              </summary>
+              <div>
+                <p>{question.communityNotes.summary}</p>
+                {question.communityNotes.caveats?.length ? (
+                  <ul>{question.communityNotes.caveats.map((caveat) => <li key={caveat}>{caveat}</li>)}</ul>
+                ) : null}
+              </div>
+            </details>
+          )}
+
           <div className="question-actions">
             {!submitted ? (
               <button

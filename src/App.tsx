@@ -17,7 +17,7 @@ import type {
   QuestionCount,
   View,
 } from "./types/quiz";
-import { answerIsCorrect, createQuiz, isAnswered } from "./utils/quiz";
+import { answerIsCorrect, createQuiz, isAnswered, maximumExamScore, scoreQuestion } from "./utils/quiz";
 
 export default function App() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -106,14 +106,16 @@ export default function App() {
   }
 
   function finishExam() {
-    const finalScore = quiz.filter((question) =>
-      answerIsCorrect(question, examAnswers[question.id] ?? {}),
-    ).length;
+    const finalScore = quiz.reduce(
+      (total, question) => total + scoreQuestion(question, examAnswers[question.id] ?? {}).earned,
+      0,
+    );
+    const maximumScore = maximumExamScore(quiz);
     setScore(finalScore);
     const entry: HistoryItem = {
       date: new Date().toISOString(),
       score: finalScore,
-      total: quiz.length,
+      total: maximumScore,
       label: "Exam mode",
     };
     const updated = [entry, ...history].slice(0, 8);
@@ -221,6 +223,7 @@ export default function App() {
         questions={quiz}
         answers={examAnswers}
         score={score}
+        maximumScore={maximumExamScore(quiz)}
         onRetry={startExam}
         onHome={() => setView("home")}
       />

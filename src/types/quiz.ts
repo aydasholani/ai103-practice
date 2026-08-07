@@ -52,6 +52,11 @@ export type Question = {
   correctAnswers?: string[];
   interactions?: Interaction[];
   media?: { type: string; src: string; alt: string }[];
+  communityNotes?: {
+    summary: string;
+    caveats?: string[];
+    answerDisputed?: boolean;
+  };
 };
 
 export type Answers = Record<string, string | string[]>;

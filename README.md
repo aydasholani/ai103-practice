@@ -31,3 +31,14 @@ Supabase authentication and synchronized quiz history are included. Install
 the client package with `npm install @supabase/supabase-js` and provide
 `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and in
 the GitHub Actions build environment.
+
+Curated ExamTopics discussion insights are included. Twelve questions contain
+a separate Community discussion section, including an Answer debated badge
+where interpretations conflict. Relevant discussion from the remaining
+questions has been incorporated into the answer explanations; usernames,
+votes, duplicate comments, and unrelated discussion have been removed.
+
+Exam mode uses selection-level scoring: every correct multiple-choice option,
+dropdown, yes/no row, or drag-and-drop target is worth one point. Partially
+correct questions show the points earned during answer review. Practice mode
+continues to require the complete answer set.

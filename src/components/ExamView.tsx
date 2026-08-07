@@ -116,6 +116,8 @@ export function ExamView(props: ExamViewProps) {
                         onChange={() => {
                           if (question.type === "multiple") {
                             const current = (answers.main as string[]) ?? [];
+                            const maximumSelections = question.correctAnswers?.length ?? current.length + 1;
+                            if (!selected && current.length >= maximumSelections) return;
                             props.onAnswer("main", selected ? current.filter((id) => id !== option.id) : [...current, option.id]);
                           } else props.onAnswer("main", [option.id]);
                         }}
