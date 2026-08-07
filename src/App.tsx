@@ -9,6 +9,7 @@ import { AuthView } from "./components/AuthView";
 import { supabase } from "./lib/supabase";
 import { loadQuizHistory, saveQuizAttempt } from "./services/quizAttempts";
 import { loadMasteredQuestionIds, setQuestionMastered } from "./services/masteredQuestions";
+import { loadQuestionPerformance, saveQuestionAttempts } from "./services/questionPerformance";
 import { DOMAIN_META } from "./constants/domains";
 import type {
   Answers,
@@ -16,6 +17,7 @@ import type {
   HistoryItem,
   Question,
   QuestionCount,
+  QuestionPerformance,
   View,
 } from "./types/quiz";
 import { answerIsCorrect, createQuiz, isAnswered, maximumExamScore, scoreQuestion } from "./utils/quiz";
@@ -38,6 +40,7 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [masteredQuestionIds, setMasteredQuestionIds] = useState<number[]>([]);
+  const [questionPerformance, setQuestionPerformance] = useState<QuestionPerformance[]>([]);
 
   useEffect(() => {
     fetch("./questions.json")
@@ -59,6 +62,7 @@ export default function App() {
     if (!session) {
       setHistory([]);
       setMasteredQuestionIds([]);
+      setQuestionPerformance([]);
       return;
     }
     loadQuizHistory().then(setHistory).catch((error) => {
@@ -67,20 +71,29 @@ export default function App() {
     loadMasteredQuestionIds().then(setMasteredQuestionIds).catch((error) => {
       console.error("Could not load mastered questions", error);
     });
+    loadQuestionPerformance().then(setQuestionPerformance).catch((error) => {
+      console.error("Could not load question performance", error);
+    });
   }, [session]);
 
-  function startQuiz(domain?: string) {
+  function startQuiz(domain?: string, needsPractice = false) {
     const mastered = new Set(masteredQuestionIds);
-    const practiceQuestions = questions.filter((question) => !mastered.has(question.id));
+    const weakIds = new Set(questionPerformance
+      .filter((item) => item.maximumPoints > 0 && item.earnedPoints / item.maximumPoints < 0.7)
+      .map((item) => item.questionId));
+    const practiceQuestions = questions.filter((question) =>
+      !mastered.has(question.id) && (!needsPractice || weakIds.has(question.id)));
     const selectedQuestions = createQuiz(practiceQuestions, questionCount, domain);
     if (!selectedQuestions.length) {
-      window.alert(domain
+      window.alert(needsPractice
+        ? "No questions need extra practice yet. Answer some questions first."
+        : domain
         ? "You have mastered every question in this domain."
         : "You have mastered every practice question.");
       return;
     }
     setQuiz(selectedQuestions);
-    setQuizLabel(domain ? DOMAIN_META[domain].short : "All domains");
+    setQuizLabel(needsPractice ? "Needs practice" : domain ? DOMAIN_META[domain].short : "All domains");
     setActiveDomain(domain);
     setIndex(0);
     setScore(0);
@@ -157,6 +170,21 @@ export default function App() {
       saveQuizAttempt(session.user.id, "exam", entry).catch((error) => {
         console.error("Could not save exam result", error);
       });
+      const attempts = quiz.map((question) => {
+        const result = scoreQuestion(question, examAnswers[question.id] ?? {});
+        return {
+          questionId: question.id,
+          category: question.category,
+          mode: "exam" as const,
+          isCorrect: result.earned === result.maximum,
+          earnedPoints: result.earned,
+          maximumPoints: result.maximum,
+        };
+      });
+      applyPerformance(attempts);
+      saveQuestionAttempts(session.user.id, attempts).catch((error) => {
+        console.error("Could not save exam question performance", error);
+      });
     }
     setView("exam-result");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -165,10 +193,51 @@ export default function App() {
   function submitAnswer() {
     const question = quiz[index];
     if (!isAnswered(question, answers)) return;
-    if (answerIsCorrect(question, answers)) {
+    const correct = answerIsCorrect(question, answers);
+    if (correct) {
       setScore((current) => current + 1);
     }
+    if (session) {
+      const attempt = {
+        questionId: question.id,
+        category: question.category,
+        mode: "practice" as const,
+        isCorrect: correct,
+        earnedPoints: correct ? 1 : 0,
+        maximumPoints: 1,
+      };
+      applyPerformance([attempt]);
+      saveQuestionAttempts(session.user.id, [attempt]).catch((error) => {
+        console.error("Could not save question performance", error);
+      });
+    }
     setSubmitted(true);
+  }
+
+  function applyPerformance(attempts: {
+    questionId: number;
+    isCorrect: boolean;
+    earnedPoints: number;
+    maximumPoints: number;
+  }[]) {
+    setQuestionPerformance((current) => {
+      const next = new Map(current.map((item) => [item.questionId, { ...item }]));
+      for (const attempt of attempts) {
+        const item = next.get(attempt.questionId) ?? {
+          questionId: attempt.questionId,
+          attempts: 0,
+          correctAttempts: 0,
+          earnedPoints: 0,
+          maximumPoints: 0,
+        };
+        item.attempts += 1;
+        item.correctAttempts += attempt.isCorrect ? 1 : 0;
+        item.earnedPoints += attempt.earnedPoints;
+        item.maximumPoints += attempt.maximumPoints;
+        next.set(attempt.questionId, item);
+      }
+      return [...next.values()];
+    });
   }
 
   function nextQuestion() {
@@ -274,10 +343,12 @@ export default function App() {
       onDomainChange={setSelectedDomain}
       onQuestionCountChange={setQuestionCount}
       onStart={startQuiz}
+      onStartNeedsPractice={() => startQuiz(undefined, true)}
       onStartExam={startExam}
       userEmail={session.user.email ?? "Signed in"}
       onSignOut={() => supabase.auth.signOut()}
       masteredQuestionIds={masteredQuestionIds}
+      questionPerformance={questionPerformance}
     />
   );
 }

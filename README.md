@@ -32,6 +32,15 @@ the client package with `npm install @supabase/supabase-js` and provide
 `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and in
 the GitHub Actions build environment.
 
+Run both SQL files in the `supabase` directory in Supabase SQL Editor. The app
+then syncs mastered questions and per-question answer history between devices.
+Mastered questions are excluded from practice but remain in Exam Mode.
+
+The start page shows accuracy per exam domain. Questions with a cumulative
+score below 70 percent are automatically available in **Needs practice** mode.
+Practice answers and Exam Mode component scores both contribute to these
+statistics.
+
 Curated ExamTopics discussion insights are included. Twelve questions contain
 a separate Community discussion section, including an Answer debated badge
 where interpretations conflict. Relevant discussion from the remaining

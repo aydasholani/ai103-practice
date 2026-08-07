@@ -1,5 +1,5 @@
 import { DOMAIN_META } from "../constants/domains";
-import type { HistoryItem, Question, QuestionCount } from "../types/quiz";
+import type { HistoryItem, Question, QuestionCount, QuestionPerformance } from "../types/quiz";
 import { Brand } from "./Brand";
 
 type HomeViewProps = {
@@ -10,10 +10,12 @@ type HomeViewProps = {
   onDomainChange: (domain: string) => void;
   onQuestionCountChange: (count: QuestionCount) => void;
   onStart: (domain?: string) => void;
+  onStartNeedsPractice: () => void;
   onStartExam: () => void;
   userEmail: string;
   onSignOut: () => void;
   masteredQuestionIds: number[];
+  questionPerformance: QuestionPerformance[];
 };
 
 const QUESTION_COUNTS: { value: QuestionCount; label: string }[] = [
@@ -31,22 +33,36 @@ export function HomeView({
   onDomainChange,
   onQuestionCountChange,
   onStart,
+  onStartNeedsPractice,
   onStartExam,
   userEmail,
   onSignOut,
   masteredQuestionIds,
+  questionPerformance,
 }: HomeViewProps) {
   const masteredSet = new Set(masteredQuestionIds);
   const masteredCount = questions.filter((question) => masteredSet.has(question.id)).length;
   const remainingCount = questions.length - masteredCount;
+  const performanceMap = new Map(questionPerformance.map((item) => [item.questionId, item]));
+  const weakQuestionIds = new Set(questionPerformance
+    .filter((item) => item.maximumPoints > 0 && item.earnedPoints / item.maximumPoints < 0.7)
+    .map((item) => item.questionId));
+  const weakCount = questions.filter((question) =>
+    weakQuestionIds.has(question.id) && !masteredSet.has(question.id)).length;
   const domains = Object.keys(DOMAIN_META).map((name) => {
     const domainQuestions = questions.filter((question) => question.category === name);
     const mastered = domainQuestions.filter((question) => masteredSet.has(question.id)).length;
+    const performance = domainQuestions
+      .map((question) => performanceMap.get(question.id))
+      .filter((item): item is QuestionPerformance => Boolean(item));
+    const earnedPoints = performance.reduce((total, item) => total + item.earnedPoints, 0);
+    const maximumPoints = performance.reduce((total, item) => total + item.maximumPoints, 0);
     return {
       name,
       total: domainQuestions.length,
       mastered,
       count: domainQuestions.length - mastered,
+      accuracy: maximumPoints ? Math.round((earnedPoints / maximumPoints) * 100) : null,
       ...DOMAIN_META[name],
     };
   });
@@ -170,6 +186,23 @@ export function HomeView({
               Start exam <span>→</span>
             </button>
           </article>
+
+          <article className="mode-card needs-practice-card">
+            <div className="mode-icon needs-practice-icon">↻</div>
+            <span className="card-kicker practice-kicker">Adaptive study</span>
+            <h3>Needs practice</h3>
+            <p>Retry questions where your total accuracy is below 70%.</p>
+            <div className="mode-detail"><span>Questions identified</span><strong>{weakCount}</strong></div>
+            <div className="mode-detail"><span>Mastered excluded</span><strong>Yes</strong></div>
+            {countSelect}
+            <button
+              className="primary-button full practice-button"
+              disabled={weakCount === 0}
+              onClick={onStartNeedsPractice}
+            >
+              Practice weak questions <span>→</span>
+            </button>
+          </article>
         </div>
       </section>
 
@@ -190,6 +223,9 @@ export function HomeView({
               <span className="domain-name">
                 <strong>{domain.name}</strong>
                 <small>{domain.count} remaining · {domain.mastered} mastered · {domain.total} total</small>
+                <small className={domain.accuracy !== null && domain.accuracy < 70 ? "weak-accuracy" : ""}>
+                  Accuracy: {domain.accuracy === null ? "Not tested" : `${domain.accuracy}%`}
+                </small>
               </span>
               <span className="domain-arrow">→</span>
             </button>

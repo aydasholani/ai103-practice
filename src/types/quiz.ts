@@ -69,3 +69,11 @@ export type HistoryItem = {
 export type View = "home" | "quiz" | "result" | "exam" | "exam-result";
 export type QuestionCount = "10" | "25" | "50" | "all";
 export type ExamAnswers = Record<number, Answers>;
+
+export type QuestionPerformance = {
+  questionId: number;
+  attempts: number;
+  correctAttempts: number;
+  earnedPoints: number;
+  maximumPoints: number;
+};
