@@ -6,10 +6,12 @@ import { ResultView } from "./components/ResultView";
 import { ExamView } from "./components/ExamView";
 import { ExamResultView } from "./components/ExamResultView";
 import { AuthView } from "./components/AuthView";
+import { MistakeReviewView } from "./components/MistakeReviewView";
 import { supabase } from "./lib/supabase";
 import { loadQuizHistory, saveQuizAttempt } from "./services/quizAttempts";
 import { loadMasteredQuestionIds, setQuestionMastered } from "./services/masteredQuestions";
 import { loadQuestionPerformance, saveQuestionAttempts } from "./services/questionPerformance";
+import { loadStudyProgress, saveStudyProgress } from "./services/studyProgress";
 import { DOMAIN_META } from "./constants/domains";
 import type {
   Answers,
@@ -18,6 +20,8 @@ import type {
   Question,
   QuestionCount,
   QuestionPerformance,
+  Confidence,
+  StudyProgress,
   View,
 } from "./types/quiz";
 import { answerIsCorrect, createQuiz, isAnswered, maximumExamScore, scoreQuestion } from "./utils/quiz";
@@ -41,6 +45,8 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [masteredQuestionIds, setMasteredQuestionIds] = useState<number[]>([]);
   const [questionPerformance, setQuestionPerformance] = useState<QuestionPerformance[]>([]);
+  const [studyProgress, setStudyProgress] = useState<StudyProgress[]>([]);
+  const [confidence, setConfidence] = useState<Confidence | null>(null);
 
   useEffect(() => {
     fetch("./questions.json")
@@ -63,6 +69,7 @@ export default function App() {
       setHistory([]);
       setMasteredQuestionIds([]);
       setQuestionPerformance([]);
+      setStudyProgress([]);
       return;
     }
     loadQuizHistory().then(setHistory).catch((error) => {
@@ -73,6 +80,9 @@ export default function App() {
     });
     loadQuestionPerformance().then(setQuestionPerformance).catch((error) => {
       console.error("Could not load question performance", error);
+    });
+    loadStudyProgress().then(setStudyProgress).catch((error) => {
+      console.error("Could not load study progress. Run supabase/study_progress.sql.", error);
     });
   }, [session]);
 
@@ -99,6 +109,7 @@ export default function App() {
     setScore(0);
     setAnswers({});
     setSubmitted(false);
+    setConfidence(null);
     setView("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -210,8 +221,35 @@ export default function App() {
       saveQuestionAttempts(session.user.id, [attempt]).catch((error) => {
         console.error("Could not save question performance", error);
       });
+      saveProgress(question, correct, null);
     }
     setSubmitted(true);
+  }
+
+  async function saveProgress(question: Question, correct: boolean, nextConfidence: Confidence | null) {
+    if (!session) return;
+    const previous = studyProgress.find((item) => item.questionId === question.id);
+    try {
+      const saved = await saveStudyProgress(session.user.id, question.id, answers, correct, nextConfidence, previous?.reviewStep);
+      setStudyProgress((current) => [...current.filter((item) => item.questionId !== question.id), saved]);
+    } catch (error) {
+      console.error("Could not save study progress", error);
+    }
+  }
+
+  function chooseConfidence(value: Confidence) {
+    const question = quiz[index];
+    setConfidence(value);
+    saveProgress(question, answerIsCorrect(question, answers), value);
+  }
+
+  function startReview(filter: (item: StudyProgress) => boolean, label: string) {
+    const ids = new Set(studyProgress.filter(filter).map((item) => item.questionId));
+    const selected = createQuiz(questions.filter((question) => ids.has(question.id)), questionCount);
+    if (!selected.length) return;
+    setQuiz(selected); setQuizLabel(label); setActiveDomain(undefined); setIndex(0); setScore(0);
+    setAnswers({}); setSubmitted(false); setConfidence(null); setView("quiz");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function applyPerformance(attempts: {
@@ -245,6 +283,7 @@ export default function App() {
       setIndex((current) => current + 1);
       setAnswers({});
       setSubmitted(false);
+      setConfidence(null);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -287,6 +326,8 @@ export default function App() {
         onExit={() => setView("home")}
         mastered={masteredQuestionIds.includes(quiz[index].id)}
         onToggleMastered={() => toggleMastered(quiz[index].id)}
+        confidence={confidence}
+        onConfidence={chooseConfidence}
       />
     );
   }
@@ -300,6 +341,12 @@ export default function App() {
         onHome={() => setView("home")}
       />
     );
+  }
+
+  if (view === "mistakes") {
+    return <MistakeReviewView questions={questions} progress={studyProgress}
+      onPractice={() => startReview((item) => !item.wasCorrect, "Mistake review")}
+      onHome={() => setView("home")} />;
   }
 
 
@@ -349,6 +396,13 @@ export default function App() {
       onSignOut={() => supabase.auth.signOut()}
       masteredQuestionIds={masteredQuestionIds}
       questionPerformance={questionPerformance}
+      studyProgress={studyProgress}
+      onStartDomainReview={(domain) => startQuiz(domain)}
+      onOpenMistakes={() => setView("mistakes")}
+      onStartDueReview={() => startReview(
+        (item) => Boolean(item.nextReviewAt) && new Date(item.nextReviewAt!) <= new Date(),
+        "Due review",
+      )}
     />
   );
 }

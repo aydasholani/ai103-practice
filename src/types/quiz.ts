@@ -66,7 +66,7 @@ export type HistoryItem = {
   total: number;
   label: string;
 };
-export type View = "home" | "quiz" | "result" | "exam" | "exam-result";
+export type View = "home" | "quiz" | "result" | "exam" | "exam-result" | "mistakes";
 export type QuestionCount = "10" | "25" | "50" | "all";
 export type ExamAnswers = Record<number, Answers>;
 
@@ -76,4 +76,16 @@ export type QuestionPerformance = {
   correctAttempts: number;
   earnedPoints: number;
   maximumPoints: number;
+};
+
+export type Confidence = "guessed" | "unsure" | "confident";
+
+export type StudyProgress = {
+  questionId: number;
+  lastAnswers: Answers;
+  wasCorrect: boolean;
+  confidence: Confidence | null;
+  reviewStep: number;
+  nextReviewAt: string | null;
+  updatedAt: string;
 };

@@ -24,15 +24,16 @@ includes an English explanation. Explanations are displayed after the answer
 has been checked.
 
 Exam mode includes 60 random questions, a 120-minute countdown, question
-flagging and navigation, automatic submission when time expires, a 70 percent
-passing score, and answer review only after the exam has been submitted.
+flagging and navigation, automatic submission when time expires, an 80 percent
+practice target, and answer review only after the exam has been submitted. This
+practice target does not reproduce Microsoft's scaled 700-point scoring system.
 
 Supabase authentication and synchronized quiz history are included. Install
 the client package with `npm install @supabase/supabase-js` and provide
 `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and in
 the GitHub Actions build environment.
 
-Run both SQL files in the `supabase` directory in Supabase SQL Editor. The app
+Run all three SQL files in the `supabase` directory in Supabase SQL Editor. The app
 then syncs mastered questions and per-question answer history between devices.
 Mastered questions are excluded from practice but remain in Exam Mode.
 
@@ -51,3 +52,10 @@ Exam mode uses selection-level scoring: every correct multiple-choice option,
 dropdown, yes/no row, or drag-and-drop target is worth one point. Partially
 correct questions show the points earned during answer review. Practice mode
 continues to require the complete answer set.
+
+The home page includes official Microsoft Learn resources per exam domain, a
+Weak areas panel, due-review shortcuts, and Mistake review. After checking a
+practice answer, users can mark it Guessed, Unsure, or Confident and open a
+Microsoft Learn search for that question's topic. Incorrect, guessed, and
+unsure questions are scheduled for spaced review after 1, 3, and 7 days. Run
+`supabase/study_progress.sql` before using these synchronized learning features.

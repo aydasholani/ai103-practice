@@ -1,5 +1,5 @@
-import { DOMAIN_META } from "../constants/domains";
-import type { HistoryItem, Question, QuestionCount, QuestionPerformance } from "../types/quiz";
+import { AI103_COURSE_URL, AI103_STUDY_GUIDE_URL, DOMAIN_META } from "../constants/domains";
+import type { HistoryItem, Question, QuestionCount, QuestionPerformance, StudyProgress } from "../types/quiz";
 import { Brand } from "./Brand";
 
 type HomeViewProps = {
@@ -16,6 +16,10 @@ type HomeViewProps = {
   onSignOut: () => void;
   masteredQuestionIds: number[];
   questionPerformance: QuestionPerformance[];
+  studyProgress: StudyProgress[];
+  onStartDomainReview: (domain: string) => void;
+  onOpenMistakes: () => void;
+  onStartDueReview: () => void;
 };
 
 const QUESTION_COUNTS: { value: QuestionCount; label: string }[] = [
@@ -39,6 +43,10 @@ export function HomeView({
   onSignOut,
   masteredQuestionIds,
   questionPerformance,
+  studyProgress,
+  onStartDomainReview,
+  onOpenMistakes,
+  onStartDueReview,
 }: HomeViewProps) {
   const masteredSet = new Set(masteredQuestionIds);
   const masteredCount = questions.filter((question) => masteredSet.has(question.id)).length;
@@ -67,6 +75,8 @@ export function HomeView({
     };
   });
   const selectedDomainRemaining = domains.find((domain) => domain.name === selectedDomain)?.count ?? 0;
+  const dueCount = studyProgress.filter((item) => item.nextReviewAt && new Date(item.nextReviewAt) <= new Date()).length;
+  const mistakeCount = studyProgress.filter((item) => !item.wasCorrect).length;
 
   const countSelect = (
     <label className="select-label">
@@ -177,7 +187,7 @@ export function HomeView({
             <p>Simulate a full exam without feedback until you submit.</p>
             <div className="mode-detail"><span>Questions</span><strong>60 random</strong></div>
             <div className="mode-detail"><span>Time limit</span><strong>120 minutes</strong></div>
-            <div className="mode-detail"><span>Passing score</span><strong>70%</strong></div>
+            <div className="mode-detail"><span>Practice target</span><strong>80%</strong></div>
             <button
               className="primary-button full exam-button"
               disabled={questions.length < 60}
@@ -231,6 +241,26 @@ export function HomeView({
             </button>
           ))}
         </div>
+      </section>
+
+      <section className="insights-section">
+        <div className="section-heading"><span className="eyebrow">Adaptive learning</span><h2>Weak areas</h2></div>
+        <div className="insight-grid">
+          {domains.filter((domain) => domain.accuracy !== null).sort((a, b) => (a.accuracy ?? 0) - (b.accuracy ?? 0)).map((domain) => <article className="insight-card" key={domain.name}>
+            <span>{domain.short}</span><strong>{domain.accuracy}%</strong>
+            <button className="secondary-button" onClick={() => onStartDomainReview(domain.name)}>Practice this area</button>
+            <a href={domain.learnUrl} target="_blank" rel="noreferrer">Microsoft Learn ↗</a>
+          </article>)}
+        </div>
+        <div className="review-actions">
+          <button className="secondary-button" disabled={!mistakeCount} onClick={onOpenMistakes}>Mistake review ({mistakeCount})</button>
+          <button className="secondary-button" disabled={!dueCount} onClick={onStartDueReview}>Due for review ({dueCount})</button>
+        </div>
+      </section>
+
+      <section className="resources-section">
+        <div className="section-heading"><span className="eyebrow">Official resources</span><h2>Microsoft Learn</h2></div>
+        <div className="resource-links"><a href={AI103_COURSE_URL} target="_blank" rel="noreferrer">AI-103 course ↗</a><a href={AI103_STUDY_GUIDE_URL} target="_blank" rel="noreferrer">Official study guide ↗</a></div>
       </section>
 
       <section className="history-section">

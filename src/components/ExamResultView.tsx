@@ -14,7 +14,7 @@ type ExamResultViewProps = {
 
 export function ExamResultView({ questions, answers, score, maximumScore, onRetry, onHome }: ExamResultViewProps) {
   const percent = Math.round((score / maximumScore) * 100);
-  const passed = percent >= 70;
+  const passed = percent >= 80;
 
   return (
     <main className="app-shell exam-result-page">
@@ -22,7 +22,7 @@ export function ExamResultView({ questions, answers, score, maximumScore, onRetr
         <div className="result-ring" style={{ "--score": `${percent * 3.6}deg` } as CSSProperties}><span>{percent}%</span></div>
         <p className="eyebrow">Exam complete</p>
         <h1>{passed ? "Passed" : "Not passed"}</h1>
-        <p>{score} of {maximumScore} points · Passing score: 70%</p>
+        <p>{score} of {maximumScore} points · Practice target: 80%</p>
         <div className="result-actions"><button className="primary-button" onClick={onRetry}>New exam</button><button className="secondary-button" onClick={onHome}>Back to home</button></div>
       </section>
 

@@ -1,5 +1,5 @@
-import { DOMAIN_META } from "../constants/domains";
-import type { Answers, Question } from "../types/quiz";
+import { DOMAIN_META, questionLearnUrl } from "../constants/domains";
+import type { Answers, Confidence, Question } from "../types/quiz";
 import { answerIsCorrect, isAnswered } from "../utils/quiz";
 import { Brand } from "./Brand";
 import { InteractionField } from "./InteractionField";
@@ -16,6 +16,8 @@ type QuizViewProps = {
   onExit: () => void;
   mastered: boolean;
   onToggleMastered: () => void;
+  confidence: Confidence | null;
+  onConfidence: (confidence: Confidence) => void;
 };
 
 export function QuizView(props: QuizViewProps) {
@@ -120,6 +122,17 @@ export function QuizView(props: QuizViewProps) {
                   : "The correct answer is highlighted above."}</p>
               </div>
             </div>
+          )}
+
+          {submitted && (
+            <section className="learning-tools">
+              <div><strong>How confident were you?</strong><div className="confidence-buttons">
+                {(["guessed", "unsure", "confident"] as Confidence[]).map((value) => <button
+                  className={props.confidence === value ? "active" : ""}
+                  key={value} onClick={() => props.onConfidence(value)}>{value[0].toUpperCase() + value.slice(1)}</button>)}
+              </div></div>
+              {!correct && <a className="learn-link" href={questionLearnUrl(question)} target="_blank" rel="noreferrer">Study this topic on Microsoft Learn ↗</a>}
+            </section>
           )}
 
           {submitted && question.communityNotes && (
