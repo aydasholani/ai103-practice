@@ -1,5 +1,7 @@
 # Refactored AI-103 source
 
+[AI-103 Practice](<https://aydasholani.github.io/ai103-practice/>)
+
 Replace the existing `src` directory in `ai103-practice` with the `src`
 directory in this package. Also replace `public/questions.json` with the
 included version. Keep your other files in `public`, plus `package.json`,
