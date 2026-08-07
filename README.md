@@ -1,7 +1,5 @@
 # Refactored AI-103 source
 
-[AI-103 Practice](<https://aydasholani.github.io/ai103-practice/>)
-
 Replace the existing `src` directory in `ai103-practice` with the `src`
 directory in this package. Also replace `public/questions.json` with the
 included version. Keep your other files in `public`, plus `package.json`,
@@ -28,3 +26,8 @@ has been checked.
 Exam mode includes 60 random questions, a 120-minute countdown, question
 flagging and navigation, automatic submission when time expires, a 70 percent
 passing score, and answer review only after the exam has been submitted.
+
+Supabase authentication and synchronized quiz history are included. Install
+the client package with `npm install @supabase/supabase-js` and provide
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and in
+the GitHub Actions build environment.

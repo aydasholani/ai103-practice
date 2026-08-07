@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 import { HomeView } from "./components/HomeView";
 import { QuizView } from "./components/QuizView";
 import { ResultView } from "./components/ResultView";
 import { ExamView } from "./components/ExamView";
 import { ExamResultView } from "./components/ExamResultView";
+import { AuthView } from "./components/AuthView";
+import { supabase } from "./lib/supabase";
+import { loadQuizHistory, saveQuizAttempt } from "./services/quizAttempts";
 import { DOMAIN_META } from "./constants/domains";
 import type {
   Answers,
@@ -30,15 +34,34 @@ export default function App() {
   const [activeDomain, setActiveDomain] = useState<string>();
   const [examAnswers, setExamAnswers] = useState<ExamAnswers>({});
   const [flaggedQuestions, setFlaggedQuestions] = useState<number[]>([]);
+  const [session, setSession] = useState<Session | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     fetch("./questions.json")
       .then((response) => response.json())
       .then(setQuestions);
 
-    const saved = localStorage.getItem("ai103-history");
-    if (saved) setHistory(JSON.parse(saved));
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setAuthLoading(false);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+      setAuthLoading(false);
+    });
+    return () => listener.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!session) {
+      setHistory([]);
+      return;
+    }
+    loadQuizHistory().then(setHistory).catch((error) => {
+      console.error("Could not load quiz history", error);
+    });
+  }, [session]);
 
   function startQuiz(domain?: string) {
     const selectedQuestions = createQuiz(questions, questionCount, domain);
@@ -95,7 +118,11 @@ export default function App() {
     };
     const updated = [entry, ...history].slice(0, 8);
     setHistory(updated);
-    localStorage.setItem("ai103-history", JSON.stringify(updated));
+    if (session) {
+      saveQuizAttempt(session.user.id, "exam", entry).catch((error) => {
+        console.error("Could not save exam result", error);
+      });
+    }
     setView("exam-result");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -126,8 +153,20 @@ export default function App() {
     };
     const updated = [entry, ...history].slice(0, 8);
     setHistory(updated);
-    localStorage.setItem("ai103-history", JSON.stringify(updated));
+    if (session) {
+      saveQuizAttempt(session.user.id, "practice", entry).catch((error) => {
+        console.error("Could not save quiz result", error);
+      });
+    }
     setView("result");
+  }
+
+  if (authLoading) {
+    return <main className="auth-page"><p>Loading…</p></main>;
+  }
+
+  if (!session) {
+    return <AuthView />;
   }
 
   if (view === "quiz" && quiz[index]) {
@@ -198,6 +237,8 @@ export default function App() {
       onQuestionCountChange={setQuestionCount}
       onStart={startQuiz}
       onStartExam={startExam}
+      userEmail={session.user.email ?? "Signed in"}
+      onSignOut={() => supabase.auth.signOut()}
     />
   );
 }

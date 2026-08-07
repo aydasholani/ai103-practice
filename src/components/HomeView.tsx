@@ -11,6 +11,8 @@ type HomeViewProps = {
   onQuestionCountChange: (count: QuestionCount) => void;
   onStart: (domain?: string) => void;
   onStartExam: () => void;
+  userEmail: string;
+  onSignOut: () => void;
 };
 
 const QUESTION_COUNTS: { value: QuestionCount; label: string }[] = [
@@ -29,6 +31,8 @@ export function HomeView({
   onQuestionCountChange,
   onStart,
   onStartExam,
+  userEmail,
+  onSignOut,
 }: HomeViewProps) {
   const domains = Object.keys(DOMAIN_META).map((name) => ({
     name,
@@ -56,7 +60,10 @@ export function HomeView({
     <main className="app-shell">
       <header className="topbar">
         <Brand />
-        <span className="question-total">{questions.length} practice questions</span>
+        <div className="account-menu">
+          <span>{userEmail}</span>
+          <button className="text-button" onClick={onSignOut}>Sign out</button>
+        </div>
       </header>
 
       <section className="hero">
