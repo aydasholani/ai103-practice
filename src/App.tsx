@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { HomeView } from "./components/HomeView";
 import { QuizView } from "./components/QuizView";
 import { ResultView } from "./components/ResultView";
+import { ExamView } from "./components/ExamView";
+import { ExamResultView } from "./components/ExamResultView";
 import { DOMAIN_META } from "./constants/domains";
 import type {
   Answers,
+  ExamAnswers,
   HistoryItem,
   Question,
   QuestionCount,
@@ -25,6 +28,8 @@ export default function App() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [quizLabel, setQuizLabel] = useState("All domains");
   const [activeDomain, setActiveDomain] = useState<string>();
+  const [examAnswers, setExamAnswers] = useState<ExamAnswers>({});
+  const [flaggedQuestions, setFlaggedQuestions] = useState<number[]>([]);
 
   useEffect(() => {
     fetch("./questions.json")
@@ -52,6 +57,47 @@ export default function App() {
     if (!submitted) {
       setAnswers((current) => ({ ...current, [key]: value }));
     }
+  }
+
+  function startExam() {
+    setQuiz(createQuiz(questions, "all").slice(0, 60));
+    setExamAnswers({});
+    setFlaggedQuestions([]);
+    setIndex(0);
+    setView("exam");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function setExamAnswer(key: string, value: string | string[]) {
+    const questionId = quiz[index].id;
+    setExamAnswers((current) => ({
+      ...current,
+      [questionId]: { ...current[questionId], [key]: value },
+    }));
+  }
+
+  function toggleFlag(questionId: number) {
+    setFlaggedQuestions((current) => current.includes(questionId)
+      ? current.filter((id) => id !== questionId)
+      : [...current, questionId]);
+  }
+
+  function finishExam() {
+    const finalScore = quiz.filter((question) =>
+      answerIsCorrect(question, examAnswers[question.id] ?? {}),
+    ).length;
+    setScore(finalScore);
+    const entry: HistoryItem = {
+      date: new Date().toISOString(),
+      score: finalScore,
+      total: quiz.length,
+      label: "Exam mode",
+    };
+    const updated = [entry, ...history].slice(0, 8);
+    setHistory(updated);
+    localStorage.setItem("ai103-history", JSON.stringify(updated));
+    setView("exam-result");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function submitAnswer() {
@@ -111,6 +157,37 @@ export default function App() {
     );
   }
 
+
+  if (view === "exam" && quiz[index]) {
+    return (
+      <ExamView
+        question={quiz[index]}
+        questions={quiz}
+        index={index}
+        answers={examAnswers[quiz[index].id] ?? {}}
+        allAnswers={examAnswers}
+        flaggedQuestions={flaggedQuestions}
+        onAnswer={setExamAnswer}
+        onNavigate={setIndex}
+        onToggleFlag={() => toggleFlag(quiz[index].id)}
+        onFinish={finishExam}
+        onExit={() => setView("home")}
+      />
+    );
+  }
+
+  if (view === "exam-result") {
+    return (
+      <ExamResultView
+        questions={quiz}
+        answers={examAnswers}
+        score={score}
+        onRetry={startExam}
+        onHome={() => setView("home")}
+      />
+    );
+  }
+
   return (
     <HomeView
       questions={questions}
@@ -120,6 +197,7 @@ export default function App() {
       onDomainChange={setSelectedDomain}
       onQuestionCountChange={setQuestionCount}
       onStart={startQuiz}
+      onStartExam={startExam}
     />
   );
 }

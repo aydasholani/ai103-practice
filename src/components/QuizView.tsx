@@ -67,6 +67,7 @@ export function QuizView(props: QuizViewProps) {
                       type={question.type === "multiple" ? "checkbox" : "radio"}
                       name="main-answer"
                       checked={selected}
+                      disabled={submitted}
                       onChange={() => {
                         if (question.type === "multiple") {
                           const current = (answers.main as string[]) ?? [];
@@ -82,7 +83,15 @@ export function QuizView(props: QuizViewProps) {
                       }}
                     />
                     <span className="option-letter">{option.id}</span>
-                    <span className="preserve-text">{option.text}</span>
+                    <span className="option-content">
+                      <span className="preserve-text">{option.text}</span>
+                      {submitted && option.explanation && (
+                        <small className="option-explanation">
+                          <strong>{isCorrectOption ? "Why it is correct:" : "Why it is incorrect:"}</strong>{" "}
+                          {option.explanation}
+                        </small>
+                      )}
+                    </span>
                   </label>
                 );
               })}

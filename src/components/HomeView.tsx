@@ -10,6 +10,7 @@ type HomeViewProps = {
   onDomainChange: (domain: string) => void;
   onQuestionCountChange: (count: QuestionCount) => void;
   onStart: (domain?: string) => void;
+  onStartExam: () => void;
 };
 
 const QUESTION_COUNTS: { value: QuestionCount; label: string }[] = [
@@ -27,6 +28,7 @@ export function HomeView({
   onDomainChange,
   onQuestionCountChange,
   onStart,
+  onStartExam,
 }: HomeViewProps) {
   const domains = Object.keys(DOMAIN_META).map((name) => ({
     name,
@@ -129,6 +131,23 @@ export function HomeView({
               onClick={() => onStart(selectedDomain)}
             >
               Start domain quiz <span>→</span>
+            </button>
+          </article>
+
+          <article className="mode-card exam-mode-card">
+            <div className="mode-icon exam-icon">◷</div>
+            <span className="card-kicker exam-kicker">Exam simulation</span>
+            <h3>Exam mode</h3>
+            <p>Simulate a full exam without feedback until you submit.</p>
+            <div className="mode-detail"><span>Questions</span><strong>60 random</strong></div>
+            <div className="mode-detail"><span>Time limit</span><strong>120 minutes</strong></div>
+            <div className="mode-detail"><span>Passing score</span><strong>70%</strong></div>
+            <button
+              className="primary-button full exam-button"
+              disabled={questions.length < 60}
+              onClick={onStartExam}
+            >
+              Start exam <span>→</span>
             </button>
           </article>
         </div>

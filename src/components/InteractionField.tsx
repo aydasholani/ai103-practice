@@ -15,6 +15,7 @@ export function InteractionField({
 }: InteractionFieldProps) {
   if (interaction.type === "dropdown") {
     const value = (answers[interaction.id] as string) ?? "";
+    const selectedOption = interaction.options.find((option) => option.id === value);
     const state = submitted
       ? value === interaction.correctAnswer
         ? "correct-select"
@@ -43,6 +44,12 @@ export function InteractionField({
             )?.text}
           </small>
         )}
+        {submitted && selectedOption?.explanation && (
+          <small className="option-explanation">
+            <strong>{value === interaction.correctAnswer ? "Why it is correct:" : "Why it is incorrect:"}</strong>{" "}
+            {selectedOption.explanation}
+          </small>
+        )}
       </label>
     );
   }
@@ -54,7 +61,8 @@ export function InteractionField({
           <span>Statement</span><span>Yes</span><span>No</span>
         </div>
         {interaction.rows.map((row) => (
-          <div className="table-row" key={row.id}>
+          <div className="table-row-wrap" key={row.id}>
+          <div className="table-row">
             <p>{row.text}</p>
             {["yes", "no"].map((value) => {
               const selected = answers[row.id] === value;
@@ -75,6 +83,10 @@ export function InteractionField({
                 </label>
               );
             })}
+          </div>
+          {submitted && row.explanation && (
+            <small className="row-explanation">{row.explanation}</small>
+          )}
           </div>
         ))}
       </div>
@@ -103,6 +115,9 @@ export function InteractionField({
             </select>
             {submitted && value !== target.correctAnswer && (
               <small>Correct: {target.correctAnswer}</small>
+            )}
+            {submitted && target.explanation && (
+              <small className="option-explanation">{target.explanation}</small>
             )}
           </label>
         );
