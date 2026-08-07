@@ -1,20 +1,19 @@
-# AI-103 Exam Practice
+# Refactored AI-103 source
 
-A static React quiz app with 117 AI-103 practice questions. It supports single choice, multiple choice, dropdowns, yes/no tables, matching questions, category practice, immediate feedback, results, and local quiz history.
+Replace the existing `src` directory in `ai103-practice` with the `src`
+directory in this package. Keep your current `public`, `package.json`,
+`package-lock.json`, `vite.config.ts`, and GitHub Actions workflow.
 
-## Run locally
+The original large component has been split into:
 
-```bash
-npm install
-npm run dev
-```
+- `App.tsx` — application state and navigation
+- `components/HomeView.tsx` — start page and quiz configuration
+- `components/QuizView.tsx` — question screen
+- `components/ResultView.tsx` — result screen
+- `components/InteractionField.tsx` — dropdown, yes/no, and matching fields
+- `components/Brand.tsx` — shared logo/header element
+- `constants/domains.ts` — domain labels and colors
+- `types/quiz.ts` — TypeScript types
+- `utils/quiz.ts` — shuffle, quiz selection, and answer validation
 
-## Deploy to GitHub Pages
-
-1. Create an empty GitHub repository.
-2. Upload or push every file in this project.
-3. Open **Settings → Pages** in the repository.
-4. Under **Build and deployment**, select **GitHub Actions**.
-5. Push to the `main` branch. The included workflow builds and publishes the app automatically.
-
-Your site will be available at `https://YOUR-USERNAME.github.io/REPOSITORY-NAME/`.
+The question-count selector is included with 10, 25, 50, and all questions.
