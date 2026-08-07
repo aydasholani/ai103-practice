@@ -8,6 +8,7 @@ import { ExamResultView } from "./components/ExamResultView";
 import { AuthView } from "./components/AuthView";
 import { supabase } from "./lib/supabase";
 import { loadQuizHistory, saveQuizAttempt } from "./services/quizAttempts";
+import { loadMasteredQuestionIds, setQuestionMastered } from "./services/masteredQuestions";
 import { DOMAIN_META } from "./constants/domains";
 import type {
   Answers,
@@ -36,6 +37,7 @@ export default function App() {
   const [flaggedQuestions, setFlaggedQuestions] = useState<number[]>([]);
   const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [masteredQuestionIds, setMasteredQuestionIds] = useState<number[]>([]);
 
   useEffect(() => {
     fetch("./questions.json")
@@ -56,15 +58,27 @@ export default function App() {
   useEffect(() => {
     if (!session) {
       setHistory([]);
+      setMasteredQuestionIds([]);
       return;
     }
     loadQuizHistory().then(setHistory).catch((error) => {
       console.error("Could not load quiz history", error);
     });
+    loadMasteredQuestionIds().then(setMasteredQuestionIds).catch((error) => {
+      console.error("Could not load mastered questions", error);
+    });
   }, [session]);
 
   function startQuiz(domain?: string) {
-    const selectedQuestions = createQuiz(questions, questionCount, domain);
+    const mastered = new Set(masteredQuestionIds);
+    const practiceQuestions = questions.filter((question) => !mastered.has(question.id));
+    const selectedQuestions = createQuiz(practiceQuestions, questionCount, domain);
+    if (!selectedQuestions.length) {
+      window.alert(domain
+        ? "You have mastered every question in this domain."
+        : "You have mastered every practice question.");
+      return;
+    }
     setQuiz(selectedQuestions);
     setQuizLabel(domain ? DOMAIN_META[domain].short : "All domains");
     setActiveDomain(domain);
@@ -103,6 +117,25 @@ export default function App() {
     setFlaggedQuestions((current) => current.includes(questionId)
       ? current.filter((id) => id !== questionId)
       : [...current, questionId]);
+  }
+
+  async function toggleMastered(questionId: number) {
+    if (!session) return;
+    const wasMastered = masteredQuestionIds.includes(questionId);
+    const update = (ids: number[]) => wasMastered
+      ? ids.filter((id) => id !== questionId)
+      : [...ids, questionId];
+    setMasteredQuestionIds(update);
+
+    try {
+      await setQuestionMastered(session.user.id, questionId, !wasMastered);
+    } catch (error) {
+      setMasteredQuestionIds((ids) => wasMastered
+        ? [...ids, questionId]
+        : ids.filter((id) => id !== questionId));
+      console.error("Could not update mastered question", error);
+      window.alert("Could not update mastered status. Please try again.");
+    }
   }
 
   function finishExam() {
@@ -183,6 +216,8 @@ export default function App() {
         onSubmit={submitAnswer}
         onNext={nextQuestion}
         onExit={() => setView("home")}
+        mastered={masteredQuestionIds.includes(quiz[index].id)}
+        onToggleMastered={() => toggleMastered(quiz[index].id)}
       />
     );
   }
@@ -242,6 +277,7 @@ export default function App() {
       onStartExam={startExam}
       userEmail={session.user.email ?? "Signed in"}
       onSignOut={() => supabase.auth.signOut()}
+      masteredQuestionIds={masteredQuestionIds}
     />
   );
 }

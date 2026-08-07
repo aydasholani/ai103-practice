@@ -14,6 +14,8 @@ type QuizViewProps = {
   onSubmit: () => void;
   onNext: () => void;
   onExit: () => void;
+  mastered: boolean;
+  onToggleMastered: () => void;
 };
 
 export function QuizView(props: QuizViewProps) {
@@ -145,9 +147,17 @@ export function QuizView(props: QuizViewProps) {
                 Check answer
               </button>
             ) : (
-              <button className="primary-button" onClick={props.onNext}>
-                {index === total - 1 ? "See results" : "Next question"}
-              </button>
+              <>
+                <button
+                  className={`secondary-button mastered-button ${props.mastered ? "active" : ""}`}
+                  onClick={props.onToggleMastered}
+                >
+                  {props.mastered ? "✓ Mastered" : "Mark as mastered"}
+                </button>
+                <button className="primary-button" onClick={props.onNext}>
+                  {index === total - 1 ? "See results" : "Next question"}
+                </button>
+              </>
             )}
           </div>
         </article>

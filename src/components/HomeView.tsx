@@ -13,6 +13,7 @@ type HomeViewProps = {
   onStartExam: () => void;
   userEmail: string;
   onSignOut: () => void;
+  masteredQuestionIds: number[];
 };
 
 const QUESTION_COUNTS: { value: QuestionCount; label: string }[] = [
@@ -33,12 +34,23 @@ export function HomeView({
   onStartExam,
   userEmail,
   onSignOut,
+  masteredQuestionIds,
 }: HomeViewProps) {
-  const domains = Object.keys(DOMAIN_META).map((name) => ({
-    name,
-    count: questions.filter((question) => question.category === name).length,
-    ...DOMAIN_META[name],
-  }));
+  const masteredSet = new Set(masteredQuestionIds);
+  const masteredCount = questions.filter((question) => masteredSet.has(question.id)).length;
+  const remainingCount = questions.length - masteredCount;
+  const domains = Object.keys(DOMAIN_META).map((name) => {
+    const domainQuestions = questions.filter((question) => question.category === name);
+    const mastered = domainQuestions.filter((question) => masteredSet.has(question.id)).length;
+    return {
+      name,
+      total: domainQuestions.length,
+      mastered,
+      count: domainQuestions.length - mastered,
+      ...DOMAIN_META[name],
+    };
+  });
+  const selectedDomainRemaining = domains.find((domain) => domain.name === selectedDomain)?.count ?? 0;
 
   const countSelect = (
     <label className="select-label">
@@ -72,12 +84,12 @@ export function HomeView({
           <h1>Prepare for AI-103 with focused practice.</h1>
           <p>
             Work through exam-style questions across every official domain.
-            Check each answer instantly and track your progress on this device.
+            Check each answer instantly and sync your progress across devices.
           </p>
           <div className="hero-stats">
-            <span><strong>{questions.length || 117}</strong> Questions</span>
-            <span><strong>5</strong> Domains</span>
-            <span><strong>14</strong> Skill areas</span>
+            <span><strong>{remainingCount}</strong> Remaining</span>
+            <span><strong>{masteredCount}</strong> Mastered</span>
+            <span><strong>{questions.length || 117}</strong> Total</span>
           </div>
         </div>
         <div className="exam-card">
@@ -101,11 +113,12 @@ export function HomeView({
             <h3>All domains</h3>
             <p>Practice with randomly mixed questions from all exam topics.</p>
             <div className="mode-detail"><span>Question mix</span><strong>All topics</strong></div>
+            <div className="mode-detail"><span>Available</span><strong>{remainingCount} questions</strong></div>
             <div className="mode-detail"><span>Format</span><strong>Random order</strong></div>
             {countSelect}
             <button
               className="primary-button full"
-              disabled={!questions.length}
+              disabled={!questions.length || remainingCount === 0}
               onClick={() => onStart()}
             >
               Start quiz <span>→</span>
@@ -126,7 +139,7 @@ export function HomeView({
                 <option value="">Choose a domain…</option>
                 {domains.map((domain) => (
                   <option value={domain.name} key={domain.name}>
-                    {domain.short} ({domain.count})
+                    {domain.short} ({domain.count} remaining)
                   </option>
                 ))}
               </select>
@@ -134,7 +147,7 @@ export function HomeView({
             {countSelect}
             <button
               className="secondary-button full"
-              disabled={!selectedDomain}
+              disabled={!selectedDomain || selectedDomainRemaining === 0}
               onClick={() => onStart(selectedDomain)}
             >
               Start domain quiz <span>→</span>
@@ -171,10 +184,12 @@ export function HomeView({
               className="domain-row"
               onClick={() => onStart(domain.name)}
               key={domain.name}
+              disabled={domain.count === 0}
             >
               <span className={`domain-number ${domain.tone}`}>0{index + 1}</span>
               <span className="domain-name">
-                <strong>{domain.name}</strong><small>{domain.count} questions</small>
+                <strong>{domain.name}</strong>
+                <small>{domain.count} remaining · {domain.mastered} mastered · {domain.total} total</small>
               </span>
               <span className="domain-arrow">→</span>
             </button>
