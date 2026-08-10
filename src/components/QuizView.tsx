@@ -135,7 +135,6 @@ export function QuizView(props: QuizViewProps) {
             <section className="learning-tools">
               <div className={`question-status status-${props.status}`}>
                 <strong>{props.status === "new" ? "New"
-                  : props.status === "learning" ? "Learning"
                   : props.status === "needs_practice" ? "Needs practice"
                   : "Mastered"}</strong>
                 <span>{props.status === "mastered"

@@ -28,7 +28,7 @@ import { answerIsCorrect, createExamQuiz, createQuiz, isAnswered, maximumExamSco
 import { getQuestionStatus } from "./utils/questionStatus";
 import { matchesQuestionFormat } from "./utils/questionFormat";
 
-type PracticePool = "learning" | "needs_practice" | "mastered" | "all";
+type PracticePool = "new" | "needs_practice" | "mastered" | "all";
 
 export default function App() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -50,7 +50,7 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [questionPerformance, setQuestionPerformance] = useState<QuestionPerformance[]>([]);
   const [studyProgress, setStudyProgress] = useState<StudyProgress[]>([]);
-  const [activePracticePool, setActivePracticePool] = useState<PracticePool>("learning");
+  const [activePracticePool, setActivePracticePool] = useState<PracticePool>("new");
   const performanceMap = useMemo(() => new Map(questionPerformance.map((item) => [item.questionId, item])), [questionPerformance]);
   const questionStatus = (questionId: number): QuestionStatus => getQuestionStatus(performanceMap.get(questionId));
   const masteredQuestionIds = useMemo(() => questions
@@ -91,12 +91,12 @@ export default function App() {
     });
   }, [session]);
 
-  function startQuiz(domain?: string, pool: PracticePool = "learning") {
+  function startQuiz(domain?: string, pool: PracticePool = "new") {
     const eligible = (question: Question) => {
       if (!matchesQuestionFormat(question, questionFormat)) return false;
       const status = questionStatus(question.id);
       if (pool === "all") return true;
-      if (pool === "learning") return status === "new" || status === "learning";
+      if (pool === "new") return status === "new";
       return status === pool;
     };
     const includedGroups = new Set(questions
@@ -114,7 +114,7 @@ export default function App() {
         : pool === "mastered"
         ? "No questions are mastered yet."
         : domain
-        ? "No new or learning questions remain in this domain."
+        ? "No new questions remain in this domain."
         : "No questions are available in this study mode.");
       return;
     }
@@ -122,7 +122,7 @@ export default function App() {
     setQuizLabel(pool === "needs_practice" ? "Needs practice"
       : pool === "mastered" ? "Mastered review"
       : pool === "all" ? "All questions"
-      : domain ? DOMAIN_META[domain].short : "New & learning");
+      : domain ? DOMAIN_META[domain].short : "New questions");
     setActiveDomain(domain);
     setActivePracticePool(pool);
     setIndex(0);

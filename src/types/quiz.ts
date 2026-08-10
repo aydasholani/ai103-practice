@@ -103,7 +103,7 @@ export type QuestionPerformance = {
   lastWasCorrect: boolean;
 };
 
-export type QuestionStatus = "new" | "learning" | "needs_practice" | "mastered";
+export type QuestionStatus = "new" | "needs_practice" | "mastered";
 
 export type Confidence = "guessed" | "unsure" | "confident";
 

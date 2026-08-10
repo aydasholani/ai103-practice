@@ -12,6 +12,5 @@ export function getQuestionStatus(performance?: QuestionPerformance): QuestionSt
   if (!performance?.attempts) return "new";
   const accuracy = questionAccuracy(performance) ?? 0;
   if (performance.correctStreak >= MASTERY_STREAK && accuracy >= MINIMUM_ACCURACY) return "mastered";
-  if (!performance.lastWasCorrect || accuracy < MINIMUM_ACCURACY) return "needs_practice";
-  return "learning";
+  return "needs_practice";
 }

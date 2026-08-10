@@ -22,7 +22,49 @@ export function createQuiz(
 }
 
 export function createExamQuiz(questions: Question[], limit = 60) {
-  return selectGroupedQuestions(questions, limit);
+  const domainTargets = allocateExamDomains(limit);
+  const selected = Object.entries(domainTargets).flatMap(([domain, count]) =>
+    selectGroupedQuestions(
+      questions.filter((question) => question.category === domain),
+      count,
+    ),
+  );
+
+  if (selected.length < Math.min(limit, questions.length)) {
+    const used = new Set(selected.map((question) => question.id));
+    selected.push(...selectGroupedQuestions(
+      questions.filter((question) => !used.has(question.id)),
+      limit - selected.length,
+    ));
+  }
+
+  return shuffleGroupedQuestions(selected).slice(0, limit);
+}
+
+// 60 questions at 28.3%, 33.3%, 13.3%, 11.7%, and 13.3% respectively.
+// Every value is inside Microsoft's published AI-103 domain range.
+const EXAM_DOMAIN_TARGETS = {
+  "Plan and manage an Azure AI solution": 17,
+  "Implement generative AI and agentic solutions": 20,
+  "Implement computer vision solutions": 8,
+  "Implement text analysis solutions": 7,
+  "Implement information extraction solutions": 8,
+} as const;
+
+function allocateExamDomains(limit: number) {
+  const entries = Object.entries(EXAM_DOMAIN_TARGETS).map(([domain, target]) => {
+    const exact = limit * target / 60;
+    return { domain, count: Math.floor(exact), remainder: exact % 1 };
+  });
+  let remaining = limit - entries.reduce((total, entry) => total + entry.count, 0);
+
+  for (const entry of [...entries].sort((a, b) => b.remainder - a.remainder)) {
+    if (remaining === 0) break;
+    entry.count += 1;
+    remaining -= 1;
+  }
+
+  return Object.fromEntries(entries.map(({ domain, count }) => [domain, count]));
 }
 
 function selectGroupedQuestions(questions: Question[], limit: number) {
@@ -47,6 +89,27 @@ function selectGroupedQuestions(questions: Question[], limit: number) {
     selected.push(...shuffle(questions.filter((question) => !used.has(question.id) && !question.examGroup && !question.caseStudy)).slice(0, limit - selected.length));
   }
   return selected;
+}
+
+function shuffleGroupedQuestions(questions: Question[]) {
+  const groups = new Map<string, Question[]>();
+  const blocks: Question[][] = [];
+
+  for (const question of questions) {
+    const groupId = question.examGroup
+      ? `solution:${question.examGroup.id}`
+      : question.caseStudy
+        ? `case:${question.caseStudy.id}`
+        : null;
+    if (!groupId) blocks.push([question]);
+    else groups.set(groupId, [...(groups.get(groupId) ?? []), question]);
+  }
+
+  blocks.push(...[...groups.values()].map((group) => group.sort((a, b) =>
+    (a.examGroup?.position ?? a.caseStudy!.position) -
+    (b.examGroup?.position ?? b.caseStudy!.position))));
+
+  return shuffle(blocks).flat();
 }
 
 export function expectedAnswers(question: Question) {
