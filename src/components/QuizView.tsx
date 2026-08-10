@@ -3,6 +3,7 @@ import type { Answers, Confidence, Question } from "../types/quiz";
 import { answerIsCorrect, isAnswered } from "../utils/quiz";
 import { Brand } from "./Brand";
 import { InteractionField } from "./InteractionField";
+import { CaseStudyPanel } from "./CaseStudyPanel";
 
 type QuizViewProps = {
   question: Question;
@@ -42,8 +43,11 @@ export function QuizView(props: QuizViewProps) {
           </span>
           <span>{question.subcategory}</span>
         </div>
+        <div className={question.caseStudy ? "case-study-question-layout" : ""}>
+        {question.caseStudy && question.context && <CaseStudyPanel context={question.context} />}
         <article className="question-card">
-          {question.context && (
+          {question.examGroup && <div className="locked-section-notice"><strong>Solution set · {question.examGroup.position} of {question.examGroup.size}</strong><span>The questions in this scenario are shown together and in order.</span></div>}
+          {question.context && !question.caseStudy && (
             <details className="context-box">
               <summary>Open case study context</summary>
               <div className="preserve-text">{question.context}</div>
@@ -174,6 +178,7 @@ export function QuizView(props: QuizViewProps) {
             )}
           </div>
         </article>
+        </div>
       </section>
     </main>
   );

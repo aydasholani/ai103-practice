@@ -17,9 +17,36 @@ export function createQuiz(
   const pool = domain
     ? questions.filter((question) => question.category === domain)
     : questions;
-  const shuffled = shuffle(pool);
-  const limit = count === "all" ? shuffled.length : Number(count);
-  return shuffled.slice(0, Math.min(limit, shuffled.length));
+  const limit = count === "all" ? pool.length : Number(count);
+  return selectGroupedQuestions(pool, limit);
+}
+
+export function createExamQuiz(questions: Question[], limit = 60) {
+  return selectGroupedQuestions(questions, limit);
+}
+
+function selectGroupedQuestions(questions: Question[], limit: number) {
+  const groupedIds = new Set(questions.filter((question) => question.examGroup || question.caseStudy).map((question) => question.id));
+  const groups = new Map<string, Question[]>();
+  for (const question of questions.filter((item) => item.examGroup || item.caseStudy)) {
+    const id = question.examGroup ? `solution:${question.examGroup.id}` : `case:${question.caseStudy!.id}`;
+    groups.set(id, [...(groups.get(id) ?? []), question]);
+  }
+  const blocks: Question[][] = [
+    ...questions.filter((question) => !groupedIds.has(question.id)).map((question) => [question]),
+    ...[...groups.values()].map((group) => group.sort((a, b) =>
+      (a.examGroup?.position ?? a.caseStudy!.position) - (b.examGroup?.position ?? b.caseStudy!.position))),
+  ];
+  const selected: Question[] = [];
+  for (const block of shuffle(blocks)) {
+    if (selected.length + block.length <= limit) selected.push(...block);
+    if (selected.length === limit) break;
+  }
+  if (selected.length < Math.min(limit, questions.length)) {
+    const used = new Set(selected.map((question) => question.id));
+    selected.push(...shuffle(questions.filter((question) => !used.has(question.id) && !question.examGroup && !question.caseStudy)).slice(0, limit - selected.length));
+  }
+  return selected;
 }
 
 export function expectedAnswers(question: Question) {

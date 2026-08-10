@@ -24,7 +24,7 @@ import type {
   StudyProgress,
   View,
 } from "./types/quiz";
-import { answerIsCorrect, createQuiz, isAnswered, maximumExamScore, scoreQuestion } from "./utils/quiz";
+import { answerIsCorrect, createExamQuiz, createQuiz, isAnswered, maximumExamScore, scoreQuestion } from "./utils/quiz";
 
 export default function App() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -91,8 +91,16 @@ export default function App() {
     const weakIds = new Set(questionPerformance
       .filter((item) => item.maximumPoints > 0 && item.earnedPoints / item.maximumPoints < 0.7)
       .map((item) => item.questionId));
+    const eligible = (question: Question) =>
+      !mastered.has(question.id) && (!needsPractice || weakIds.has(question.id));
+    const includedGroups = new Set(questions
+      .filter(eligible)
+      .flatMap((question) => question.examGroup ? [`solution:${question.examGroup.id}`]
+        : question.caseStudy ? [`case:${question.caseStudy.id}`] : []));
     const practiceQuestions = questions.filter((question) =>
-      !mastered.has(question.id) && (!needsPractice || weakIds.has(question.id)));
+      eligible(question)
+      || Boolean(question.examGroup && includedGroups.has(`solution:${question.examGroup.id}`))
+      || Boolean(question.caseStudy && includedGroups.has(`case:${question.caseStudy.id}`)));
     const selectedQuestions = createQuiz(practiceQuestions, questionCount, domain);
     if (!selectedQuestions.length) {
       window.alert(needsPractice
@@ -121,7 +129,7 @@ export default function App() {
   }
 
   function startExam() {
-    setQuiz(createQuiz(questions, "all").slice(0, 60));
+    setQuiz(createExamQuiz(questions, 60));
     setExamAnswers({});
     setFlaggedQuestions([]);
     setIndex(0);

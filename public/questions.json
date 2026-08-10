@@ -60,6 +60,13 @@
         "Global Standard offers highly elastic throughput, but it can route inference outside the selected region.",
         "Data Zone Standard could be relevant in a different option set, but it is not offered in this question."
       ]
+    },
+    "caseStudy": {
+      "id": "contoso-agent-products",
+      "position": 1,
+      "size": 7,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
     }
   },
   {
@@ -100,6 +107,13 @@
         "Because the question asks for one control while the case lists both concerns, readers reasonably interpret the intended requirement differently."
       ],
       "answerDisputed": true
+    },
+    "caseStudy": {
+      "id": "contoso-agent-products",
+      "position": 2,
+      "size": 7,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
     }
   },
   {
@@ -967,6 +981,13 @@
     ],
     "communityNotes": {
       "summary": "A shield configured only for user prompts detects direct malicious user input. It does not by itself cover both unsafe visual content and indirect instructions extracted from uploaded images."
+    },
+    "examGroup": {
+      "id": "multimodal-safety-solutions",
+      "position": 1,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
     }
   },
   {
@@ -992,6 +1013,13 @@
     ],
     "communityNotes": {
       "summary": "Image moderation can block harmful visual content, but it does not neutralize indirect prompt-injection instructions embedded as text in the image. The complete goal contains both risks."
+    },
+    "examGroup": {
+      "id": "multimodal-safety-solutions",
+      "position": 2,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
     }
   },
   {
@@ -1021,6 +1049,13 @@
         "Some participants interpreted 'unsafe images' as referring only to hidden instructions and therefore selected Yes. The scenario separately mentions unsafe images and hidden instructions, which supports No."
       ],
       "answerDisputed": true
+    },
+    "examGroup": {
+      "id": "multimodal-safety-solutions",
+      "position": 3,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
     }
   },
   {
@@ -1046,6 +1081,13 @@
     ],
     "communityNotes": {
       "summary": "Protected material detection concerns copyrighted or protected generated content. It does not moderate unsafe images or detect indirect prompt injection."
+    },
+    "examGroup": {
+      "id": "multimodal-safety-solutions",
+      "position": 4,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
     }
   },
   {
@@ -1079,7 +1121,14 @@
     ],
     "correctAnswers": [
       "D"
-    ]
+    ],
+    "caseStudy": {
+      "id": "contoso-agent-products",
+      "position": 3,
+      "size": 7,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
   },
   {
     "id": 28,
@@ -1112,7 +1161,14 @@
     ],
     "correctAnswers": [
       "A"
-    ]
+    ],
+    "caseStudy": {
+      "id": "contoso-agent-products",
+      "position": 4,
+      "size": 7,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
   },
   {
     "id": 29,
@@ -1622,6 +1678,13 @@
       "caveats": [
         "The answer could differ only if the omission were specifically caused by output truncation, which the scenario does not state."
       ]
+    },
+    "examGroup": {
+      "id": "response-completeness-solutions",
+      "position": 1,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
     }
   },
   {
@@ -1644,7 +1707,14 @@
     ],
     "correctAnswers": [
       "A"
-    ]
+    ],
+    "examGroup": {
+      "id": "response-completeness-solutions",
+      "position": 2,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
+    }
   },
   {
     "id": 43,
@@ -1666,7 +1736,14 @@
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "examGroup": {
+      "id": "response-completeness-solutions",
+      "position": 3,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
+    }
   },
   {
     "id": 44,
@@ -1695,6 +1772,13 @@
         "Some participants interpreted enforcement through blocking as meeting the goal. The wording asks to improve the response, which favors No unless a retry or regeneration step is included."
       ],
       "answerDisputed": true
+    },
+    "examGroup": {
+      "id": "response-completeness-solutions",
+      "position": 4,
+      "size": 4,
+      "locked": true,
+      "reviewable": false
     }
   },
   {
@@ -2104,6 +2188,13 @@
     ],
     "communityNotes": {
       "summary": "Document Intelligence is strong for extracting fields and layout. This scenario also requires reasoning over visual and textual invoice content and validating it against contract terms, which is the broader Content Understanding use case."
+    },
+    "caseStudy": {
+      "id": "contoso-agent-products",
+      "position": 5,
+      "size": 7,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
     }
   },
   {
@@ -2276,7 +2367,14 @@
     "correctAnswers": [
       "A",
       "C"
-    ]
+    ],
+    "caseStudy": {
+      "id": "contoso-agent-products",
+      "position": 6,
+      "size": 7,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
   },
   {
     "id": 62,
@@ -2309,7 +2407,14 @@
     ],
     "correctAnswers": [
       "C"
-    ]
+    ],
+    "caseStudy": {
+      "id": "contoso-agent-products",
+      "position": 7,
+      "size": 7,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
   },
   {
     "id": 63,
@@ -2471,7 +2576,14 @@
         ],
         "correctAnswer": "D"
       }
-    ]
+    ],
+    "caseStudy": {
+      "id": "contoso-foundry-projects",
+      "position": 1,
+      "size": 3,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
   },
   {
     "id": 67,
@@ -2504,7 +2616,14 @@
     ],
     "correctAnswers": [
       "B"
-    ]
+    ],
+    "caseStudy": {
+      "id": "contoso-foundry-projects",
+      "position": 2,
+      "size": 3,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
   },
   {
     "id": 68,
@@ -2560,7 +2679,14 @@
         ],
         "correctAnswer": "B"
       }
-    ]
+    ],
+    "caseStudy": {
+      "id": "contoso-foundry-projects",
+      "position": 3,
+      "size": 3,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
   },
   {
     "id": 69,

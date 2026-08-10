@@ -59,3 +59,23 @@ practice answer, users can mark it Guessed, Unsure, or Confident and open a
 Microsoft Learn search for that question's topic. Incorrect, guessed, and
 unsure questions are scheduled for spaced review after 1, 3, and 7 days. Run
 `supabase/study_progress.sql` before using these synchronized learning features.
+
+Exam Mode preserves Microsoft-style locked solution sets. Questions 23–26 and
+41–44 are selected as complete blocks, shown consecutively in source order,
+require an answer before Next, and cannot be revisited or flagged before the
+exam is submitted. After submission, they remain visible with the correct
+answer and explanation for study purposes. Ordinary exam questions still
+support free navigation and marking for review.
+
+Practice Mode also treats these questions as complete blocks. If any question
+from a solution set is selected for ordinary or adaptive practice, every
+question in that set appears consecutively in source order.
+
+Case-study questions are identified as two complete sections: questions 1, 2,
+27, 28, 56, 61, and 62 form one case; questions 66–68 form the other. The app
+selects each case atomically and presents its questions consecutively. Scenario
+information is shown in a separate Microsoft-style panel with Overview,
+Existing Environment, Problem Statements, and Requirements navigation. In
+Exam Mode, users can move between and review questions inside the active case,
+then explicitly finish the case; after leaving it, the section cannot be
+reopened. Post-exam answer explanations remain available for learning.

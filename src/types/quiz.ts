@@ -52,6 +52,20 @@ export type Question = {
   correctAnswers?: string[];
   interactions?: Interaction[];
   media?: { type: string; src: string; alt: string }[];
+  examGroup?: {
+    id: string;
+    position: number;
+    size: number;
+    locked: boolean;
+    reviewable: boolean;
+  };
+  caseStudy?: {
+    id: string;
+    position: number;
+    size: number;
+    reviewableWithinSection: boolean;
+    returnAfterLeaving: boolean;
+  };
   communityNotes?: {
     summary: string;
     caveats?: string[];
