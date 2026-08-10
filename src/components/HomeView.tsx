@@ -1,6 +1,7 @@
 import { AI103_COURSE_URL, AI103_STUDY_GUIDE_URL, DOMAIN_META } from "../constants/domains";
-import type { HistoryItem, Question, QuestionCount, QuestionPerformance, StudyProgress } from "../types/quiz";
+import type { HistoryItem, Question, QuestionCount, QuestionFormat, QuestionPerformance, StudyProgress } from "../types/quiz";
 import { getQuestionStatus } from "../utils/questionStatus";
+import { matchesQuestionFormat } from "../utils/questionFormat";
 import { Brand } from "./Brand";
 
 type HomeViewProps = {
@@ -8,8 +9,10 @@ type HomeViewProps = {
   history: HistoryItem[];
   selectedDomain: string;
   questionCount: QuestionCount;
+  questionFormat: QuestionFormat;
   onDomainChange: (domain: string) => void;
   onQuestionCountChange: (count: QuestionCount) => void;
+  onQuestionFormatChange: (format: QuestionFormat) => void;
   onStart: (domain?: string) => void;
   onStartNeedsPractice: () => void;
   onStartAllQuestions: () => void;
@@ -32,13 +35,27 @@ const QUESTION_COUNTS: { value: QuestionCount; label: string }[] = [
   { value: "all", label: "All questions" },
 ];
 
+const QUESTION_FORMATS: { value: QuestionFormat; label: string }[] = [
+  { value: "all", label: "All formats" },
+  { value: "single", label: "Single choice" },
+  { value: "multiple", label: "Multiple choice" },
+  { value: "dropdown", label: "Dropdown" },
+  { value: "drag_drop", label: "Drag-and-drop / ordering" },
+  { value: "yes_no_table", label: "Yes / No tables" },
+  { value: "hotspot", label: "HOTSPOT" },
+  { value: "case_study", label: "Case studies only" },
+  { value: "solution_set", label: "Locked solution sets only" },
+];
+
 export function HomeView({
   questions,
   history,
   selectedDomain,
   questionCount,
+  questionFormat,
   onDomainChange,
   onQuestionCountChange,
+  onQuestionFormatChange,
   onStart,
   onStartNeedsPractice,
   onStartAllQuestions,
@@ -54,15 +71,20 @@ export function HomeView({
   onStartMasteredReview,
 }: HomeViewProps) {
   const masteredSet = new Set(masteredQuestionIds);
-  const masteredCount = questions.filter((question) => masteredSet.has(question.id)).length;
   const performanceMap = new Map(questionPerformance.map((item) => [item.questionId, item]));
   const statusOf = (question: Question) => getQuestionStatus(performanceMap.get(question.id));
-  const newCount = questions.filter((question) => statusOf(question) === "new").length;
-  const learningCount = questions.filter((question) => statusOf(question) === "learning").length;
+  const filteredQuestions = questions.filter((question) => matchesQuestionFormat(question, questionFormat));
+  const overallNewCount = questions.filter((question) => statusOf(question) === "new").length;
+  const overallLearningCount = questions.filter((question) => statusOf(question) === "learning").length;
+  const overallWeakCount = questions.filter((question) => statusOf(question) === "needs_practice").length;
+  const overallMasteredCount = questions.filter((question) => masteredSet.has(question.id)).length;
+  const newCount = filteredQuestions.filter((question) => statusOf(question) === "new").length;
+  const learningCount = filteredQuestions.filter((question) => statusOf(question) === "learning").length;
   const learningPoolCount = newCount + learningCount;
-  const weakCount = questions.filter((question) => statusOf(question) === "needs_practice").length;
+  const weakCount = filteredQuestions.filter((question) => statusOf(question) === "needs_practice").length;
+  const masteredCount = filteredQuestions.filter((question) => masteredSet.has(question.id)).length;
   const domains = Object.keys(DOMAIN_META).map((name) => {
-    const domainQuestions = questions.filter((question) => question.category === name);
+    const domainQuestions = filteredQuestions.filter((question) => question.category === name);
     const mastered = domainQuestions.filter((question) => masteredSet.has(question.id)).length;
     const needsPractice = domainQuestions.filter((question) => statusOf(question) === "needs_practice").length;
     const count = domainQuestions.filter((question) => {
@@ -85,8 +107,9 @@ export function HomeView({
     };
   });
   const selectedDomainRemaining = domains.find((domain) => domain.name === selectedDomain)?.count ?? 0;
-  const dueCount = studyProgress.filter((item) => item.nextReviewAt && new Date(item.nextReviewAt) <= new Date()).length;
-  const mistakeCount = studyProgress.filter((item) => !item.wasCorrect).length;
+  const filteredIds = new Set(filteredQuestions.map((question) => question.id));
+  const dueCount = studyProgress.filter((item) => filteredIds.has(item.questionId) && item.nextReviewAt && new Date(item.nextReviewAt) <= new Date()).length;
+  const mistakeCount = studyProgress.filter((item) => filteredIds.has(item.questionId) && !item.wasCorrect).length;
 
   const countSelect = (
     <label className="select-label">
@@ -100,6 +123,15 @@ export function HomeView({
         {QUESTION_COUNTS.map((option) => (
           <option key={option.value} value={option.value}>{option.label}</option>
         ))}
+      </select>
+    </label>
+  );
+
+  const formatSelect = (
+    <label className="select-label">
+      Question format
+      <select value={questionFormat} onChange={(event) => onQuestionFormatChange(event.target.value as QuestionFormat)}>
+        {QUESTION_FORMATS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
       </select>
     </label>
   );
@@ -123,10 +155,10 @@ export function HomeView({
             Check each answer instantly and sync your progress across devices.
           </p>
           <div className="hero-stats">
-            <span><strong>{newCount}</strong> New</span>
-            <span><strong>{learningCount}</strong> Learning</span>
-            <span><strong>{weakCount}</strong> Needs practice</span>
-            <span><strong>{masteredCount}</strong> Mastered</span>
+            <span><strong>{overallNewCount}</strong> New</span>
+            <span><strong>{overallLearningCount}</strong> Learning</span>
+            <span><strong>{overallWeakCount}</strong> Needs practice</span>
+            <span><strong>{overallMasteredCount}</strong> Mastered</span>
           </div>
         </div>
         <div className="exam-card">
@@ -143,6 +175,7 @@ export function HomeView({
           <span className="eyebrow">Start practicing</span>
           <h2>Choose your study mode</h2>
         </div>
+        <div className="practice-filters">{formatSelect}<span>{filteredQuestions.length} questions match this format</span></div>
         <div className="mode-grid">
           <article className="mode-card featured">
             <div className="mode-icon">✦</div>
@@ -264,7 +297,7 @@ export function HomeView({
           </article>)}
         </div>
         <div className="review-actions">
-          <button className="secondary-button" disabled={!questions.length} onClick={onStartAllQuestions}>All questions ({questions.length})</button>
+          <button className="secondary-button" disabled={!filteredQuestions.length} onClick={onStartAllQuestions}>All questions ({filteredQuestions.length})</button>
           <button className="secondary-button" disabled={!mistakeCount} onClick={onOpenMistakes}>Mistake review ({mistakeCount})</button>
           <button className="secondary-button" disabled={!dueCount} onClick={onStartDueReview}>Due for review ({dueCount})</button>
           <button className="secondary-button" disabled={!masteredCount} onClick={onStartMasteredReview}>Review mastered ({masteredCount})</button>

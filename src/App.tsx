@@ -18,6 +18,7 @@ import type {
   HistoryItem,
   Question,
   QuestionCount,
+  QuestionFormat,
   QuestionPerformance,
   QuestionStatus,
   StudyProgress,
@@ -25,6 +26,7 @@ import type {
 } from "./types/quiz";
 import { answerIsCorrect, createExamQuiz, createQuiz, isAnswered, maximumExamScore, scoreQuestion } from "./utils/quiz";
 import { getQuestionStatus } from "./utils/questionStatus";
+import { matchesQuestionFormat } from "./utils/questionFormat";
 
 type PracticePool = "learning" | "needs_practice" | "mastered" | "all";
 
@@ -33,6 +35,7 @@ export default function App() {
   const [view, setView] = useState<View>("home");
   const [selectedDomain, setSelectedDomain] = useState("");
   const [questionCount, setQuestionCount] = useState<QuestionCount>("25");
+  const [questionFormat, setQuestionFormat] = useState<QuestionFormat>("all");
   const [quiz, setQuiz] = useState<Question[]>([]);
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
@@ -90,6 +93,7 @@ export default function App() {
 
   function startQuiz(domain?: string, pool: PracticePool = "learning") {
     const eligible = (question: Question) => {
+      if (!matchesQuestionFormat(question, questionFormat)) return false;
       const status = questionStatus(question.id);
       if (pool === "all") return true;
       if (pool === "learning") return status === "new" || status === "learning";
@@ -239,7 +243,7 @@ export default function App() {
 
   function startReview(filter: (item: StudyProgress) => boolean, label: string) {
     const ids = new Set(studyProgress.filter(filter).map((item) => item.questionId));
-    const selected = createQuiz(questions.filter((question) => ids.has(question.id)), questionCount);
+    const selected = createQuiz(questions.filter((question) => ids.has(question.id) && matchesQuestionFormat(question, questionFormat)), questionCount);
     if (!selected.length) return;
     setQuiz(selected); setQuizLabel(label); setActiveDomain(undefined); setIndex(0); setScore(0);
     setAnswers({}); setSubmitted(false); setView("quiz");
@@ -382,8 +386,10 @@ export default function App() {
       history={history}
       selectedDomain={selectedDomain}
       questionCount={questionCount}
+      questionFormat={questionFormat}
       onDomainChange={setSelectedDomain}
       onQuestionCountChange={setQuestionCount}
+      onQuestionFormatChange={setQuestionFormat}
       onStart={startQuiz}
       onStartNeedsPractice={() => startQuiz(undefined, "needs_practice")}
       onStartAllQuestions={() => startQuiz(undefined, "all")}

@@ -90,6 +90,7 @@ export type HistoryItem = {
 };
 export type View = "home" | "quiz" | "result" | "exam" | "exam-result" | "mistakes";
 export type QuestionCount = "10" | "25" | "50" | "all";
+export type QuestionFormat = "all" | "single" | "multiple" | "dropdown" | "drag_drop" | "yes_no_table" | "hotspot" | "case_study" | "solution_set";
 export type ExamAnswers = Record<number, Answers>;
 
 export type QuestionPerformance = {
