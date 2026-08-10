@@ -5,6 +5,8 @@ import { isAnswered } from "../utils/quiz";
 import { Brand } from "./Brand";
 import { InteractionField } from "./InteractionField";
 import { CaseStudyPanel } from "./CaseStudyPanel";
+import { CodeAnswerTemplate } from "./CodeAnswerTemplate";
+import { QuestionSupportingContent } from "./QuestionSupportingContent";
 
 const EXAM_SECONDS = 120 * 60;
 
@@ -153,6 +155,7 @@ export function ExamView(props: ExamViewProps) {
               {!locked && <button className={`flag-button ${props.flaggedQuestions.includes(question.id) ? "active" : ""}`} onClick={props.onToggleFlag}>⚑ Mark for review</button>}
             </div>
             <h1 className="question-text preserve-text">{question.question}</h1>
+            <QuestionSupportingContent question={question} />
             {question.media?.map((media) => <img className="question-image" key={media.src} src={media.src} alt={media.alt} />)}
 
             {(question.type === "single" || question.type === "multiple") && (
@@ -181,7 +184,9 @@ export function ExamView(props: ExamViewProps) {
                 })}
               </div>
             )}
-            {question.interactions?.map((interaction) => <InteractionField key={interaction.id} interaction={interaction} answers={answers} submitted={false} onAnswer={props.onAnswer} />)}
+            {question.answerTemplate
+              ? <CodeAnswerTemplate question={question} answers={answers} submitted={false} onAnswer={(key, value) => props.onAnswer(key, value)} />
+              : question.interactions?.map((interaction) => <InteractionField key={interaction.id} interaction={interaction} answers={answers} submitted={false} onAnswer={props.onAnswer} />)}
 
             <div className="question-actions exam-actions">
               <button className="secondary-button" disabled={index === 0 || locked || index === caseStart || questions[index - 1]?.examGroup?.reviewable === false} onClick={() => navigate(index - 1)}>← Previous</button>

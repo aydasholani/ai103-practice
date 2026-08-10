@@ -32,11 +32,15 @@ export async function loadQuestionPerformance(): Promise<QuestionPerformance[]> 
       correctAttempts: 0,
       earnedPoints: 0,
       maximumPoints: 0,
+      correctStreak: 0,
+      lastWasCorrect: false,
     };
     current.attempts += 1;
     current.correctAttempts += attempt.is_correct ? 1 : 0;
     current.earnedPoints += attempt.earned_points;
     current.maximumPoints += attempt.maximum_points;
+    current.correctStreak = attempt.is_correct ? current.correctStreak + 1 : 0;
+    current.lastWasCorrect = attempt.is_correct;
     totals.set(attempt.question_id, current);
   }
   return [...totals.values()];

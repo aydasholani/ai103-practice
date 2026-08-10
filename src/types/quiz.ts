@@ -52,6 +52,14 @@ export type Question = {
   correctAnswers?: string[];
   interactions?: Interaction[];
   media?: { type: string; src: string; alt: string }[];
+  supportingContent?: (
+    | { type: "code"; language: string; content: string }
+    | { type: "table"; columns: string[]; rows: string[][] }
+  )[];
+  answerTemplate?: {
+    language: string;
+    content: string;
+  };
   examGroup?: {
     id: string;
     position: number;
@@ -90,7 +98,11 @@ export type QuestionPerformance = {
   correctAttempts: number;
   earnedPoints: number;
   maximumPoints: number;
+  correctStreak: number;
+  lastWasCorrect: boolean;
 };
+
+export type QuestionStatus = "new" | "learning" | "needs_practice" | "mastered";
 
 export type Confidence = "guessed" | "unsure" | "confident";
 

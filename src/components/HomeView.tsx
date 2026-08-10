@@ -1,5 +1,6 @@
 import { AI103_COURSE_URL, AI103_STUDY_GUIDE_URL, DOMAIN_META } from "../constants/domains";
 import type { HistoryItem, Question, QuestionCount, QuestionPerformance, StudyProgress } from "../types/quiz";
+import { getQuestionStatus } from "../utils/questionStatus";
 import { Brand } from "./Brand";
 
 type HomeViewProps = {
@@ -11,6 +12,7 @@ type HomeViewProps = {
   onQuestionCountChange: (count: QuestionCount) => void;
   onStart: (domain?: string) => void;
   onStartNeedsPractice: () => void;
+  onStartAllQuestions: () => void;
   onStartExam: () => void;
   userEmail: string;
   onSignOut: () => void;
@@ -20,6 +22,7 @@ type HomeViewProps = {
   onStartDomainReview: (domain: string) => void;
   onOpenMistakes: () => void;
   onStartDueReview: () => void;
+  onStartMasteredReview: () => void;
 };
 
 const QUESTION_COUNTS: { value: QuestionCount; label: string }[] = [
@@ -38,6 +41,7 @@ export function HomeView({
   onQuestionCountChange,
   onStart,
   onStartNeedsPractice,
+  onStartAllQuestions,
   onStartExam,
   userEmail,
   onSignOut,
@@ -47,19 +51,24 @@ export function HomeView({
   onStartDomainReview,
   onOpenMistakes,
   onStartDueReview,
+  onStartMasteredReview,
 }: HomeViewProps) {
   const masteredSet = new Set(masteredQuestionIds);
   const masteredCount = questions.filter((question) => masteredSet.has(question.id)).length;
-  const remainingCount = questions.length - masteredCount;
   const performanceMap = new Map(questionPerformance.map((item) => [item.questionId, item]));
-  const weakQuestionIds = new Set(questionPerformance
-    .filter((item) => item.maximumPoints > 0 && item.earnedPoints / item.maximumPoints < 0.7)
-    .map((item) => item.questionId));
-  const weakCount = questions.filter((question) =>
-    weakQuestionIds.has(question.id) && !masteredSet.has(question.id)).length;
+  const statusOf = (question: Question) => getQuestionStatus(performanceMap.get(question.id));
+  const newCount = questions.filter((question) => statusOf(question) === "new").length;
+  const learningCount = questions.filter((question) => statusOf(question) === "learning").length;
+  const learningPoolCount = newCount + learningCount;
+  const weakCount = questions.filter((question) => statusOf(question) === "needs_practice").length;
   const domains = Object.keys(DOMAIN_META).map((name) => {
     const domainQuestions = questions.filter((question) => question.category === name);
     const mastered = domainQuestions.filter((question) => masteredSet.has(question.id)).length;
+    const needsPractice = domainQuestions.filter((question) => statusOf(question) === "needs_practice").length;
+    const count = domainQuestions.filter((question) => {
+      const status = statusOf(question);
+      return status === "new" || status === "learning";
+    }).length;
     const performance = domainQuestions
       .map((question) => performanceMap.get(question.id))
       .filter((item): item is QuestionPerformance => Boolean(item));
@@ -69,7 +78,8 @@ export function HomeView({
       name,
       total: domainQuestions.length,
       mastered,
-      count: domainQuestions.length - mastered,
+      needsPractice,
+      count,
       accuracy: maximumPoints ? Math.round((earnedPoints / maximumPoints) * 100) : null,
       ...DOMAIN_META[name],
     };
@@ -113,9 +123,10 @@ export function HomeView({
             Check each answer instantly and sync your progress across devices.
           </p>
           <div className="hero-stats">
-            <span><strong>{remainingCount}</strong> Remaining</span>
+            <span><strong>{newCount}</strong> New</span>
+            <span><strong>{learningCount}</strong> Learning</span>
+            <span><strong>{weakCount}</strong> Needs practice</span>
             <span><strong>{masteredCount}</strong> Mastered</span>
-            <span><strong>{questions.length || 117}</strong> Total</span>
           </div>
         </div>
         <div className="exam-card">
@@ -136,15 +147,15 @@ export function HomeView({
           <article className="mode-card featured">
             <div className="mode-icon">✦</div>
             <span className="card-kicker">Recommended</span>
-            <h3>All domains</h3>
-            <p>Practice with randomly mixed questions from all exam topics.</p>
-            <div className="mode-detail"><span>Question mix</span><strong>All topics</strong></div>
-            <div className="mode-detail"><span>Available</span><strong>{remainingCount} questions</strong></div>
+            <h3>New &amp; learning</h3>
+            <p>Practice unseen questions and questions you are currently learning across all domains.</p>
+            <div className="mode-detail"><span>Excluded</span><strong>Needs practice &amp; mastered</strong></div>
+            <div className="mode-detail"><span>Available</span><strong>{learningPoolCount} questions</strong></div>
             <div className="mode-detail"><span>Format</span><strong>Random order</strong></div>
             {countSelect}
             <button
               className="primary-button full"
-              disabled={!questions.length || remainingCount === 0}
+              disabled={!questions.length || learningPoolCount === 0}
               onClick={() => onStart()}
             >
               Start quiz <span>→</span>
@@ -201,7 +212,7 @@ export function HomeView({
             <div className="mode-icon needs-practice-icon">↻</div>
             <span className="card-kicker practice-kicker">Adaptive study</span>
             <h3>Needs practice</h3>
-            <p>Retry questions where your total accuracy is below 70%.</p>
+            <p>Retry questions where your latest answer was wrong or your total accuracy is below 70%.</p>
             <div className="mode-detail"><span>Questions identified</span><strong>{weakCount}</strong></div>
             <div className="mode-detail"><span>Mastered excluded</span><strong>Yes</strong></div>
             {countSelect}
@@ -232,7 +243,7 @@ export function HomeView({
               <span className={`domain-number ${domain.tone}`}>0{index + 1}</span>
               <span className="domain-name">
                 <strong>{domain.name}</strong>
-                <small>{domain.count} remaining · {domain.mastered} mastered · {domain.total} total</small>
+                <small>{domain.count} new/learning · {domain.needsPractice} needs practice · {domain.mastered} mastered</small>
                 <small className={domain.accuracy !== null && domain.accuracy < 70 ? "weak-accuracy" : ""}>
                   Accuracy: {domain.accuracy === null ? "Not tested" : `${domain.accuracy}%`}
                 </small>
@@ -248,13 +259,15 @@ export function HomeView({
         <div className="insight-grid">
           {domains.filter((domain) => domain.accuracy !== null).sort((a, b) => (a.accuracy ?? 0) - (b.accuracy ?? 0)).map((domain) => <article className="insight-card" key={domain.name}>
             <span>{domain.short}</span><strong>{domain.accuracy}%</strong>
-            <button className="secondary-button" onClick={() => onStartDomainReview(domain.name)}>Practice this area</button>
+            <button className="secondary-button" disabled={domain.needsPractice === 0} onClick={() => onStartDomainReview(domain.name)}>Practice this area ({domain.needsPractice})</button>
             <a href={domain.learnUrl} target="_blank" rel="noreferrer">Microsoft Learn ↗</a>
           </article>)}
         </div>
         <div className="review-actions">
+          <button className="secondary-button" disabled={!questions.length} onClick={onStartAllQuestions}>All questions ({questions.length})</button>
           <button className="secondary-button" disabled={!mistakeCount} onClick={onOpenMistakes}>Mistake review ({mistakeCount})</button>
           <button className="secondary-button" disabled={!dueCount} onClick={onStartDueReview}>Due for review ({dueCount})</button>
+          <button className="secondary-button" disabled={!masteredCount} onClick={onStartMasteredReview}>Review mastered ({masteredCount})</button>
         </div>
       </section>
 

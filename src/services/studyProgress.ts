@@ -32,10 +32,9 @@ export async function saveStudyProgress(
   questionId: number,
   answers: Answers,
   wasCorrect: boolean,
-  confidence: Confidence | null,
   previousStep = 0,
 ) {
-  const reviewStep = wasCorrect && confidence === "confident" ? 0 : Math.min(previousStep + 1, 3);
+  const reviewStep = wasCorrect ? Math.min(previousStep + 1, 3) : 1;
   const delays = [0, 1, 3, 7];
   const nextReviewAt = reviewStep
     ? new Date(Date.now() + delays[reviewStep] * 86_400_000).toISOString()
@@ -45,7 +44,7 @@ export async function saveStudyProgress(
     question_id: questionId,
     last_answers: answers,
     was_correct: wasCorrect,
-    confidence,
+    confidence: null,
     review_step: reviewStep,
     next_review_at: nextReviewAt,
     updated_at: new Date().toISOString(),

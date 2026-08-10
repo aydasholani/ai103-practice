@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { HomeView } from "./components/HomeView";
 import { QuizView } from "./components/QuizView";
@@ -9,7 +9,6 @@ import { AuthView } from "./components/AuthView";
 import { MistakeReviewView } from "./components/MistakeReviewView";
 import { supabase } from "./lib/supabase";
 import { loadQuizHistory, saveQuizAttempt } from "./services/quizAttempts";
-import { loadMasteredQuestionIds, setQuestionMastered } from "./services/masteredQuestions";
 import { loadQuestionPerformance, saveQuestionAttempts } from "./services/questionPerformance";
 import { loadStudyProgress, saveStudyProgress } from "./services/studyProgress";
 import { DOMAIN_META } from "./constants/domains";
@@ -20,11 +19,14 @@ import type {
   Question,
   QuestionCount,
   QuestionPerformance,
-  Confidence,
+  QuestionStatus,
   StudyProgress,
   View,
 } from "./types/quiz";
 import { answerIsCorrect, createExamQuiz, createQuiz, isAnswered, maximumExamScore, scoreQuestion } from "./utils/quiz";
+import { getQuestionStatus } from "./utils/questionStatus";
+
+type PracticePool = "learning" | "needs_practice" | "mastered" | "all";
 
 export default function App() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -43,10 +45,14 @@ export default function App() {
   const [flaggedQuestions, setFlaggedQuestions] = useState<number[]>([]);
   const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
-  const [masteredQuestionIds, setMasteredQuestionIds] = useState<number[]>([]);
   const [questionPerformance, setQuestionPerformance] = useState<QuestionPerformance[]>([]);
   const [studyProgress, setStudyProgress] = useState<StudyProgress[]>([]);
-  const [confidence, setConfidence] = useState<Confidence | null>(null);
+  const [activePracticePool, setActivePracticePool] = useState<PracticePool>("learning");
+  const performanceMap = useMemo(() => new Map(questionPerformance.map((item) => [item.questionId, item])), [questionPerformance]);
+  const questionStatus = (questionId: number): QuestionStatus => getQuestionStatus(performanceMap.get(questionId));
+  const masteredQuestionIds = useMemo(() => questions
+    .filter((question) => getQuestionStatus(performanceMap.get(question.id)) === "mastered")
+    .map((question) => question.id), [questions, performanceMap]);
 
   useEffect(() => {
     fetch("./questions.json")
@@ -67,16 +73,12 @@ export default function App() {
   useEffect(() => {
     if (!session) {
       setHistory([]);
-      setMasteredQuestionIds([]);
       setQuestionPerformance([]);
       setStudyProgress([]);
       return;
     }
     loadQuizHistory().then(setHistory).catch((error) => {
       console.error("Could not load quiz history", error);
-    });
-    loadMasteredQuestionIds().then(setMasteredQuestionIds).catch((error) => {
-      console.error("Could not load mastered questions", error);
     });
     loadQuestionPerformance().then(setQuestionPerformance).catch((error) => {
       console.error("Could not load question performance", error);
@@ -86,13 +88,13 @@ export default function App() {
     });
   }, [session]);
 
-  function startQuiz(domain?: string, needsPractice = false) {
-    const mastered = new Set(masteredQuestionIds);
-    const weakIds = new Set(questionPerformance
-      .filter((item) => item.maximumPoints > 0 && item.earnedPoints / item.maximumPoints < 0.7)
-      .map((item) => item.questionId));
-    const eligible = (question: Question) =>
-      !mastered.has(question.id) && (!needsPractice || weakIds.has(question.id));
+  function startQuiz(domain?: string, pool: PracticePool = "learning") {
+    const eligible = (question: Question) => {
+      const status = questionStatus(question.id);
+      if (pool === "all") return true;
+      if (pool === "learning") return status === "new" || status === "learning";
+      return status === pool;
+    };
     const includedGroups = new Set(questions
       .filter(eligible)
       .flatMap((question) => question.examGroup ? [`solution:${question.examGroup.id}`]
@@ -103,23 +105,32 @@ export default function App() {
       || Boolean(question.caseStudy && includedGroups.has(`case:${question.caseStudy.id}`)));
     const selectedQuestions = createQuiz(practiceQuestions, questionCount, domain);
     if (!selectedQuestions.length) {
-      window.alert(needsPractice
-        ? "No questions need extra practice yet. Answer some questions first."
+      window.alert(pool === "needs_practice"
+        ? "No questions need extra practice right now."
+        : pool === "mastered"
+        ? "No questions are mastered yet."
         : domain
-        ? "You have mastered every question in this domain."
-        : "You have mastered every practice question.");
+        ? "No new or learning questions remain in this domain."
+        : "No questions are available in this study mode.");
       return;
     }
     setQuiz(selectedQuestions);
-    setQuizLabel(needsPractice ? "Needs practice" : domain ? DOMAIN_META[domain].short : "All domains");
+    setQuizLabel(pool === "needs_practice" ? "Needs practice"
+      : pool === "mastered" ? "Mastered review"
+      : pool === "all" ? "All questions"
+      : domain ? DOMAIN_META[domain].short : "New & learning");
     setActiveDomain(domain);
+    setActivePracticePool(pool);
     setIndex(0);
     setScore(0);
     setAnswers({});
     setSubmitted(false);
-    setConfidence(null);
     setView("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function startMasteredReview() {
+    startQuiz(undefined, "mastered");
   }
 
   function setAnswer(key: string, value: string | string[]) {
@@ -149,25 +160,6 @@ export default function App() {
     setFlaggedQuestions((current) => current.includes(questionId)
       ? current.filter((id) => id !== questionId)
       : [...current, questionId]);
-  }
-
-  async function toggleMastered(questionId: number) {
-    if (!session) return;
-    const wasMastered = masteredQuestionIds.includes(questionId);
-    const update = (ids: number[]) => wasMastered
-      ? ids.filter((id) => id !== questionId)
-      : [...ids, questionId];
-    setMasteredQuestionIds(update);
-
-    try {
-      await setQuestionMastered(session.user.id, questionId, !wasMastered);
-    } catch (error) {
-      setMasteredQuestionIds((ids) => wasMastered
-        ? [...ids, questionId]
-        : ids.filter((id) => id !== questionId));
-      console.error("Could not update mastered question", error);
-      window.alert("Could not update mastered status. Please try again.");
-    }
   }
 
   function finishExam() {
@@ -229,26 +221,20 @@ export default function App() {
       saveQuestionAttempts(session.user.id, [attempt]).catch((error) => {
         console.error("Could not save question performance", error);
       });
-      saveProgress(question, correct, null);
+      saveProgress(question, correct);
     }
     setSubmitted(true);
   }
 
-  async function saveProgress(question: Question, correct: boolean, nextConfidence: Confidence | null) {
+  async function saveProgress(question: Question, correct: boolean) {
     if (!session) return;
     const previous = studyProgress.find((item) => item.questionId === question.id);
     try {
-      const saved = await saveStudyProgress(session.user.id, question.id, answers, correct, nextConfidence, previous?.reviewStep);
+      const saved = await saveStudyProgress(session.user.id, question.id, answers, correct, previous?.reviewStep);
       setStudyProgress((current) => [...current.filter((item) => item.questionId !== question.id), saved]);
     } catch (error) {
       console.error("Could not save study progress", error);
     }
-  }
-
-  function chooseConfidence(value: Confidence) {
-    const question = quiz[index];
-    setConfidence(value);
-    saveProgress(question, answerIsCorrect(question, answers), value);
   }
 
   function startReview(filter: (item: StudyProgress) => boolean, label: string) {
@@ -256,7 +242,7 @@ export default function App() {
     const selected = createQuiz(questions.filter((question) => ids.has(question.id)), questionCount);
     if (!selected.length) return;
     setQuiz(selected); setQuizLabel(label); setActiveDomain(undefined); setIndex(0); setScore(0);
-    setAnswers({}); setSubmitted(false); setConfidence(null); setView("quiz");
+    setAnswers({}); setSubmitted(false); setView("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -275,11 +261,15 @@ export default function App() {
           correctAttempts: 0,
           earnedPoints: 0,
           maximumPoints: 0,
+          correctStreak: 0,
+          lastWasCorrect: false,
         };
         item.attempts += 1;
         item.correctAttempts += attempt.isCorrect ? 1 : 0;
         item.earnedPoints += attempt.earnedPoints;
         item.maximumPoints += attempt.maximumPoints;
+        item.correctStreak = attempt.isCorrect ? item.correctStreak + 1 : 0;
+        item.lastWasCorrect = attempt.isCorrect;
         next.set(attempt.questionId, item);
       }
       return [...next.values()];
@@ -291,7 +281,6 @@ export default function App() {
       setIndex((current) => current + 1);
       setAnswers({});
       setSubmitted(false);
-      setConfidence(null);
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -332,10 +321,8 @@ export default function App() {
         onSubmit={submitAnswer}
         onNext={nextQuestion}
         onExit={() => setView("home")}
-        mastered={masteredQuestionIds.includes(quiz[index].id)}
-        onToggleMastered={() => toggleMastered(quiz[index].id)}
-        confidence={confidence}
-        onConfidence={chooseConfidence}
+        status={questionStatus(quiz[index].id)}
+        performance={performanceMap.get(quiz[index].id)}
       />
     );
   }
@@ -345,7 +332,7 @@ export default function App() {
       <ResultView
         score={score}
         total={quiz.length}
-        onRetry={() => startQuiz(activeDomain)}
+        onRetry={() => startQuiz(activeDomain, activePracticePool)}
         onHome={() => setView("home")}
       />
     );
@@ -398,19 +385,21 @@ export default function App() {
       onDomainChange={setSelectedDomain}
       onQuestionCountChange={setQuestionCount}
       onStart={startQuiz}
-      onStartNeedsPractice={() => startQuiz(undefined, true)}
+      onStartNeedsPractice={() => startQuiz(undefined, "needs_practice")}
+      onStartAllQuestions={() => startQuiz(undefined, "all")}
       onStartExam={startExam}
       userEmail={session.user.email ?? "Signed in"}
       onSignOut={() => supabase.auth.signOut()}
       masteredQuestionIds={masteredQuestionIds}
       questionPerformance={questionPerformance}
       studyProgress={studyProgress}
-      onStartDomainReview={(domain) => startQuiz(domain)}
+      onStartDomainReview={(domain) => startQuiz(domain, "needs_practice")}
       onOpenMistakes={() => setView("mistakes")}
       onStartDueReview={() => startReview(
         (item) => Boolean(item.nextReviewAt) && new Date(item.nextReviewAt!) <= new Date(),
         "Due review",
       )}
+      onStartMasteredReview={startMasteredReview}
     />
   );
 }

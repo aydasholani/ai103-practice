@@ -2,6 +2,8 @@ import type { CSSProperties } from "react";
 import type { ExamAnswers, Question } from "../types/quiz";
 import { scoreQuestion } from "../utils/quiz";
 import { InteractionField } from "./InteractionField";
+import { CodeAnswerTemplate } from "./CodeAnswerTemplate";
+import { QuestionSupportingContent } from "./QuestionSupportingContent";
 
 type ExamResultViewProps = {
   questions: Question[];
@@ -38,6 +40,7 @@ export function ExamResultView({ questions, answers, score, maximumScore, onRetr
               <summary><span>Question {index + 1}</span><strong>{correct ? "Correct" : partial ? "Partial" : "Incorrect"} · {points.earned}/{points.maximum} points</strong></summary>
               <div className="review-body">
                 <h3 className="preserve-text">{question.question}</h3>
+                <QuestionSupportingContent question={question} />
                 {(question.type === "single" || question.type === "multiple") && <div className="answer-list">
                   {question.options?.map((option) => {
                     const selected = (questionAnswers.main ?? []).includes(option.id);
@@ -46,7 +49,9 @@ export function ExamResultView({ questions, answers, score, maximumScore, onRetr
                     return <div className={`answer-option ${state}`} key={option.id}><span /><span className="option-letter">{option.id}</span><span className="option-content"><span>{option.text}</span>{option.explanation && <small className="option-explanation"><strong>{isCorrectOption ? "Why it is correct:" : "Why it is incorrect:"}</strong> {option.explanation}</small>}</span></div>;
                   })}
                 </div>}
-                {question.interactions?.map((interaction) => <InteractionField key={interaction.id} interaction={interaction} answers={questionAnswers} submitted onAnswer={() => undefined} />)}
+                {question.answerTemplate
+                  ? <CodeAnswerTemplate question={question} answers={questionAnswers} submitted onAnswer={() => undefined} />
+                  : question.interactions?.map((interaction) => <InteractionField key={interaction.id} interaction={interaction} answers={questionAnswers} submitted onAnswer={() => undefined} />)}
                 {question.communityNotes && <div className={`community-notes open-note ${question.communityNotes.answerDisputed ? "disputed" : ""}`}><strong>Community discussion{question.communityNotes.answerDisputed ? " · Answer debated" : ""}</strong><p>{question.communityNotes.summary}</p>{question.communityNotes.caveats?.length ? <ul>{question.communityNotes.caveats.map((caveat) => <li key={caveat}>{caveat}</li>)}</ul> : null}</div>}
               </div>
             </details>

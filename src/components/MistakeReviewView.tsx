@@ -19,7 +19,7 @@ export function MistakeReviewView({ questions, progress, onPractice, onHome }: {
       {mistakes.length ? <>
         <button className="primary-button" onClick={onPractice}>Practice these questions</button>
         <div className="mistake-list">{mistakes.map(({ item, question }) => <details className="review-question" key={question.id}>
-          <summary><span>Question {question.id}: {question.question}</span><strong>{item.confidence ?? "No confidence set"}</strong></summary>
+          <summary><span>Question {question.id}: {question.question}</span><strong>Latest answer incorrect</strong></summary>
           <div className="review-body">
             <p><b>Your latest answer:</b> {Object.values(item.lastAnswers).flat().join(", ") || "No answer recorded"}</p>
             <p><b>Correct answer:</b> {question.correctAnswers?.join(", ") || question.interactions?.map((i) => "correctAnswer" in i ? i.correctAnswer : i.type).join(", ")}</p>

@@ -1,9 +1,11 @@
 import { DOMAIN_META, questionLearnUrl } from "../constants/domains";
-import type { Answers, Confidence, Question } from "../types/quiz";
+import type { Answers, Question, QuestionPerformance, QuestionStatus } from "../types/quiz";
 import { answerIsCorrect, isAnswered } from "../utils/quiz";
 import { Brand } from "./Brand";
 import { InteractionField } from "./InteractionField";
 import { CaseStudyPanel } from "./CaseStudyPanel";
+import { CodeAnswerTemplate } from "./CodeAnswerTemplate";
+import { QuestionSupportingContent } from "./QuestionSupportingContent";
 
 type QuizViewProps = {
   question: Question;
@@ -15,10 +17,8 @@ type QuizViewProps = {
   onSubmit: () => void;
   onNext: () => void;
   onExit: () => void;
-  mastered: boolean;
-  onToggleMastered: () => void;
-  confidence: Confidence | null;
-  onConfidence: (confidence: Confidence) => void;
+  status: QuestionStatus;
+  performance?: QuestionPerformance;
 };
 
 export function QuizView(props: QuizViewProps) {
@@ -55,6 +55,8 @@ export function QuizView(props: QuizViewProps) {
           )}
           <div className="question-number">Question {question.id}</div>
           <h1 className="question-text preserve-text">{question.question}</h1>
+
+          <QuestionSupportingContent question={question} />
 
           {question.media?.map((media) => (
             <img className="question-image" key={media.src} src={media.src} alt={media.alt} />
@@ -106,7 +108,8 @@ export function QuizView(props: QuizViewProps) {
             </div>
           )}
 
-          {question.interactions?.map((interaction) => (
+          {question.answerTemplate && <CodeAnswerTemplate question={question} answers={answers} submitted={submitted} onAnswer={(key, value) => props.onAnswer(key, value)} />}
+          {!question.answerTemplate && question.interactions?.map((interaction) => (
             <InteractionField
               key={interaction.id}
               interaction={interaction}
@@ -130,11 +133,15 @@ export function QuizView(props: QuizViewProps) {
 
           {submitted && (
             <section className="learning-tools">
-              <div><strong>How confident were you?</strong><div className="confidence-buttons">
-                {(["guessed", "unsure", "confident"] as Confidence[]).map((value) => <button
-                  className={props.confidence === value ? "active" : ""}
-                  key={value} onClick={() => props.onConfidence(value)}>{value[0].toUpperCase() + value.slice(1)}</button>)}
-              </div></div>
+              <div className={`question-status status-${props.status}`}>
+                <strong>{props.status === "new" ? "New"
+                  : props.status === "learning" ? "Learning"
+                  : props.status === "needs_practice" ? "Needs practice"
+                  : "Mastered"}</strong>
+                <span>{props.status === "mastered"
+                  ? "3 correct answers in a row with at least 70% total accuracy."
+                  : `${props.performance?.correctStreak ?? 0}/3 correct answers in a row.`}</span>
+              </div>
               {!correct && <a className="learn-link" href={questionLearnUrl(question)} target="_blank" rel="noreferrer">Study this topic on Microsoft Learn ↗</a>}
             </section>
           )}
@@ -164,17 +171,9 @@ export function QuizView(props: QuizViewProps) {
                 Check answer
               </button>
             ) : (
-              <>
-                <button
-                  className={`secondary-button mastered-button ${props.mastered ? "active" : ""}`}
-                  onClick={props.onToggleMastered}
-                >
-                  {props.mastered ? "✓ Mastered" : "Mark as mastered"}
-                </button>
-                <button className="primary-button" onClick={props.onNext}>
-                  {index === total - 1 ? "See results" : "Next question"}
-                </button>
-              </>
+              <button className="primary-button" onClick={props.onNext}>
+                {index === total - 1 ? "See results" : "Next question"}
+              </button>
             )}
           </div>
         </article>

@@ -79,3 +79,19 @@ Existing Environment, Problem Statements, and Requirements navigation. In
 Exam Mode, users can move between and review questions inside the active case,
 then explicitly finish the case; after leaving it, the section cannot be
 reopened. Post-exam answer explanations remain available for learning.
+
+The original Answer Area code has been restored for questions 6, 11, 35, 66,
+68, 98, 103, 104, and 113. Their dropdown controls appear inline at the correct
+positions inside the Python, YAML, Bicep, Azure CLI, or HTTP/JSON template
+instead of as detached fields below the question. The same rendering is used
+in Practice Mode, Exam Mode, and post-exam review.
+
+All 399 previously generic option explanations have been replaced. Incorrect
+options now first explain what the named service, parameter, command, role, or
+feature actually does, then explain why that behavior is insufficient for the
+scenario. Correct-answer keys and component scoring were preserved unchanged.
+
+The Adaptive learning section includes a **Review mastered** button. It starts
+a feedback quiz using mastered questions, preserves complete solution-set and
+case-study grouping, and lets users remove the Mastered mark immediately when
+a fact-check reveals that a question needs more practice.

@@ -1,4 +1,5 @@
-import type { Answers, Interaction } from "../types/quiz";
+import { useState } from "react";
+import type { Answers, DragDropInteraction, Interaction } from "../types/quiz";
 
 type InteractionFieldProps = {
   interaction: Interaction;
@@ -93,35 +94,101 @@ export function InteractionField({
     );
   }
 
+  return <DragDropField interaction={interaction} answers={answers} submitted={submitted} onAnswer={onAnswer} />;
+}
+
+function DragDropField({ interaction, answers, submitted, onAnswer }: {
+  interaction: DragDropInteraction;
+  answers: Answers;
+  submitted: boolean;
+  onAnswer: (key: string, value: string) => void;
+}) {
+  const [selectedChoice, setSelectedChoice] = useState("");
+  const isOrdering = interaction.targets.every((target) => /^\d+$/.test(target.prompt.trim()));
+  const usedChoices = new Set(interaction.targets
+    .map((target) => answers[target.id])
+    .filter((value): value is string => typeof value === "string" && Boolean(value)));
+
+  const placeChoice = (targetId: string, choice: string) => {
+    if (submitted || !choice) return;
+    if (isOrdering) {
+      const previousTarget = interaction.targets.find((target) => target.id !== targetId && answers[target.id] === choice);
+      if (previousTarget) onAnswer(previousTarget.id, "");
+    }
+    onAnswer(targetId, choice);
+    setSelectedChoice("");
+  };
+
   return (
-    <div className="mapping-interaction">
-      {interaction.targets.map((target) => {
+    <div className={`drag-drop-interaction ${isOrdering ? "ordering-interaction" : ""}`}>
+      <div className="drag-choice-panel">
+        <strong>{isOrdering ? "Actions" : "Options"}</strong>
+        <small>Drag an option to a target, or tap an option and then a target.</small>
+        <div className="drag-choice-list">
+          {interaction.choices.map((choice) => {
+            const used = isOrdering && usedChoices.has(choice.text);
+            return <button
+              type="button"
+              className={`drag-choice ${selectedChoice === choice.text ? "selected" : ""} ${used ? "used" : ""}`}
+              draggable={!submitted && !used}
+              disabled={submitted || used}
+              key={choice.id}
+              onClick={() => setSelectedChoice((current) => current === choice.text ? "" : choice.text)}
+              onDragStart={(event) => {
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData("text/plain", choice.text);
+                setSelectedChoice(choice.text);
+              }}
+            ><span className="drag-handle" aria-hidden="true">⠿</span>{choice.text}</button>;
+          })}
+        </div>
+      </div>
+
+      <div className="drag-target-list">
+        <strong>Answer area</strong>
+        {interaction.targets.map((target) => {
         const value = (answers[target.id] as string) ?? "";
         const state = submitted
-          ? value === target.correctAnswer ? "correct-select" : "wrong-select"
+          ? value === target.correctAnswer ? "correct-drop" : "wrong-drop"
           : "";
         return (
-          <label className={state} key={target.id}>
-            <span>{target.prompt}</span>
-            <select
-              value={value}
-              disabled={submitted}
-              onChange={(event) => onAnswer(target.id, event.target.value)}
+          <div className={`drag-target-row ${state}`} key={target.id}>
+            <span className="drag-target-prompt">{isOrdering ? `Step ${target.prompt}` : target.prompt}</span>
+            <div
+              className={`drag-target ${value ? "filled" : ""} ${selectedChoice ? "ready" : ""}`}
+              role="button"
+              tabIndex={submitted ? -1 : 0}
+              aria-label={`${target.prompt}: ${value || "empty"}`}
+              onDragOver={(event) => {
+                if (!submitted) {
+                  event.preventDefault();
+                  event.dataTransfer.dropEffect = "move";
+                }
+              }}
+              onDrop={(event) => {
+                event.preventDefault();
+                placeChoice(target.id, event.dataTransfer.getData("text/plain"));
+              }}
+              onClick={() => selectedChoice ? placeChoice(target.id, selectedChoice) : value && !submitted ? onAnswer(target.id, "") : undefined}
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                if (selectedChoice) placeChoice(target.id, selectedChoice);
+                else if (value && !submitted) onAnswer(target.id, "");
+              }}
             >
-              <option value="">Choose an option…</option>
-              {interaction.choices.map((choice) => (
-                <option value={choice.text} key={choice.id}>{choice.text}</option>
-              ))}
-            </select>
+              {value ? <><span className="drag-handle" aria-hidden="true">⠿</span><span>{value}</span>{!submitted && <span className="remove-drop" aria-hidden="true">×</span>}</> : <span className="drop-placeholder">Drop or tap here</span>}
+            </div>
             {submitted && value !== target.correctAnswer && (
               <small>Correct: {target.correctAnswer}</small>
             )}
             {submitted && target.explanation && (
               <small className="option-explanation">{target.explanation}</small>
             )}
-          </label>
+          </div>
         );
       })}
+      </div>
     </div>
   );
 }
