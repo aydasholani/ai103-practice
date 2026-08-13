@@ -17,6 +17,7 @@ type HomeViewProps = {
   onStartNeedsPractice: () => void;
   onStartAllQuestions: () => void;
   onStartExam: () => void;
+  onStartConcepts: () => void;
   userEmail: string;
   onSignOut: () => void;
   masteredQuestionIds: number[];
@@ -60,6 +61,7 @@ export function HomeView({
   onStartNeedsPractice,
   onStartAllQuestions,
   onStartExam,
+  onStartConcepts,
   userEmail,
   onSignOut,
   masteredQuestionIds,
@@ -170,6 +172,19 @@ export function HomeView({
         </div>
         <div className="practice-filters">{formatSelect}<span>{filteredQuestions.length} questions match this format</span></div>
         <div className="mode-grid">
+          <article className="mode-card concept-mode-card">
+            <div className="mode-icon concept-icon">⇄</div>
+            <span className="card-kicker concept-kicker">Learn concepts</span>
+            <h3>Concept matching</h3>
+            <p>Match Azure terms with what they do and when they should be used.</p>
+            <div className="mode-detail"><span>Format</span><strong>Drag and drop</strong></div>
+            <div className="mode-detail"><span>Concept bank</span><strong>Curated concepts and code</strong></div>
+            <div className="mode-detail"><span>Questions</span><strong>10 per round</strong></div>
+            <div className="mode-detail"><span>Affects mastery</span><strong>No</strong></div>
+            <button className="primary-button full concept-button" onClick={onStartConcepts}>
+              Learn concepts <span>→</span>
+            </button>
+          </article>
           {newCount > 0 && <article className="mode-card featured">
             <div className="mode-icon">✦</div>
             <span className="card-kicker">Recommended</span>

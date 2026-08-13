@@ -7,6 +7,7 @@ import { ExamView } from "./components/ExamView";
 import { ExamResultView } from "./components/ExamResultView";
 import { AuthView } from "./components/AuthView";
 import { MistakeReviewView } from "./components/MistakeReviewView";
+import { ConceptQuizView } from "./components/ConceptQuizView";
 import { supabase } from "./lib/supabase";
 import { loadQuizHistory, saveQuizAttempt } from "./services/quizAttempts";
 import { loadQuestionPerformance, saveQuestionAttempts } from "./services/questionPerformance";
@@ -348,6 +349,10 @@ export default function App() {
       onHome={() => setView("home")} />;
   }
 
+  if (view === "concepts") {
+    return <ConceptQuizView userId={session.user.id} onHome={() => setView("home")} />;
+  }
+
 
   if (view === "exam" && quiz[index]) {
     return (
@@ -394,6 +399,7 @@ export default function App() {
       onStartNeedsPractice={() => startQuiz(undefined, "needs_practice")}
       onStartAllQuestions={() => startQuiz(undefined, "all")}
       onStartExam={startExam}
+      onStartConcepts={() => { setView("concepts"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
       userEmail={session.user.email ?? "Signed in"}
       onSignOut={() => supabase.auth.signOut()}
       masteredQuestionIds={masteredQuestionIds}
