@@ -13,19 +13,19 @@
       "concepts": [
         {
           "term": "Standard",
-          "definition": "Pay-as-you-go-deployment där inferensen använder kapacitet i den valda Azure-regionen och skalar utan reserverade PTU:er."
+          "definition": "Standard is a pay-as-you-go deployment type that scales with request demand without reserving provisioned throughput units (PTUs). Unlike Global Standard, processing stays within the deployment's Azure geography, so it fits the EU data-residency requirement."
         },
         {
           "term": "Global Standard",
-          "definition": "Pay-as-you-go-deployment där inferenstrafik kan dirigeras mellan stödda globala Azure-regioner för högre tillgänglig kapacitet."
+          "definition": "Global Standard can route inference traffic across supported global regions. That conflicts with the requirement that model processing remain within the EU."
         },
         {
           "term": "Global Provisioned",
-          "definition": "Global deployment med reserverad provisionerad genomströmning, mätt i PTU:er, för förutsägbar kapacitet."
+          "definition": "Global Provisioned uses reserved provisioned throughput and can route processing globally. The scenario explicitly requires dynamic scaling without reserved throughput and requires EU data residency."
         },
         {
           "term": "serverless API",
-          "definition": "Modellåtkomst via hanterad API-endpoint utan att själv drifta inferensinfrastruktur."
+          "definition": "Serverless API is the broader Foundry deployment option under which pay-per-token deployment types are exposed. The question asks specifically for the deployment type, not the deployment option."
         }
       ]
     },
@@ -37,11 +37,11 @@
       "concepts": [
         {
           "term": "batch",
-          "definition": "Bearbetningsläge för asynkrona jobb med många indata i stället för interaktiv inferens."
+          "definition": "Batch is asynchronous and optimized for offline high-throughput jobs, so it does not meet the real-time inference requirement."
         },
         {
           "term": "self-hosted container",
-          "definition": "Deployment där modellen körs i en container som du själv ansvarar för att drifta."
+          "definition": "A self-hosted/managed-compute container uses dedicated compute capacity and therefore conflicts with the requirement to avoid subscription VM/vCPU capacity."
         }
       ]
     },
@@ -53,19 +53,19 @@
       "concepts": [
         {
           "term": "large language model (LLM)",
-          "definition": "Generativ språkmodell avsedd för bred språkförståelse, generering och resonemang."
+          "definition": "An LLM is designed for long-context natural-language generation and multi-step reasoning. An SLM prioritizes efficiency, while multimodal and key-phrase models solve different tasks."
         },
         {
           "term": "small language model (SLM)",
-          "definition": "Mindre språkmodell som ofta prioriterar lägre kostnad och latens framför maximal kapacitet."
+          "definition": "An SLM offers lower latency and cost with reduced capacity. It can handle simpler tasks, but it is not the best fit for the required context-aware generation and complex reasoning."
         },
         {
           "term": "embedding model",
-          "definition": "Modell som omvandlar innehåll till vektorer för likhetsbaserad sökning och retrieval."
+          "definition": "An embedding model converts documents and queries into numeric vectors whose distance represents semantic similarity. Those vectors are what the search solution requires."
         },
         {
           "term": "multimodal model",
-          "definition": "Modell som kan arbeta med mer än en modalitet, till exempel text och bilder."
+          "definition": "A multimodal model processes combinations such as text and images. The scenario only requires grounded natural-language support responses, so multimodal capability is not the deciding requirement."
         }
       ]
     },
@@ -77,19 +77,19 @@
       "concepts": [
         {
           "term": "image generation model",
-          "definition": "Generativ modell som skapar eller redigerar bilder från instruktioner och ibland referensbilder."
+          "definition": "An image-generation model creates images from prompts or reference media. It does not encode policy text into vectors for search."
         },
         {
           "term": "Whisper model",
-          "definition": "Tal-till-text-modell för transkribering av ljud."
+          "definition": "A speech-to-text model used to transcribe spoken audio into text."
         },
         {
           "term": "model fine-tuning",
-          "definition": "Vidareträning av en basmodell på exempel för att anpassa beteende eller uppgift."
+          "definition": "Fine-tuning changes a model's learned behavior using training examples. It is a model-improvement technique, not a measurement of whether a particular response is grounded in supplied sources."
         },
         {
           "term": "model cascade",
-          "definition": "Mönster där enklare frågor skickas till en billigare modell och svårare frågor eskaleras till en starkare modell."
+          "definition": "A routing pattern that sends simpler requests to a cheaper model and escalates harder requests to a more capable model."
         }
       ]
     },
@@ -101,19 +101,19 @@
       "concepts": [
         {
           "term": "File search",
-          "definition": "Söker fram relevanta delar ur filer som gjorts tillgängliga för agenten."
+          "definition": "File Search indexes files attached or uploaded for the agent and retrieves relevant passages from them. It matches the requirement to answer from documents uploaded directly to the agent."
         },
         {
           "term": "Code interpreter",
-          "definition": "Kör kod i en isolerad miljö för beräkningar och filanalys."
+          "definition": "Code Interpreter gives the agent a sandboxed Python execution environment for calculations and data processing. It is the tool designed for performing computations during a conversation."
         },
         {
           "term": "Azure AI Search tool",
-          "definition": "Låter en agent hämta grundande information från ett Azure AI Search-index."
+          "definition": "Azure AI Search retrieves content from a separately managed Search index. The scenario's curated files can be grounded directly with the agent's file-search capability instead."
         },
         {
           "term": "Grounding with Bing Search",
-          "definition": "Ger modellen möjlighet att grunda svar i aktuella webbsökresultat."
+          "definition": "Grounding with Bing Search lets an agent retrieve current public web information and use it as grounding. It matches the requirement for up-to-date information from public websites; File Search targets uploaded files and Code Interpreter executes code."
         }
       ]
     },
@@ -125,7 +125,7 @@
       "concepts": [
         {
           "term": "Computer use",
-          "definition": "Verktyg för att låta en agent interagera med ett grafiskt användargränssnitt."
+          "definition": "A tool that lets an agent interact with a graphical user interface by observing the screen and taking actions."
         }
       ]
     },
@@ -137,19 +137,19 @@
       "concepts": [
         {
           "term": "workflow",
-          "definition": "Deterministisk orkestrering med steg, villkor, delat tillstånd och valfria åtgärder."
+          "definition": "A Foundry workflow provides deterministic steps, conditional branches, shared state, and optional actions without requiring custom orchestration code."
         },
         {
           "term": "multi-agent group chat",
-          "definition": "Samarbetsmönster där flera agenter deltar i en gemensam konversation och kontrollen kan växla mellan dem."
+          "definition": "A collaboration pattern in which multiple agents share a conversation and control can pass between them."
         },
         {
           "term": "sequential template",
-          "definition": "Orkestreringsmönster där resultat skickas vidare från ett steg eller en agent till nästa i fast ordning."
+          "definition": "An orchestration pattern that passes the output of one step or agent to the next in a fixed order."
         },
         {
           "term": "human-in-the-loop template",
-          "definition": "Orkestreringsmönster som pausar körningen för mänsklig granskning eller inmatning."
+          "definition": "An orchestration pattern that pauses execution for human input, review, or approval."
         }
       ]
     },
@@ -161,15 +161,15 @@
       "concepts": [
         {
           "term": "Conversation history",
-          "definition": "Tidigare meddelanden i en konversation som används som kortsiktigt sammanhang."
+          "definition": "Conversation history retains messages inside one conversation. It does not automatically remember preferences across separate conversations."
         },
         {
           "term": "Orchestration-managed session context",
-          "definition": "Sessionsbundet tillstånd som hanteras av orkestreringen under en pågående interaktion."
+          "definition": "Session context preserves state managed by the current orchestration session. It is temporary and not durable cross-conversation memory."
         },
         {
           "term": "Agent memory",
-          "definition": "Beständig minnesfunktion för att återanvända relevant information mellan konversationer."
+          "definition": "Persistent memory that lets an agent reuse relevant information across separate conversations."
         }
       ]
     },
@@ -181,19 +181,19 @@
       "concepts": [
         {
           "term": "Retrieval Augmented Generation (RAG)",
-          "definition": "Hämtar extern information och skickar den som kontext till modellen före generering."
+          "definition": "RAG retrieves external information at run time and adds it as grounding context. The task instead asks to demonstrate the desired classification behavior with labeled examples inside the prompt, so retrieval is unnecessary."
         },
         {
           "term": "classic Retrieval Augmented Generation (RAG)",
-          "definition": "RAG-flöde med en mer förutbestämd retrievalkedja innan svaret genereras."
+          "definition": "Classic RAG typically performs a retrieval step from the user's query and then sends retrieved chunks to the model. It lacks the agentic query decomposition, conversation-aware planning, and parallel subquery execution required here."
         },
         {
           "term": "agentic Retrieval Augmented Generation (RAG)",
-          "definition": "RAG där en agent mer dynamiskt planerar och utför retrievalsteg."
+          "definition": "Agentic RAG can decompose a complex request into parallel subqueries, use conversation context to plan retrieval, and combine evidence from multiple chunks."
         },
         {
           "term": "iterative retrieval",
-          "definition": "Retrieval som upprepas i flera steg när första sökningen inte ger tillräckligt underlag."
+          "definition": "Iterative retrieval performs repeated retrieval passes, but by itself it does not provide the conversational query planning, decomposition, and parallel subquery execution described in the requirements."
         }
       ]
     },
@@ -205,19 +205,19 @@
       "concepts": [
         {
           "term": "vector search",
-          "definition": "Sökning som jämför embeddingvektorer för att hitta semantiskt liknande innehåll."
+          "definition": "Vector search compares embeddings and retrieves content by semantic similarity even when the query and document use different wording."
         },
         {
           "term": "keyword search",
-          "definition": "Lexikal sökning baserad på ord och termer i dokument och fråga."
+          "definition": "Lexical retrieval that matches words and terms in the query against indexed text."
         },
         {
           "term": "hybrid search",
-          "definition": "Kombinerar vanligtvis nyckelordssökning och vektorsökning i samma sökflöde."
+          "definition": "Hybrid search combines lexical and vector retrieval, allowing exact product identifiers and semantically similar descriptions to contribute to the result set."
         },
         {
           "term": "semantic search",
-          "definition": "Samlingsbegrepp för semantiskt förbättrad sökning; i Azure AI Search används semantic ranker för att omranka ett initialt textresultat."
+          "definition": "Search enhanced by language understanding; in Azure AI Search, semantic ranker reranks an initial text result set."
         }
       ]
     },
@@ -229,15 +229,15 @@
       "concepts": [
         {
           "term": "semantic ranking",
-          "definition": "Omrankar ett initialt textresultat med språkförståelse för att förbättra relevansen."
+          "definition": "Semantic ranking reranks an existing text result set for relevance. It improves ranking but still needs an initial keyword or vector retrieval method."
         },
         {
           "term": "suggesters",
-          "definition": "Azure AI Search-funktion för förslag och autocomplete-liknande sökupplevelser."
+          "definition": "Suggesters provide type-ahead and autocomplete suggestions from configured text fields. They are not used for semantic document retrieval in RAG."
         },
         {
           "term": "analyzers",
-          "definition": "Regler för hur text tokeniseras och normaliseras vid indexering och sökning."
+          "definition": "Analyzers tokenize and normalize text during indexing and querying. They support lexical search but do not create embedding-based semantic similarity."
         }
       ]
     },
@@ -249,19 +249,19 @@
       "concepts": [
         {
           "term": "Azure OpenAI Embedding",
-          "definition": "Skill eller modellsteg som skapar vektorembeddings för sökbart innehåll."
+          "definition": "Azure OpenAI Embedding converts each text chunk into a numeric embedding vector. Azure AI Search stores those vectors so vector queries can retrieve semantically similar chunks even when wording differs."
         },
         {
           "term": "Text Split",
-          "definition": "Delar text i mindre segment eller chunks inför indexering och retrieval."
+          "definition": "Text Split divides long document text into smaller pages/chunks that fit retrieval and embedding limits. Smaller retrieval-sized chunks improve the granularity of Azure AI Search retrieval."
         },
         {
           "term": "Merge",
-          "definition": "Sammanfogar berikade fält eller textdelar i en Azure AI Search-skillset."
+          "definition": "The Merge skill combines text or inserted content into one field. It does not perform OCR or split long content for indexing."
         },
         {
           "term": "Entity Recognition",
-          "definition": "Identifierar namngivna entiteter i text, exempelvis personer, organisationer eller platser."
+          "definition": "Entity Recognition finds named entities such as people, organizations, and locations. It does not extract image text or divide long document text into searchable chunks."
         }
       ]
     },
@@ -273,19 +273,19 @@
       "concepts": [
         {
           "term": "Language Detection",
-          "definition": "Identifierar vilket språk ett textinnehåll är skrivet på."
+          "definition": "Language Detection identifies the language of text. It is useful for multilingual processing but does not satisfy the OCR and chunking requirements here."
         },
         {
           "term": "key phrase extraction",
-          "definition": "Extraherar centrala fraser och ämnesbärande uttryck ur text."
+          "definition": "Key phrase extraction identifies important phrases in existing text. It does not read scanned images or create appropriately sized search chunks."
         },
         {
           "term": "Shaper skill",
-          "definition": "Omformar och strukturerar berikad data i en Azure AI Search-skillset."
+          "definition": "An Azure AI Search skill that restructures enriched data into a new complex shape."
         },
         {
           "term": "indexer",
-          "definition": "Komponent som läser från en datakälla och fyller eller uppdaterar ett sökindex."
+          "definition": "A component that reads content from a data source and populates or refreshes a search index."
         }
       ]
     },
@@ -297,19 +297,19 @@
       "concepts": [
         {
           "term": "Microsoft Foundry",
-          "definition": "Azure-plattform för att bygga, utvärdera, distribuera och drifta AI-applikationer och agenter."
+          "definition": "Microsoft's Azure platform for building, evaluating, deploying, and operating AI applications and agents."
         },
         {
           "term": "Azure AI Search",
-          "definition": "Hanterad söktjänst för text-, vektor-, hybrid- och semantisk sökning."
+          "definition": "Azure AI Search supplies the private-document index and supports semantic and vector retrieval. Extraction services can prepare content but do not replace the search layer."
         },
         {
           "term": "Azure Content Understanding",
-          "definition": "Analyserar dokument, bilder, ljud och video med ett schema som definierar vilka strukturerade fält som ska extraheras eller genereras."
+          "definition": "Azure Content Understanding produces multimodal document representations with source grounding for text and visual regions, supporting the requested page-level citations and polygons."
         },
         {
           "term": "Azure Document Intelligence",
-          "definition": "Dokument-AI för OCR, layoutanalys och extraktion av fält från dokument."
+          "definition": "A document AI service for OCR, layout analysis, and structured field extraction."
         }
       ]
     },
@@ -321,19 +321,19 @@
       "concepts": [
         {
           "term": "Azure Language",
-          "definition": "Språktjänster för bland annat textanalys, entiteter och klassificering."
+          "definition": "Azure services for language tasks such as text analysis, entity recognition, and classification."
         },
         {
           "term": "Azure Translator",
-          "definition": "Tjänst för maskinöversättning av text och dokument."
+          "definition": "An Azure service for machine translation of text and documents."
         },
         {
           "term": "Image Analysis",
-          "definition": "Visionfunktion för att analysera bildinnehåll och visuella egenskaper."
+          "definition": "Image Analysis describes visual features such as objects, tags, and captions. It is not optimized for structured invoice fields and document tables."
         },
         {
           "term": "Application Insights",
-          "definition": "Azure Monitor-tjänst för applikationstelemetri, spårning, fel och prestanda."
+          "definition": "Application Insights is Azure Monitor's application observability backend for requests, dependencies, exceptions, performance data, and distributed traces. It can receive and visualize the agent application's trace data, so it is one of the two appropriate components."
         }
       ]
     },
@@ -345,11 +345,11 @@
       "concepts": [
         {
           "term": "Log Analytics workspace",
-          "definition": "Arbetsyta för att lagra och fråga logg- och telemetridata i Azure Monitor."
+          "definition": "A Log Analytics workspace stores and queries logs that resources send to it, but it does not by itself instrument a Python agent application or create end-to-end LLM/tool spans. Additional telemetry instrumentation/export is still required."
         },
         {
           "term": "Microsoft Sentinel",
-          "definition": "Molnbaserad SIEM/SOAR-tjänst för säkerhetsanalys och incidenthantering."
+          "definition": "Microsoft Sentinel is a SIEM/SOAR service for security analytics and incident response. It can consume logs, but it is not the application-tracing instrumentation or backend used to capture agent latency breakdowns and exceptions."
         }
       ]
     },
@@ -361,19 +361,19 @@
       "concepts": [
         {
           "term": "optical character recognition (OCR)",
-          "definition": "Extraherar maskinläsbar text från bilder och skannade dokument."
+          "definition": "OCR converts printed text in the scanned invoice images into machine-readable text that can be mapped into searchable index fields."
         },
         {
           "term": "Document Extraction",
-          "definition": "Extraherar dokumentinnehåll och fält; fokuserar inte i sig på att skapa kunskapslagerprojektioner."
+          "definition": "Document Extraction extracts document content and fields, but it is not the single multimodal Search skill that produces page-level text and image locations with bounding polygons."
         },
         {
           "term": "Document Layout",
-          "definition": "Extraherar text och dokumentstruktur, exempelvis stycken, tabeller, selection marks och positioner."
+          "definition": "Document Layout focuses on page structure and text layout. The multimodal extraction skill is required when citations must cover both text and images with locations."
         },
         {
           "term": "prebuilt-read",
-          "definition": "Förbyggd dokumentmodell för textläsning och OCR."
+          "definition": "OCR or the prebuilt-read analyzer extracts printed and handwritten text, but does not preserve the full document structure needed for layout-aware processing. The prebuilt-layout analyzer extracts text together with structural elements such as tables, selection marks, and document layout."
         }
       ]
     },
@@ -385,19 +385,19 @@
       "concepts": [
         {
           "term": "prebuilt-layout",
-          "definition": "Förbyggd dokumentmodell som extraherar text tillsammans med layoutstruktur."
+          "definition": "The prebuilt-layout model extracts structural elements such as tables and can detect barcodes and QR codes; prebuilt-read focuses on OCR text."
         },
         {
           "term": "prebuilt-documentSearch",
-          "definition": "Förbyggd analys som är inriktad på att förbereda dokumentinnehåll för sökning."
+          "definition": "The prebuilt document-search analyzer produces retrieval-oriented content that preserves useful document structure and links for downstream agent grounding."
         },
         {
           "term": "Single-file task in standard mode",
-          "definition": "Kostnadseffektivt läge för högvolymsanalys av ett fristående dokument."
+          "definition": "Standard mode is designed for high-volume, cost-effective analysis of a single file. Pipeline1 processes standalone PDF invoices and does not require cross-document reasoning or reference data, so a single-file task in standard mode is appropriate."
         },
         {
           "term": "Single-file task in pro mode",
-          "definition": "Mer avancerad analys av ett enskilt dokument med större resonemangskapacitet."
+          "definition": "An advanced Content Understanding task for analyzing one document with greater reasoning capability."
         }
       ]
     },
@@ -409,7 +409,7 @@
       "concepts": [
         {
           "term": "Multi-file task in pro mode",
-          "definition": "Avancerad analys över flera filer och referensdata med flerstegsresonemang."
+          "definition": "Pro mode adds advanced multi-step reasoning and support for multiple files/reference data. Pipeline2 must compare information across documents and validate it against reference data, so it needs a multi-file task in pro mode."
         }
       ]
     },
@@ -421,15 +421,15 @@
       "concepts": [
         {
           "term": "File projection",
-          "definition": "Skriver binära normaliserade bilder från enrichment-trädet till Blob Storage; används inte som generell projektion för extraherad text."
+          "definition": "File projection writes binary or file-like enrichment outputs to blob storage. Unstructured JSON is better preserved as an object."
         },
         {
           "term": "Object projection",
-          "definition": "Skriver berikade resultat som hierarkiska JSON-objekt till Blob Storage."
+          "definition": "Object projection stores a hierarchical JSON object and preserves the structure of unstructured enrichment data."
         },
         {
           "term": "Table projection",
-          "definition": "Skriver berikade resultat som rader och kolumner i Azure Table Storage."
+          "definition": "Table projection flattens data into rows and columns in Azure Table Storage. It is not the best match for preserving arbitrary nested JSON."
         }
       ]
     },
@@ -441,19 +441,19 @@
       "concepts": [
         {
           "term": "system-assigned managed identity",
-          "definition": "Azure-hanterad identitet vars livscykel är knuten till den resurs där den aktiveras."
+          "definition": "An Azure-managed identity whose lifecycle is tied to the resource on which it is enabled."
         },
         {
           "term": "user-assigned managed identity",
-          "definition": "Fristående Azure-hanterad identitet som kan tilldelas till en eller flera resurser."
+          "definition": "A user-assigned managed identity can represent Azure workloads, but a GitHub-hosted runner signs in to Azure through federated OIDC rather than directly using managed identity metadata."
         },
         {
           "term": "DefaultAzureCredential",
-          "definition": "Azure Identity-kedja som i Azure kan använda managed identity och lokalt kan använda tillgängliga utvecklaridentiteter."
+          "definition": "DefaultAzureCredential is an Azure Identity credential chain that can obtain Microsoft Entra tokens from a managed identity when the app runs on an Azure host with managed identity enabled. It avoids storing API keys or client secrets, so it meets the managed-identity requirement."
         },
         {
           "term": "ClientSecretCredential",
-          "definition": "Microsoft Entra-autentisering med tenant-ID, klient-ID och klienthemlighet."
+          "definition": "ClientSecretCredential uses a tenant ID, client ID, and stored client secret. It is an application credential, not managed identity authentication."
         }
       ]
     },
@@ -465,19 +465,19 @@
       "concepts": [
         {
           "term": "AzureKeyCredential",
-          "definition": "SDK-credential som bär en statisk tjänste- eller API-nyckel; den använder inte Microsoft Entra ID."
+          "definition": "AzureKeyCredential authenticates with a static service key. It cannot satisfy the requirement to use a Microsoft Entra managed identity."
         },
         {
           "term": "AccountManagedIdentity",
-          "definition": "Autentiseringstyp där en Azure-hanterad identitet används i stället för konto- eller API-nyckel."
+          "definition": "AccountManagedIdentity tells the connection to authenticate as the Foundry account's managed identity without storing a secret."
         },
         {
           "term": "AccountKey",
-          "definition": "Autentisering med en resurs- eller kontonyckel."
+          "definition": "AccountKey authenticates with a shared account key. Key Vault access in this design uses the Foundry account's managed identity instead."
         },
         {
           "term": "ApiKey",
-          "definition": "Autentisering med en API-nyckel."
+          "definition": "ApiKey represents an API-key credential. Azure Key Vault uses Microsoft Entra authorization for this managed-identity connection."
         }
       ]
     },
@@ -489,19 +489,19 @@
       "concepts": [
         {
           "term": "Cognitive Services OpenAI User",
-          "definition": "Dataplanroll som ger rätt att använda Azure OpenAI-modeller för inferens utan bredare administratörsbehörighet."
+          "definition": "Authentication succeeded, so the 403 indicates missing data-plane authorization. Cognitive Services OpenAI User grants model inference with less privilege than Contributor."
         },
         {
           "term": "Cognitive Services User",
-          "definition": "Generell dataplanroll för användning av stödda Azure AI-tjänster."
+          "definition": "Cognitive Services User grants data-plane access to supported Azure AI services generally. Azure OpenAI inference requires the OpenAI-specific user role in this scenario."
         },
         {
           "term": "Cognitive Services Data Reader",
-          "definition": "Läsroll för data och metadata utan rätt att utföra alla dataplanoperationer."
+          "definition": "Cognitive Services Data Reader is intended for reading service data and metadata. It does not grant permission to invoke an Azure OpenAI model deployment."
         },
         {
           "term": "Contributor",
-          "definition": "Bred kontrollplansroll för att skapa och ändra Azure-resurser, men inte automatiskt alla dataplanrättigheter."
+          "definition": "Contributor manages Azure resources in the control plane, such as creating or changing deployments. It does not by itself grant Azure OpenAI data-plane inference access."
         }
       ]
     },
@@ -513,19 +513,19 @@
       "concepts": [
         {
           "term": "Storage Blob Data Reader",
-          "definition": "Dataplanroll som ger läsåtkomst till blobdata."
+          "definition": "An Azure data-plane role that allows an identity to read blob data."
         },
         {
           "term": "Storage Blob Data Contributor",
-          "definition": "Dataplanroll som ger läs- och skrivåtkomst till blobdata."
+          "definition": "An Azure data-plane role that allows an identity to read, write, and delete blob data."
         },
         {
           "term": "Storage Queue Data Contributor",
-          "definition": "Dataplanroll för att läsa och ändra ködata i Azure Storage."
+          "definition": "An Azure data-plane role that allows an identity to read and modify queue data."
         },
         {
           "term": "Key Vault Secrets User",
-          "definition": "Roll som ger en identitet rätt att läsa hemligheter i Azure Key Vault."
+          "definition": "An Azure role that allows an identity to read secret values from Azure Key Vault."
         }
       ]
     },
@@ -537,19 +537,19 @@
       "concepts": [
         {
           "term": "API key security scheme",
-          "definition": "OpenAPI-säkerhetsschema som beskriver hur en API-nyckel skickas, exempelvis i en HTTP-header."
+          "definition": "An OpenAPI apiKey security scheme declares where the header key belongs and lets the tool inject the value from the configured project connection."
         },
         {
           "term": "Bearer token security scheme",
-          "definition": "OpenAPI-säkerhetsschema för bearer-token, normalt i Authorization-headern."
+          "definition": "A bearer security scheme sends a token in the Authorization header. The weather service expects an API key in its own header, so an apiKey security scheme is required instead."
         },
         {
           "term": "Azure Key Vault connection",
-          "definition": "Projektanslutning för säker åtkomst till hemligheter i Azure Key Vault."
+          "definition": "An Azure Key Vault connection can provide secure access to secrets, but the OpenAPI document still needs an apiKey security scheme so the tool knows where to place the credential."
         },
         {
           "term": "identity passthrough",
-          "definition": "Mönster där anroparens Microsoft Entra-identitet förs vidare till ett underliggande verktyg eller API."
+          "definition": "An authentication pattern that forwards the caller's Microsoft Entra identity to an underlying tool or API."
         }
       ]
     },
@@ -561,11 +561,11 @@
       "concepts": [
         {
           "term": "distinct agent identity",
-          "definition": "Separat identitet för en publicerad agent eller klientapplikation för isolerad och auditerbar verktygsåtkomst."
+          "definition": "A separate identity assigned to a published agent or client so its tool access is isolated and auditable."
         },
         {
           "term": "shared project agent identity",
-          "definition": "Gemensam identitet på projektnivå som flera agenter eller klienter kan använda."
+          "definition": "A project-level identity that can be shared by multiple agents or clients."
         }
       ]
     },
@@ -577,19 +577,19 @@
       "concepts": [
         {
           "term": "Groundedness",
-          "definition": "Mäter om påståenden i svaret faktiskt stöds av den tillhandahållna eller hämtade källkontexten."
+          "definition": "Groundedness measures whether statements in the response are supported by the supplied context, making it a core RAG evaluation metric."
         },
         {
           "term": "Relevance",
-          "definition": "Mäter hur väl svaret adresserar användarens fråga eller den avsedda uppgiften."
+          "definition": "Measures how directly and appropriately a response addresses the user's request or intended task."
         },
         {
           "term": "Fluency",
-          "definition": "Mäter språklig flyt och läsbarhet."
+          "definition": "Fluency measures grammatical quality and readability of the generated response. A response can be fluent even when retrieval is poor or claims are unsupported."
         },
         {
           "term": "Coherence",
-          "definition": "Mäter om svaret är logiskt sammanhängande och välstrukturerat."
+          "definition": "Coherence measures whether the response is logically organized and internally consistent. It does not directly test retrieval quality or source support."
         }
       ]
     },
@@ -601,19 +601,19 @@
       "concepts": [
         {
           "term": "Response Completeness",
-          "definition": "Mäter om svaret innehåller de delar som krävs för att besvara uppgiften fullständigt."
+          "definition": "Response Completeness measures whether the answer covers required information. It does not specifically assess whether retrieval found the right evidence or whether claims are grounded."
         },
         {
           "term": "groundedness evaluator",
-          "definition": "Evaluator som specifikt bedömer stöd i källkontext för genererade påståenden."
+          "definition": "Groundedness evaluation checks whether generated claims are supported by the retrieved source material. RAG evaluation is broader and fine-tuning does not directly measure factual support."
         },
         {
           "term": "Retrieval Augmented Generation (RAG) evaluator",
-          "definition": "Evaluator för RAG-lösningar som bedömer retrieval- och generationsrelaterade kvalitetsaspekter."
+          "definition": "RAG retrieves external source content and supplies it as grounding context before generation. Groundedness evaluation checks whether generated claims are supported by the supplied source context."
         },
         {
           "term": "fluency evaluator",
-          "definition": "Evaluator som bedömer språklig flyt och formulering."
+          "definition": "The fluency evaluator measures language quality and readability. It does not provide groundedness, relevance, or harmful-content category scores."
         }
       ]
     },
@@ -625,11 +625,11 @@
       "concepts": [
         {
           "term": "similarity evaluators",
-          "definition": "Evaluatorer som jämför modellutdata med referenssvar eller andra texter."
+          "definition": "Similarity evaluators compare generated and reference text using lexical or embedding similarity. They are not the evaluation category for RAG groundedness and safety."
         },
         {
           "term": "Risk and safety metrics",
-          "definition": "Mätvärden för skadligt, otillåtet eller policybrytande innehåll."
+          "definition": "Risk and safety metrics evaluate harmful or policy-violating content categories. They are the relevant signal for responses flagged for policy violations; latency and token metrics instead measure performance or usage."
         }
       ]
     },
@@ -641,19 +641,19 @@
       "concepts": [
         {
           "term": "prompt shields",
-          "definition": "Skydd som upptäcker promptinjektion och försök att manipulera modellens instruktioner."
+          "definition": "Prompt Shields detect direct and indirect prompt-injection attempts. They protect model instructions, but they do not perform PII detection or redaction."
         },
         {
           "term": "prompt shields for user prompts",
-          "definition": "Promptskydd som granskar instruktioner direkt i användarens textinmatning."
+          "definition": "Prompt Shields for User Prompts inspect instructions supplied directly by the user as the prompt. Here the risky text is appended as external OCR/document context, so the document/indirect-attack shield is the appropriate scope instead."
         },
         {
           "term": "prompt shields for documents",
-          "definition": "Promptskydd för indirekta instruktioner som kan ligga gömda i dokumentinnehåll."
+          "definition": "Prompt Shields for Documents inspect third-party or retrieved text for indirect prompt-injection instructions. Because the OCR result is appended as untrusted contextual text, the document shield is the control that targets the stated attack."
         },
         {
           "term": "Personally identifiable information (PII) Detection",
-          "definition": "Identifierar personuppgifter så att de kan blockeras, maskeras eller hanteras särskilt."
+          "definition": "PII Detection identifies sensitive personal information so it can be removed or blocked before customer data is exposed. Content-category filters and Prompt Shields address different risks."
         }
       ]
     },
@@ -665,19 +665,19 @@
       "concepts": [
         {
           "term": "self-harm content filtering",
-          "definition": "Klassificerar och kan blockera innehåll kopplat till självskada."
+          "definition": "Self-harm content filtering detects and optionally blocks text associated with self-harm at configured severity levels. It does not identify or redact personal data such as names, addresses, or account numbers."
         },
         {
           "term": "violence content filtering",
-          "definition": "Klassificerar och kan blockera våldsrelaterat innehåll."
+          "definition": "Violence content filtering classifies violent content and can block it by severity. It does not detect the personal information required by this compliance scenario."
         },
         {
           "term": "image moderation",
-          "definition": "Analyserar bilder för skadligt eller otillåtet visuellt innehåll."
+          "definition": "Image moderation classifies harmful visual content such as violence or sexual content. The problem here is not visual harm; it is malicious instructions contained in OCR-extracted text, so image moderation addresses a different risk."
         },
         {
           "term": "Protected material",
-          "definition": "Säkerhetsdetektion för text eller kod som kan matcha skyddat material."
+          "definition": "Protected material detection looks for known protected text or code that the model may reproduce. It does not generally detect arbitrary confidential, proprietary, or personally identifiable information. Therefore it is only correct if the question's 'sensitive or proprietary information' specifically means protected/copyrighted material."
         }
       ]
     },
@@ -689,11 +689,11 @@
       "concepts": [
         {
           "term": "Indirect attack",
-          "definition": "Promptinjektion som kommer via externa källor som dokument, webbsidor eller annat inhämtat innehåll."
+          "definition": "Indirect attack detects malicious instructions embedded in retrieved content. It addresses prompt injection, not copyrighted or protected material."
         },
         {
           "term": "custom guardrail",
-          "definition": "Egen regel eller kontroll som validerar eller begränsar indata, utdata eller verktygsbeteende."
+          "definition": "A custom guardrail validates or constrains inputs, outputs, or tool behavior according to a policy. It does not specifically score whether every generated claim is supported by retrieved evidence."
         }
       ]
     },
@@ -705,19 +705,19 @@
       "concepts": [
         {
           "term": "fairness",
-          "definition": "Princip om att AI-system ska behandla människor och grupper på ett rättvist sätt."
+          "definition": "Fairness concerns equitable treatment and avoiding systematic performance differences across groups. Informing users that their data is processed is not primarily a fairness control."
         },
         {
           "term": "transparency",
-          "definition": "Princip om begriplighet, insyn och tydlighet kring hur AI-system används och beter sig."
+          "definition": "Transparency requires communicating how and when an AI system is used, including notifying users that their submitted data is being processed."
         },
         {
           "term": "inclusiveness",
-          "definition": "Princip om att AI-system ska utformas för att fungera för människor med olika behov och förutsättningar."
+          "definition": "Inclusiveness focuses on designing systems that empower people with different abilities and backgrounds. User notification is more directly an issue of transparency."
         },
         {
           "term": "reliability and safety",
-          "definition": "Princip om robust, förutsägbart och säkert systembeteende."
+          "definition": "Reliability and safety concern consistent operation, robustness, and harm prevention. A processing notice explains system use rather than improving technical reliability."
         }
       ]
     },
@@ -729,19 +729,19 @@
       "concepts": [
         {
           "term": "tracing",
-          "definition": "Visar en enskild körnings ordnade modell-, verktygs- och andra spans tillsammans med timing och fel."
+          "definition": "Tracing exposes the ordered spans, tool calls, model calls, exceptions, and latency for one run, making it suitable for diagnosing both slow execution and incorrect reasoning after correct tool output."
         },
         {
           "term": "Hierarchical spans",
-          "definition": "Nästlade spans som visar relationen mellan en övergripande agentkörning och dess underoperationer."
+          "definition": "A trace is made of spans that represent individual operations. Hierarchical parent/child spans preserve the nested structure of an agent run, so model calls, agent handoffs, and tool calls can be audited in their execution context."
         },
         {
           "term": "Tool call attributes",
-          "definition": "Spandata som beskriver verktygsanrop, exempelvis argument och resultat."
+          "definition": "Tool-call span attributes are metadata fields attached to tool invocation spans. They can record the tool name plus invocation arguments and returned results, which is the metadata required for auditing tool use."
         },
         {
           "term": "OpenTelemetry",
-          "definition": "Öppen standard och SDK-ekosystem för traces, metrics och logs."
+          "definition": "OpenTelemetry provides the instrumentation, span model, and exporters used to trace the Python service's model and tool operations. Those spans can be exported to Application Insights to provide end-to-end tracing outside the Foundry portal."
         }
       ]
     },
@@ -753,19 +753,19 @@
       "concepts": [
         {
           "term": "token usage",
-          "definition": "Mätning av modellens tokenförbrukning för bland annat input och output."
+          "definition": "Token analytics separates input, output, and tool-related token consumption, allowing a cost increase to be diagnosed even when request volume is unchanged."
         },
         {
           "term": "latency",
-          "definition": "Mätning av hur lång tid en begäran eller ett steg tar."
+          "definition": "Latency measures how long requests, model calls, and tool calls take. It helps diagnose performance delays, not a cost increase when traffic volume is unchanged."
         },
         {
           "term": "run success rate",
-          "definition": "Andel agentkörningar som slutförs framgångsrikt."
+          "definition": "Run success rate shows the proportion of runs that complete successfully. Costs can rise while the success rate and request count remain unchanged."
         },
         {
           "term": "Model Availability Rate",
-          "definition": "Mätvärde för hur tillgänglig en modell eller deployment är."
+          "definition": "A metric that measures how often a model or deployment is available to serve requests."
         }
       ]
     },
@@ -777,15 +777,15 @@
       "concepts": [
         {
           "term": "Provisioned Utilization",
-          "definition": "Mätvärde för hur stor del av provisionerad modellkapacitet som används."
+          "definition": "A metric that shows how much of the reserved model capacity is being used."
         },
         {
           "term": "RequestResponse",
-          "definition": "Azure Monitor-diagnostikkategori som kan logga information om modellbegäranden och svar när sådan loggning är aktiverad."
+          "definition": "RequestResponse logging captures model request and response diagnostics needed to investigate failed or unexpected inference calls."
         },
         {
           "term": "Trace sampling policy",
-          "definition": "Regel för vilka eller hur många traces som ska samlas in."
+          "definition": "A rule that controls which traces, or what proportion of traces, are collected."
         }
       ]
     },
@@ -797,19 +797,19 @@
       "concepts": [
         {
           "term": "real-time speech to text",
-          "definition": "Transkriberar strömmande ljud med låg fördröjning."
+          "definition": "Transcribes streaming speech into text with low latency."
         },
         {
           "term": "batch transcription",
-          "definition": "Asynkron transkribering av inspelade ljudfiler i batch."
+          "definition": "Transcribes prerecorded audio files asynchronously in batch jobs."
         },
         {
           "term": "text to speech",
-          "definition": "Syntetiserar tal från text."
+          "definition": "Synthesizes spoken audio from written text."
         },
         {
           "term": "speech translation",
-          "definition": "Kombinerar taligenkänning med översättning till ett annat språk."
+          "definition": "Recognizes spoken input and translates it into another language."
         }
       ]
     },
@@ -821,19 +821,19 @@
       "concepts": [
         {
           "term": "custom neural voice",
-          "definition": "Anpassad neural röst som tränas för ett specifikt röstutseende och användningsfall."
+          "definition": "A neural text-to-speech voice trained for a specific voice identity and approved use case."
         },
         {
           "term": "Speech Synthesis Markup Language (SSML)",
-          "definition": "Markup för att styra uttal, prosodi och andra egenskaper i talsyntes."
+          "definition": "Markup used to control speech synthesis details such as pronunciation, pauses, rate, pitch, and emphasis."
         },
         {
           "term": "custom speech project ID",
-          "definition": "Identifierare för projektet som äger träningsdata och anpassade Speech-modeller."
+          "definition": "The project property must identify the Custom Speech project that owns the fine-tuned model. A Foundry project ID or endpoint URL identifies a different resource."
         },
         {
           "term": "custom speech endpoint URL",
-          "definition": "Endpointadress för att anropa en distribuerad anpassad speech-modell."
+          "definition": "The custom endpoint URL is the address used to send recognition requests to a deployed model. It is not the project identifier requested by this API field."
         }
       ]
     },
@@ -845,19 +845,19 @@
       "concepts": [
         {
           "term": "WebRTC",
-          "definition": "Protokollstack för realtidsmedia med låg latens mellan klienter och tjänster."
+          "definition": "WebRTC is designed for interactive client-side audio/video and is Microsoft's recommended GPT Realtime transport for web and mobile clients. Microsoft lists it as the lowest-latency option (about 50–100 ms), so it matches a browser app targeting roughly 100 ms latency."
         },
         {
           "term": "WebSocket",
-          "definition": "Beständig tvåvägskommunikationskanal över en TCP-anslutning."
+          "definition": "WebSocket is supported by GPT Realtime, but Microsoft recommends it mainly for server-to-server scenarios where the lowest latency is not required. Its documented latency is higher (roughly 100–300 ms) than WebRTC, so it does not best meet the browser/~100 ms requirement."
         },
         {
           "term": "SIP",
-          "definition": "Signalprotokoll som ofta används för telefoni och upprättande av realtidssessioner."
+          "definition": "SIP is a telephony signaling protocol intended for phone-system integration. It is a supported Realtime connection method for telephony, not the best choice for a browser web app."
         },
         {
           "term": "RTMP",
-          "definition": "Streamingprotokoll som traditionellt används för överföring av ljud och video."
+          "definition": "RTMP is a media streaming protocol commonly used for live video delivery or ingest, but it is not one of the GPT Realtime API connection methods documented by Microsoft."
         }
       ]
     },
@@ -869,11 +869,11 @@
       "concepts": [
         {
           "term": "AnalyzeTextOptions",
-          "definition": "Options-klass som beskriver text och kategorier för textanalys i SDK-anrop."
+          "definition": "An SDK options object that specifies the text and categories used in a Content Safety text-analysis request."
         },
         {
           "term": "TextCategory.SELF_HARM",
-          "definition": "SDK-värde som representerar kategorin självskada vid innehållsanalys."
+          "definition": "An SDK enum value representing the self-harm category in Content Safety analysis."
         }
       ]
     },
@@ -885,19 +885,19 @@
       "concepts": [
         {
           "term": "few-shot learning",
-          "definition": "Styr modellen med ett litet antal exempel på önskat beteende eller format."
+          "definition": "Few-shot prompting includes representative labeled examples so the model can imitate the required support-ticket classifications without retraining."
         },
         {
           "term": "zero-shot learning",
-          "definition": "Låter modellen lösa en uppgift från instruktionen utan demonstrations­exempel."
+          "definition": "Zero-shot prompting gives instructions without examples. It relies on the model to infer the desired label format and therefore does not meet the requirement to show correct classifications."
         },
         {
           "term": "chain of thought",
-          "definition": "Modellens interna eller explicita mellanliggande resonemang; använd strukturerade instruktioner och verifierbara svar i stället för att kräva privat resonemang."
+          "definition": "Chain-of-thought is a reasoning/prompting concept, not a retrieval architecture. It does not connect the application to Azure AI Search or run parallel retrieval queries."
         },
         {
           "term": "Sampling",
-          "definition": "Övergripande begrepp för hur nästa token väljs från modellens sannolikhetsfördelning."
+          "definition": "The process of selecting the next token from a model's probability distribution."
         }
       ]
     },
@@ -909,19 +909,19 @@
       "concepts": [
         {
           "term": "top-p sampling",
-          "definition": "Begränsar tokenvalet till den minsta mängd kandidater vars sammanlagda sannolikhet når p."
+          "definition": "Limits token selection to the smallest candidate set whose cumulative probability reaches p."
         },
         {
           "term": "temperature",
-          "definition": "Parameter som påverkar hur koncentrerad eller varierad modellens tokenfördelning blir."
+          "definition": "A parameter that controls how concentrated or varied the model's token probabilities are."
         },
         {
           "term": "presence penalty",
-          "definition": "Parameter som kan minska sannolikheten för att modellen återanvänder sådant som redan förekommit."
+          "definition": "A parameter that can reduce the likelihood of repeating concepts that have already appeared."
         },
         {
           "term": "max_tokens",
-          "definition": "Övre gräns för hur många tokens modellen får generera i svaret."
+          "definition": "The maximum number of tokens the model is allowed to generate in its response."
         }
       ]
     },
@@ -933,15 +933,15 @@
       "concepts": [
         {
           "term": "stop sequences",
-          "definition": "Sekvenser som får modellen att avsluta genereringen när de påträffas."
+          "definition": "Sequences that cause the model to stop generating when they are encountered."
         },
         {
           "term": "random seed",
-          "definition": "Värde som kan användas för mer reproducerbar sampling när API och modell stöder det."
+          "definition": "A value that can make sampling more reproducible when the model and API support it."
         },
         {
           "term": "system message",
-          "definition": "Instruktionsnivå som sätter övergripande beteende, roll och begränsningar för modellen."
+          "definition": "High-priority instructions that define the model's overall role, behavior, and constraints."
         }
       ]
     },
@@ -953,19 +953,19 @@
       "concepts": [
         {
           "term": "OpenID Connect (OIDC)",
-          "definition": "Identitetslager ovanpå OAuth 2.0 för federerad autentisering och ID-token."
+          "definition": "An identity layer built on OAuth 2.0 that supports federated authentication and ID tokens."
         },
         {
           "term": "OAuth token",
-          "definition": "Token som används för delegerad eller appbaserad åtkomst enligt OAuth."
+          "definition": "A token used for delegated or application access under the OAuth authorization framework."
         },
         {
           "term": "personal access token (PAT)",
-          "definition": "Personligt åtkomsttoken som används som autentiseringshemlighet mot vissa tjänster."
+          "definition": "A PAT is a stored GitHub secret with a lifecycle and broad misuse risk. OIDC allows the workflow to obtain short-lived Azure credentials without storing a cloud secret."
         },
         {
           "term": "shared access signature (SAS) token",
-          "definition": "Tids- och rättighetsbegränsad token för delegerad åtkomst till Azure Storage-resurser."
+          "definition": "A time-limited, permission-scoped token that delegates access to Azure Storage resources."
         }
       ]
     },
@@ -977,15 +977,15 @@
       "concepts": [
         {
           "term": "subscription key",
-          "definition": "Nyckelbaserad autentisering mot en Azure-tjänsts endpoint."
+          "definition": "A service key used to authenticate requests to an Azure service endpoint."
         },
         {
           "term": "Storage account access keys",
-          "definition": "Långlivade delade nycklar som ger bred åtkomst till ett Storage-konto."
+          "definition": "Storage access keys are long-lived shared secrets. They violate the requirement for identity-based, keyless access."
         },
         {
           "term": "X.509 certificate",
-          "definition": "Certifikat som kan användas för app- eller tjänsteautentisering i stället för en klienthemlighet."
+          "definition": "A digital certificate that can authenticate an application or service instead of using a client secret."
         }
       ]
     },
@@ -997,19 +997,19 @@
       "concepts": [
         {
           "term": "mask-based inpainting",
-          "definition": "Bildredigering där endast ett maskerat område regenereras."
+          "definition": "Image editing that regenerates only the area selected by a mask."
         },
         {
           "term": "image_to_image",
-          "definition": "Genereringsläge där en befintlig bild används som visuell utgångspunkt."
+          "definition": "A generation mode that uses an existing image as the visual starting point."
         },
         {
           "term": "text_to_image",
-          "definition": "Genereringsläge där en bild skapas från en textprompt."
+          "definition": "A generation mode that creates an image from a text prompt."
         },
         {
           "term": "image_variation",
-          "definition": "Genereringsläge som skapar en variant av en referensbild."
+          "definition": "A generation mode that creates a new variation of a reference image."
         }
       ]
     },
@@ -1021,11 +1021,11 @@
       "concepts": [
         {
           "term": "input_fidelity",
-          "definition": "Parameter som styr hur starkt en bildredigering ska bevara egenskaper från indata."
+          "definition": "A parameter that controls how strongly an image edit preserves characteristics of the input image."
         },
         {
           "term": "guidance scale",
-          "definition": "Parameter som styr hur starkt genereringen följer prompten."
+          "definition": "A parameter that controls how strongly image generation follows the prompt."
         }
       ]
     },
@@ -1037,19 +1037,19 @@
       "concepts": [
         {
           "term": "GPT similarity",
-          "definition": "Modellbaserat likhetsmått mellan genererat svar och referens eller måltext."
+          "definition": "A model-assisted metric that judges similarity between generated output and a reference or target answer."
         },
         {
           "term": "F1 score",
-          "definition": "Harmoniskt medel av precision och recall."
+          "definition": "The harmonic mean of precision and recall: 2 × precision × recall / (precision + recall)."
         },
         {
           "term": "ROUGE score",
-          "definition": "Textlikhetsmått som ofta jämför överlapp mellan genererad text och referenstext."
+          "definition": "A text-similarity metric that measures overlap between generated text and reference text."
         },
         {
           "term": "prediction drift metrics",
-          "definition": "Mått som följer hur modellprediktioners fördelning förändras över tid."
+          "definition": "Prediction drift measures changes in a predictive model's data or behavior over time. Azure AI Search relevance is diagnosed with search and retrieval evaluation metrics instead."
         }
       ]
     },
@@ -1061,19 +1061,19 @@
       "concepts": [
         {
           "term": "AI quality (AI assisted) metrics",
-          "definition": "Kvalitetsmått som bedöms med hjälp av en AI-modell."
+          "definition": "AI-assisted quality metrics use an evaluator model to judge qualities such as groundedness and relevance. They supply the requested RAG quality scores."
         },
         {
           "term": "AI quality (NLP) metrics",
-          "definition": "Traditionella NLP-baserade kvalitetsmått, exempelvis likhets- eller överlappsmått."
+          "definition": "AI quality NLP metrics are traditional text metrics and evaluators. The requested groundedness and relevance measures are AI-assisted quality evaluators rather than only NLP similarity metrics."
         },
         {
           "term": "confidence score",
-          "definition": "Numeriskt mått på hur säker en analys eller extraktion bedöms vara."
+          "definition": "A numeric estimate of how certain a model, analysis, or extraction is about its result."
         },
         {
           "term": "search.score",
-          "definition": "Azure AI Search-poäng som uttrycker en träffs relevans enligt sökfrågan."
+          "definition": "An Azure AI Search relevance score assigned to a result for a specific query."
         }
       ]
     },
@@ -1085,19 +1085,19 @@
       "concepts": [
         {
           "term": "query key",
-          "definition": "Azure AI Search-nyckel med begränsad behörighet för sökfrågor."
+          "definition": "An Azure AI Search key with restricted permission to run queries against indexes."
         },
         {
           "term": "admin key",
-          "definition": "Azure AI Search-nyckel med administrativ dataplanåtkomst till tjänsten."
+          "definition": "An Azure AI Search key with broad data-plane administrative access."
         },
         {
           "term": "indexer status",
-          "definition": "Aktuell körstatus för ett Azure AI Search-indexerjobb."
+          "definition": "The current execution state and most recent result of an Azure AI Search indexer."
         },
         {
           "term": "indexer failure history",
-          "definition": "Historik över fel som inträffat under indexerkörningar."
+          "definition": "A record of failures that occurred during previous indexer runs."
         }
       ]
     },
@@ -1109,15 +1109,15 @@
       "concepts": [
         {
           "term": "outputFieldMappings",
-          "definition": "Indexerinställning som mappar berikade utdata till fält i målindex."
+          "definition": "Indexer settings that map enriched skill outputs to fields in the target search index."
         },
         {
           "term": "normalized_images",
-          "definition": "Samling av normaliserade bildobjekt som kan skapas under AI Search-dokumentberikning."
+          "definition": "A collection of normalized page-image objects created during Azure AI Search document enrichment."
         },
         {
           "term": "skillset",
-          "definition": "Samling AI Search-skills som körs som en berikningspipeline vid indexering."
+          "definition": "A collection of Azure AI Search skills executed as an enrichment pipeline during indexing."
         }
       ]
     },
@@ -1129,19 +1129,19 @@
       "concepts": [
         {
           "term": "Azure AI Immersive Reader",
-          "definition": "Tjänst för tillgänglig läsning och förståelse av textinnehåll."
+          "definition": "Immersive Reader provides reading aids such as text spacing, line focus, syllables, picture dictionary, and read-aloud, directly supporting users with dyslexia and comprehension differences."
         },
         {
           "term": "Microsoft Fabric",
-          "definition": "Microsofts plattform för dataanalys, engineering, BI och relaterade datatjänster."
+          "definition": "Microsoft's integrated platform for data engineering, analytics, data science, and business intelligence."
         },
         {
           "term": "Microsoft Graph API",
-          "definition": "API för åtkomst till Microsoft 365- och Entra-relaterade resurser och data."
+          "definition": "An API for accessing Microsoft 365 and Microsoft Entra resources and data."
         },
         {
           "term": "Azure Machine Learning",
-          "definition": "Azure-plattform för att träna, registrera och driftsätta maskininlärningsmodeller."
+          "definition": "An Azure platform for training, registering, deploying, and managing machine-learning models."
         }
       ]
     },
@@ -1153,11 +1153,11 @@
       "concepts": [
         {
           "term": "Azure Monitor Agent",
-          "definition": "Agent för insamling av telemetri och loggar till Azure Monitor."
+          "definition": "Azure Monitor Agent collects operating-system and guest telemetry from supported machines. It does not instrument LLM calls, tool calls, or agent-run spans inside this Python application."
         },
         {
           "term": "Foundry Local",
-          "definition": "Lokal kör- eller utvecklingsmiljö för vissa Foundry-relaterade arbetsflöden och modeller."
+          "definition": "A local runtime and development environment for supported Foundry models and workflows."
         }
       ]
     },
@@ -1169,19 +1169,19 @@
       "concepts": [
         {
           "term": "Text Translation",
-          "definition": "Översättning av text mellan språk."
+          "definition": "Text Translation converts already extracted text between languages. It does not perform OCR on scanned invoices."
         },
         {
           "term": "document translation",
-          "definition": "Översätter hela dokument samtidigt som struktur och format i möjligaste mån bevaras."
+          "definition": "Translates complete documents while preserving their structure and formatting where possible."
         },
         {
           "term": "TextAnalytics",
-          "definition": "SDK- eller tjänstebegrepp för textanalysfunktioner."
+          "definition": "`TextAnalytics` creates a Language-specific resource. It cannot also provide OCR/vision through the same account."
         },
         {
           "term": "LanguageAuthoring",
-          "definition": "Authoringdel för att skapa och hantera språkprojekt och modeller."
+          "definition": "LanguageAuthoring is used for authoring Azure Language projects such as classification or NER. It does not host the required generative model."
         }
       ]
     },
@@ -1193,19 +1193,19 @@
       "concepts": [
         {
           "term": "blocklists",
-          "definition": "Listor med uttryck eller innehåll som ska identifieras och blockeras."
+          "definition": "Custom lists of terms or phrases that a safety system should identify and block."
         },
         {
           "term": "Spotlighting",
-          "definition": "Markerar extern text som obetrodd data så att modellen lättare skiljer den från instruktioner; stödet varierar mellan produkter och agentflöden."
+          "definition": "A technique that marks external text as untrusted data so a model can distinguish it from instructions."
         },
         {
           "term": "Hateful and unfair content",
-          "definition": "Säkerhetskategori för hatiskt eller orättvist innehåll."
+          "definition": "Hateful and unfair content detects discriminatory or hateful language. It does not detect copied protected text or code."
         },
         {
           "term": "Violent content",
-          "definition": "Säkerhetskategori för våldsrelaterat innehåll."
+          "definition": "Violent content detects descriptions or depictions of violence. It is unrelated to protected-text or protected-code detection."
         }
       ]
     },
@@ -1217,7 +1217,7 @@
       "concepts": [
         {
           "term": "groundedness detection filter",
-          "definition": "Kontroll som identifierar svar som saknar stöd i den givna källkontexten."
+          "definition": "A safety control that identifies generated claims that are unsupported by the supplied source context."
         }
       ]
     },
@@ -1229,19 +1229,19 @@
       "concepts": [
         {
           "term": "agent",
-          "definition": "Modellbaserad komponent som kan använda instruktioner, tillstånd och verktyg för att utföra uppgifter."
+          "definition": "The agent definition contains instructions, model settings, and tools shared across users. It should not be used as the state container for one customer's case."
         },
         {
           "term": "conversation",
-          "definition": "Beständigt konversationstillstånd som Responses API kan återanvända genom ett conversation-ID."
+          "definition": "A conversation stores the ordered messages and outputs for a continuing interaction, allowing the same support case to resume across requests."
         },
         {
           "term": "session",
-          "definition": "Körnings- eller interaktionskontext som samlar tillstånd för en tidsbegränsad dialog eller process."
+          "definition": "A session-specific scope can prevent cross-session memory only when the application supplies a different scope value for every session. The literal value `session` alone would be a shared static partition, which is why the wording is ambiguous."
         },
         {
           "term": "threads and runs",
-          "definition": "Äldre Agents/Assistants-mönster där en thread håller meddelanden och en run kör agenten mot threadens tillstånd."
+          "definition": "A legacy Agents/Assistants pattern in which a thread stores messages and a run executes an agent against that state."
         }
       ]
     },
@@ -1253,15 +1253,15 @@
       "concepts": [
         {
           "term": "chat completions",
-          "definition": "API-mönster där en lista av chattmeddelanden skickas till modellen för att skapa nästa svar."
+          "definition": "Chat completions generate or reason over text supplied in a prompt. They are not the specialized document-analysis capability for extracting invoice fields and layout."
         },
         {
           "term": "Responses API",
-          "definition": "API för modellresponser med stöd för multimodala indata, verktyg och mer samlat responsformat."
+          "definition": "An API for model responses that supports multimodal input, tools, and a unified structured response format."
         },
         {
           "term": "output item",
-          "definition": "En enskild del i ett strukturerat modell- eller agentresultat."
+          "definition": "An output item is one piece of content produced during a response, such as a message or tool call. It does not represent the persistent multi-turn support case."
         }
       ]
     },
@@ -1273,15 +1273,15 @@
       "concepts": [
         {
           "term": "KQL",
-          "definition": "Kusto Query Language för att fråga logg-, telemetry- och analysdata i Azure."
+          "definition": "Kusto Query Language, used to query log, telemetry, and analytics data in Azure."
         },
         {
           "term": "client.analyze_image",
-          "definition": "SDK-metod för bildanalys."
+          "definition": "An SDK method that submits an image for analysis and returns visual analysis results."
         },
         {
           "term": "client.analyze_text",
-          "definition": "SDK-metod för textanalys."
+          "definition": "An SDK method that submits text for analysis and returns language-analysis results."
         }
       ]
     },
@@ -1293,19 +1293,19 @@
       "concepts": [
         {
           "term": "Foundry project",
-          "definition": "Projektbehållare för modeller, deployments, agenter, connections, evaluations och relaterade resurser."
+          "definition": "A project container for models, deployments, agents, connections, evaluations, and related resources."
         },
         {
           "term": "Foundry Agent Service",
-          "definition": "Hanterad tjänst för att skapa, publicera och köra agenter med modeller, instruktioner och verktyg."
+          "definition": "A managed service for creating, publishing, and running agents with models, instructions, knowledge, and tools."
         },
         {
           "term": "Prompt agent",
-          "definition": "Agent vars beteende definieras av en modell, instruktioner och konfigurerade verktyg eller knowledge."
+          "definition": "An agent whose behavior is defined by a model, instructions, and configured knowledge or tools."
         },
         {
           "term": "Published agent",
-          "definition": "Versionerad agent som publicerats så att applikationer eller workflows kan anropa den."
+          "definition": "A versioned agent that has been published so applications or workflows can invoke it."
         }
       ]
     },
@@ -1317,19 +1317,19 @@
       "concepts": [
         {
           "term": "Function calling",
-          "definition": "Modellen returnerar ett strukturerat funktionsanrop med argument; applikationen kör funktionen och skickar tillbaka resultatet."
+          "definition": "The model returns a structured function request with arguments; the application executes it and sends back the result."
         },
         {
           "term": "Function tool",
-          "definition": "Applikationsdefinierad funktion som exponeras med namn, beskrivning och argumentschema för agenten."
+          "definition": "An application-defined function exposed to an agent with a name, description, and argument schema."
         },
         {
           "term": "OpenAPI tool",
-          "definition": "Låter en agent anropa HTTP-operationer som beskrivs i ett OpenAPI-schema."
+          "definition": "A tool that lets an agent call HTTP operations described by an OpenAPI specification."
         },
         {
           "term": "MCP",
-          "definition": "Model Context Protocol: standardiserat protokoll för att exponera verktyg, resurser och prompts för AI-klienter."
+          "definition": "Model Context Protocol, a standard protocol for exposing tools, resources, and prompts to AI clients."
         }
       ]
     },
@@ -1341,15 +1341,15 @@
       "concepts": [
         {
           "term": "MCP server",
-          "definition": "Server som exponerar verktyg, resurser eller prompts genom Model Context Protocol."
+          "definition": "A server that exposes tools, resources, or prompts through Model Context Protocol."
         },
         {
           "term": "MCP tool",
-          "definition": "Anropbar capability som en MCP-server beskriver och gör tillgänglig för agenten."
+          "definition": "An invokable capability described and exposed by an MCP server."
         },
         {
           "term": "MCP client",
-          "definition": "Klientdelen som ansluter till MCP-servrar, upptäcker capabilities och utför verktygsanrop."
+          "definition": "A client that connects to MCP servers, discovers their capabilities, and invokes their tools."
         }
       ]
     },
@@ -1361,19 +1361,19 @@
       "concepts": [
         {
           "term": "tool_choice: auto",
-          "definition": "Modellen avgör själv om ett verktyg behöver användas."
+          "definition": "Allows the model to decide whether a tool needs to be used."
         },
         {
           "term": "tool_choice: required",
-          "definition": "Minst ett verktygsanrop måste göras innan modellen kan slutföra svaret."
+          "definition": "Requires the model to make at least one tool call before completing the response."
         },
         {
           "term": "tool_choice: none",
-          "definition": "Modellen får inte använda något verktyg för anropet."
+          "definition": "Prevents the model from using tools for the request."
         },
         {
           "term": "tool_choice: specific tool",
-          "definition": "Tvingar modellen att använda det angivna verktyget eller den angivna verktygstypen."
+          "definition": "Forces the model to use the specified tool or tool type."
         }
       ]
     },
@@ -1385,19 +1385,19 @@
       "concepts": [
         {
           "term": "Human approval",
-          "definition": "Pausar ett workflow eller verktygsanrop tills en människa godkänner eller avslår åtgärden."
+          "definition": "Pauses a workflow or tool call until a person approves or rejects the action."
         },
         {
           "term": "Approval checkpoint",
-          "definition": "Workflow-nod som begär mänskligt beslut innan ett känsligt efterföljande steg får köras."
+          "definition": "A workflow node that requires a human decision before a sensitive next step can run."
         },
         {
           "term": "Condition statement",
-          "definition": "Utvärderar ett villkor och väljer vilken gren i workflowet som ska köras."
+          "definition": "Evaluates a condition and selects which branch of a workflow should execute."
         },
         {
           "term": "Ask a question node",
-          "definition": "Workflow-nod som samlar in ett svar eller godkännande från en människa."
+          "definition": "A workflow node that collects an answer or approval from a person."
         }
       ]
     },
@@ -1409,19 +1409,19 @@
       "concepts": [
         {
           "term": "Persistent memory",
-          "definition": "Lagrar användar- eller uppgiftsspecifik information som kan hämtas i senare konversationer."
+          "definition": "Stores user- or task-specific information that can be retrieved in later conversations."
         },
         {
           "term": "Memory store",
-          "definition": "Beständig lagringsyta där agentminnen sparas och söks."
+          "definition": "Persistent storage in which agent memories are saved and searched."
         },
         {
           "term": "MemorySearchTool",
-          "definition": "Agentverktyg som söker efter relevanta poster i ett konfigurerat memory store."
+          "definition": "An agent tool that searches for relevant entries in a configured memory store."
         },
         {
           "term": "Memory scope",
-          "definition": "Partitionsnyckel som avgör vilka minnen en körning får spara och hämta, exempelvis per användare."
+          "definition": "A partition key that determines which memories a run can save and retrieve, such as one scope per user."
         }
       ]
     },
@@ -1433,11 +1433,11 @@
       "concepts": [
         {
           "term": "Data source",
-          "definition": "Definierar var indexerbart innehåll finns och hur en Azure AI Search-indexer ansluter till det."
+          "definition": "Defines where indexable content is located and how an Azure AI Search indexer connects to it."
         },
         {
           "term": "Search index",
-          "definition": "Sökbart schema med fält och dokument som frågor körs mot."
+          "definition": "A searchable schema containing fields and documents against which queries run."
         }
       ]
     },
@@ -1449,19 +1449,19 @@
       "concepts": [
         {
           "term": "Chunking",
-          "definition": "Delar långt innehåll i mindre enheter som kan indexeras och hämtas separat."
+          "definition": "Splits long content into smaller units that can be indexed and retrieved separately."
         },
         {
           "term": "Chunk overlap",
-          "definition": "Upprepar en del text mellan angränsande chunks för att minska förlust av sammanhang vid gränser."
+          "definition": "Repeats some text between neighboring chunks to preserve context across boundaries."
         },
         {
           "term": "Fixed-size chunking",
-          "definition": "Delar innehåll efter ett fast token- eller teckenantal, oberoende av dokumentstruktur."
+          "definition": "Splits content after a fixed number of tokens or characters regardless of document structure."
         },
         {
           "term": "Structure-aware chunking",
-          "definition": "Delar efter rubriker, stycken, tabeller eller andra strukturella gränser."
+          "definition": "Splits content at headings, paragraphs, tables, or other structural boundaries."
         }
       ]
     },
@@ -1473,15 +1473,15 @@
       "concepts": [
         {
           "term": "Search Index Data Reader",
-          "definition": "Dataplanroll som ger rätt att läsa och fråga dokument i Azure AI Search-index."
+          "definition": "An Azure data-plane role that allows an identity to read and query documents in search indexes."
         },
         {
           "term": "Search Index Data Contributor",
-          "definition": "Dataplanroll som ger rätt att lägga till, uppdatera och ta bort dokument i index."
+          "definition": "An Azure data-plane role that allows an identity to add, update, and delete documents in search indexes."
         },
         {
           "term": "Search Service Contributor",
-          "definition": "Kontrollplansroll för att hantera Search-tjänsten utan att automatiskt ge åtkomst till indexdata."
+          "definition": "An Azure control-plane role for managing a Search service without automatically granting access to index data."
         }
       ]
     },
@@ -1493,19 +1493,19 @@
       "concepts": [
         {
           "term": "Private endpoint",
-          "definition": "Ger en Azure PaaS-tjänst en privat IP-adress i ett virtuellt nätverk."
+          "definition": "Assigns an Azure PaaS service a private IP address inside a virtual network."
         },
         {
           "term": "Managed private endpoint",
-          "definition": "Privat endpoint som skapas och hanteras från en hanterad Azure-tjänst mot en extern resurs."
+          "definition": "A private endpoint created and managed from one managed Azure service to another resource."
         },
         {
           "term": "Keyless connection",
-          "definition": "Connection som använder Microsoft Entra-identitet och RBAC i stället för lagrad API-nyckel."
+          "definition": "A connection that uses Microsoft Entra identity and RBAC instead of a stored API key."
         },
         {
           "term": "RBAC",
-          "definition": "Role-Based Access Control: tilldelar roller till identiteter vid ett bestämt Azure-scope."
+          "definition": "Role-Based Access Control, which assigns roles to identities at a defined Azure scope."
         }
       ]
     },
@@ -1517,19 +1517,19 @@
       "concepts": [
         {
           "term": "Content Understanding analyzer",
-          "definition": "Konfiguration som anger modalitet, schema och hur innehåll ska analyseras till strukturerad output."
+          "definition": "A configuration that defines the input modality, schema, and analysis used to produce structured output."
         },
         {
           "term": "Prebuilt analyzer",
-          "definition": "Färdig analyzer för ett vanligt scenario utan att du själv definierar hela fältschemat."
+          "definition": "A ready-made analyzer for a common scenario that does not require defining the full field schema."
         },
         {
           "term": "Custom analyzer",
-          "definition": "Analyzer med ett eget schema för de fält som lösningen behöver extrahera eller generera."
+          "definition": "An analyzer with a user-defined schema for the fields a solution needs to extract or generate."
         },
         {
           "term": "Analyzer schema",
-          "definition": "Definition av fältnamn, datatyper, beskrivningar och metoder i analyzer-outputen."
+          "definition": "The definition of field names, data types, descriptions, and generation methods in analyzer output."
         }
       ]
     },
@@ -1541,19 +1541,19 @@
       "concepts": [
         {
           "term": "Generated field",
-          "definition": "Fält vars värde modellen genererar eller härleder från innehållet enligt schema och instruktion."
+          "definition": "A field whose value the model generates or derives from the content according to its schema and instructions."
         },
         {
           "term": "Classified field",
-          "definition": "Fält som väljs från definierade kategorier genom klassificering."
+          "definition": "A field whose value is selected from predefined categories through classification."
         },
         {
           "term": "Field confidence",
-          "definition": "Skattning av hur säker analyzern är på ett extraherat fältvärde."
+          "definition": "An estimate of how certain the analyzer is about an extracted field value."
         },
         {
           "term": "Field source",
-          "definition": "Referens till den plats i källmaterialet som stöder det extraherade fältvärdet."
+          "definition": "A reference to the location in the source content that supports an extracted field value."
         }
       ]
     },
@@ -1565,15 +1565,15 @@
       "concepts": [
         {
           "term": "Content Safety",
-          "definition": "Azure-tjänst som klassificerar och kan filtrera skadligt text- och bildinnehåll i stödda kategorier."
+          "definition": "An Azure service that classifies and can filter harmful text and image content in supported categories."
         },
         {
           "term": "Blocklist",
-          "definition": "Anpassad lista med uttryck som ska identifieras utöver de inbyggda säkerhetsklassificerarna."
+          "definition": "A custom list of terms that should be detected in addition to built-in safety classifiers."
         },
         {
           "term": "Groundedness detection",
-          "definition": "Identifierar påståenden i ett genererat svar som saknar stöd i den tillhandahållna kontexten."
+          "definition": "Identifies claims in generated output that are unsupported by the supplied context."
         }
       ]
     },
@@ -1585,19 +1585,19 @@
       "concepts": [
         {
           "term": "responses.create()",
-          "definition": "Skapar ett nytt model response-anrop från angiven modell, input och verktyg."
+          "definition": "Creates a new Responses API request using the specified model, input, and tools."
         },
         {
           "term": "responses.retrieve()",
-          "definition": "Hämtar ett tidigare lagrat response-objekt med dess ID."
+          "definition": "Retrieves a previously stored response object by its ID."
         },
         {
           "term": "responses.compact()",
-          "definition": "Komprimerar konversationstillstånd för att minska mängden historik som behöver skickas vidare."
+          "definition": "Compacts conversation state to reduce the amount of history that must be carried forward."
         },
         {
           "term": "response.output_text",
-          "definition": "Bekväm egenskap som samlar textoutput från ett Responses API-svar."
+          "definition": "A convenience property that collects the text output from a Responses API response."
         }
       ]
     },
@@ -1609,19 +1609,19 @@
       "concepts": [
         {
           "term": "agents.get()",
-          "definition": "Hämtar en befintlig agentdefinition eller agentresurs."
+          "definition": "Retrieves an existing agent definition or agent resource."
         },
         {
           "term": "agents.get_version()",
-          "definition": "Hämtar en bestämd publicerad version av en agent."
+          "definition": "Retrieves a specific published version of an agent."
         },
         {
           "term": "agents.create_version()",
-          "definition": "Skapar eller publicerar en ny version av en agentdefinition."
+          "definition": "Creates or publishes a new version of an agent definition."
         },
         {
           "term": "runs.create_and_process()",
-          "definition": "Startar en agentkörning och bearbetar den tills ett slut- eller vänteläge nås."
+          "definition": "Starts an agent run and processes it until it reaches a completed or waiting state."
         }
       ]
     },
@@ -1633,19 +1633,19 @@
       "concepts": [
         {
           "term": "client.videos.create()",
-          "definition": "Startar ett asynkront videogenereringsjobb."
+          "definition": "Starts an asynchronous video-generation job."
         },
         {
           "term": "client.videos.retrieve()",
-          "definition": "Hämtar aktuell status och metadata för ett videogenereringsjobb."
+          "definition": "Retrieves the current status and metadata of a video-generation job."
         },
         {
           "term": "download_content()",
-          "definition": "Hämtar de genererade videobytesen efter att jobbet har slutförts."
+          "definition": "Downloads the generated video bytes after the job completes."
         },
         {
           "term": "video.status",
-          "definition": "Anger om videogenereringsjobbet exempelvis köar, körs, är klart eller har misslyckats."
+          "definition": "Shows whether a video-generation job is queued, running, completed, or failed."
         }
       ]
     },
@@ -1657,11 +1657,11 @@
       "concepts": [
         {
           "term": "ContentSafetyClient",
-          "definition": "SDK-klient för att anropa Azure AI Content Safety-endpointen."
+          "definition": "The SDK client used to call an Azure AI Content Safety endpoint."
         },
         {
           "term": "client.analyze_text()",
-          "definition": "Skickar en textanalysbegäran till Content Safety och returnerar kategoriresultat."
+          "definition": "Sends a text-analysis request to Content Safety and returns category results."
         }
       ]
     },
@@ -1673,19 +1673,19 @@
       "concepts": [
         {
           "term": "--assign-identity",
-          "definition": "Aktiverar en system-assigned managed identity på resursen vid Azure CLI-kommandot."
+          "definition": "`--assign-identity` enables a managed identity on the Cognitive Services/OpenAI resource. That identity is needed for Key Vault access, but this switch does not take the encryption JSON shown in the next line."
         },
         {
           "term": "--encryption",
-          "definition": "Tar konfigurationen för customer-managed key och Key Vault-egenskaper i kommandot."
+          "definition": "`--encryption` accepts the customer-managed-key configuration containing `keySource: Microsoft.KeyVault` and `keyVaultProperties`. Microsoft’s CLI example enables the managed identity with `--assign-identity` and then supplies the Key Vault encryption configuration with `--encryption`."
         },
         {
           "term": "--kind",
-          "definition": "Anger vilken typ av Cognitive Services-resurs som ska skapas, exempelvis OpenAI."
+          "definition": "Specifies the type of Cognitive Services resource to create, such as OpenAI."
         },
         {
           "term": "--sku",
-          "definition": "Anger resursens pris- eller kapacitetsnivå."
+          "definition": "Specifies the pricing or capacity tier of the resource."
         }
       ]
     },
@@ -1697,19 +1697,19 @@
       "concepts": [
         {
           "term": "Automatic model version upgrade",
-          "definition": "Låter deploymenten flyttas till ny standardversion enligt tjänstens automatiska uppgraderingspolicy."
+          "definition": "Allows a deployment to move to a newer default model version under the service's automatic upgrade policy."
         },
         {
           "term": "Upgrade when current version expires",
-          "definition": "Behåller nuvarande modellversion tills den inte längre stöds och uppgraderar därefter."
+          "definition": "Keeps the current model version until it is retired, then upgrades the deployment."
         },
         {
           "term": "Upgrade when new default is available",
-          "definition": "Uppgraderar deploymenten när en ny standardversion blir tillgänglig enligt vald policy."
+          "definition": "Upgrades the deployment when a new default model version becomes available."
         },
         {
           "term": "Opt out of automatic upgrades",
-          "definition": "Behåller en uttryckligen vald modellversion och kräver manuell hantering av framtida versioner."
+          "definition": "Keeps an explicitly selected model version and requires future version changes to be managed manually."
         }
       ]
     },
@@ -1721,15 +1721,15 @@
       "concepts": [
         {
           "term": "Quota",
-          "definition": "Prenumerations- och regionsgräns för hur mycket av en modell eller tjänst som får distribueras eller användas."
+          "definition": "A subscription- and region-specific limit on how much of a model or service can be deployed or consumed."
         },
         {
           "term": "Rate limit",
-          "definition": "Gräns för hur många anrop eller tokens som får behandlas under ett tidsintervall."
+          "definition": "A limit on how many requests or tokens can be processed during a time interval."
         },
         {
           "term": "Provisioned throughput",
-          "definition": "Reserverad modellkapacitet som köps i PTU:er för mer förutsägbar genomströmning."
+          "definition": "Reserved model capacity purchased in PTUs to provide more predictable throughput."
         }
       ]
     },
@@ -1741,19 +1741,19 @@
       "concepts": [
         {
           "term": "HTTP 400",
-          "definition": "Bad Request: begäran är ogiltig, exempelvis på grund av felaktigt format eller överskriden inputgräns."
+          "definition": "Bad Request: the request is invalid, for example because of malformed input or an exceeded input limit."
         },
         {
           "term": "HTTP 401",
-          "definition": "Unauthorized: autentisering saknas eller credential/token är ogiltig."
+          "definition": "Unauthorized: authentication is missing or the credential or token is invalid."
         },
         {
           "term": "HTTP 403",
-          "definition": "Forbidden: identiteten är känd men saknar nödvändig behörighet."
+          "definition": "Forbidden: the identity is authenticated but does not have the required permission."
         },
         {
           "term": "HTTP 429",
-          "definition": "Too Many Requests: tjänstens rate limit eller tillgängliga kvot har överskridits."
+          "definition": "Too Many Requests: the service rate limit or available quota has been exceeded."
         }
       ]
     },
@@ -1765,19 +1765,19 @@
       "concepts": [
         {
           "term": "Retry",
-          "definition": "Nytt försök efter ett tillfälligt fel som bedöms kunna lyckas senare."
+          "definition": "Another attempt made after a temporary failure that may succeed later."
         },
         {
           "term": "Exponential backoff",
-          "definition": "Ökar väntetiden mellan upprepade retry-försök för att minska belastning och kollisioner."
+          "definition": "Increases the waiting time between retries to reduce load and repeated collisions."
         },
         {
           "term": "Jitter",
-          "definition": "Lägger slumpmässig variation på väntetiden så att många klienter inte försöker igen samtidigt."
+          "definition": "Adds random variation to retry delays so many clients do not retry at the same moment."
         },
         {
           "term": "Throttling",
-          "definition": "Tjänsten begränsar anropshastigheten när klienten överskrider kapacitet eller rate limits."
+          "definition": "The service limits request throughput when a client exceeds capacity or rate limits."
         }
       ]
     },
@@ -1789,19 +1789,19 @@
       "concepts": [
         {
           "term": "Precision",
-          "definition": "Andelen rapporterade positiva detektioner som är korrekta: TP / (TP + FP)."
+          "definition": "The proportion of reported positive detections that are correct: TP / (TP + FP)."
         },
         {
           "term": "Recall",
-          "definition": "Andelen verkliga positiva objekt som modellen hittade: TP / (TP + FN)."
+          "definition": "The proportion of actual positive objects the model finds: TP / (TP + FN)."
         },
         {
           "term": "mAP",
-          "definition": "Mean Average Precision: sammanfattar precision över klasser och ofta flera confidence- eller IoU-nivåer."
+          "definition": "Mean Average Precision, which summarizes detection precision across classes and often multiple confidence or IoU thresholds."
         },
         {
           "term": "IoU",
-          "definition": "Intersection over Union: överlappningen mellan predicerad och sann bounding box dividerad med deras union."
+          "definition": "Intersection over Union, the overlap between predicted and actual bounding boxes divided by their union."
         }
       ]
     },
@@ -1813,19 +1813,19 @@
       "concepts": [
         {
           "term": "True positive",
-          "definition": "Modellen rapporterar ett objekt och det matchar ett verkligt objekt enligt utvärderingsregeln."
+          "definition": "A reported detection that correctly matches a real object under the evaluation rule."
         },
         {
           "term": "False positive",
-          "definition": "Modellen rapporterar ett objekt som inte borde räknas som en korrekt detektion."
+          "definition": "A reported detection that should not count as a correct match."
         },
         {
           "term": "False negative",
-          "definition": "Ett verkligt objekt finns men modellen missar det."
+          "definition": "A real object that the model fails to detect."
         },
         {
           "term": "Confidence threshold",
-          "definition": "Minsta confidence score som krävs för att en prediktion ska räknas eller visas."
+          "definition": "The minimum confidence score required for a prediction to be counted or displayed."
         }
       ]
     },
@@ -1837,19 +1837,19 @@
       "concepts": [
         {
           "term": "Azure Custom Vision",
-          "definition": "Äldre Azure-tjänst för att träna egna image classification- och object detection-modeller; förekommer i äldre frågematerial."
+          "definition": "A legacy Azure service for training custom image-classification and object-detection models."
         },
         {
           "term": "Brand detection",
-          "definition": "Visionfunktion som identifierar kända varumärken eller logotyper och kan returnera namn, confidence och region."
+          "definition": "A vision feature that identifies known brands or logos and can return their name, confidence, and region."
         },
         {
           "term": "Bounding box",
-          "definition": "Rektangulärt område som lokaliserar ett objekt med koordinater och dimensioner."
+          "definition": "A rectangular region that locates an object using coordinates and dimensions."
         },
         {
           "term": "Bounding polygon",
-          "definition": "Polygon av punkter som beskriver en regions mer exakta position och form i ett dokument eller en bild."
+          "definition": "A set of points describing the more exact position and shape of a region in a document or image."
         }
       ]
     },
@@ -1861,19 +1861,19 @@
       "concepts": [
         {
           "term": "type: text",
-          "definition": "Markerar ett content item som text i en multimodal message-array."
+          "definition": "Marks a content item as text in a multimodal message array."
         },
         {
           "term": "type: image_url",
-          "definition": "Markerar ett content item som en bildreferens som modellen ska behandla visuellt."
+          "definition": "Marks a content item as an image reference that the model should process visually."
         },
         {
           "term": "Base64 data URL",
-          "definition": "Kodad bilddata inbäddad i en data-URL som används där API:t stöder bild-URL-input."
+          "definition": "Base64-encoded image data embedded in a data URL where the API supports image URL input."
         },
         {
           "term": "image_url",
-          "definition": "Fält som innehåller bildens URL eller stödda data-URL i ett image content item."
+          "definition": "The field containing an image URL or supported data URL in an image content item."
         }
       ]
     },
@@ -1885,19 +1885,19 @@
       "concepts": [
         {
           "term": "ContentFormat.MARKDOWN",
-          "definition": "SDK-enum som begär Markdown som dokumentanalysens textformat."
+          "definition": "An SDK enum value that requests Markdown as the text format for document-analysis output."
         },
         {
           "term": "output_content_format",
-          "definition": "Parameter som anger vilket textformat Document Intelligence-resultatet ska använda."
+          "definition": "A parameter that specifies the text format used in Document Intelligence results."
         },
         {
           "term": "output=figures",
-          "definition": "Begär figure-output så att identifierade figurer kan returneras eller hämtas."
+          "definition": "Requests figure output so detected figures can be returned or downloaded."
         },
         {
           "term": "content=markdown",
-          "definition": "Anger Markdown-format i ett stödd REST- eller verktygsanrop för dokumentanalys."
+          "definition": "Requests Markdown format in a supported REST or tool call for document analysis."
         }
       ]
     },
@@ -1909,19 +1909,19 @@
       "concepts": [
         {
           "term": "PiiEntityRecognition",
-          "definition": "Kind-värde som väljer PII entity recognition-analys."
+          "definition": "A kind value that selects personally identifiable information entity recognition."
         },
         {
           "term": "piiCategories",
-          "definition": "Lista över vilka typer av personuppgifter analysen ska fokusera på."
+          "definition": "A list specifying which types of personally identifiable information the analysis should target."
         },
         {
           "term": "EntityMask",
-          "definition": "Redaction policy som ersätter identifierade PII-entiteter med en mask."
+          "definition": "A redaction policy that replaces detected PII entities with a mask."
         },
         {
           "term": "redactedText",
-          "definition": "Resultatfält som innehåller texten efter att identifierad PII har maskerats."
+          "definition": "The result field containing the text after detected PII has been masked."
         }
       ]
     },
@@ -1933,19 +1933,19 @@
       "concepts": [
         {
           "term": "IsBlank(Local.Var01)",
-          "definition": "Kontrollerar om variabeln saknar värde eller innehåller ett blankt värde."
+          "definition": "IsBlank(Local.Var01) is true when the local variable has no value. The workflow needs the opposite condition so it continues after the user supplied an answer."
         },
         {
           "term": "IsEmpty(Local.Var01)",
-          "definition": "Kontrollerar om en tabell eller samling saknar poster; är inte rätt kontroll för vanlig text."
+          "definition": "IsEmpty is intended for an empty table or collection in Power Fx. Var01 stores one response value, so IsBlank is the appropriate test."
         },
         {
           "term": "Not(IsBlank(Local.Var01))",
-          "definition": "Blir sant när variabeln innehåller ett icke-blankt värde."
+          "definition": "Not(IsBlank(Local.Var01)) is true only after the local response variable contains a value, allowing the next step to run."
         },
         {
           "term": "Upper(Local.Var01)",
-          "definition": "Returnerar textvärdet omvandlat till versaler."
+          "definition": "Returns the text value of Local.Var01 converted to uppercase."
         }
       ]
     },
@@ -1957,19 +1957,19 @@
       "concepts": [
         {
           "term": "existing resource",
-          "definition": "Refererar till en Azure-resurs som redan finns utan att försöka skapa den igen."
+          "definition": "References an Azure resource that already exists without attempting to create it again."
         },
         {
           "term": "parent",
-          "definition": "Anger en Bicep-resurs som överordnad resurs för en underresurs."
+          "definition": "Specifies the parent resource of a nested Bicep resource."
         },
         {
           "term": "scope",
-          "definition": "Anger vid vilken subscription, resource group eller resurs en deklaration ska lösas eller distribueras."
+          "definition": "Specifies the subscription, resource group, or resource at which a Bicep declaration is resolved or deployed."
         },
         {
           "term": "resourceGroup()",
-          "definition": "Bicep-funktion som returnerar information om aktuell eller angiven resource group."
+          "definition": "A Bicep function that returns information about the current or specified resource group."
         }
       ]
     },
@@ -1981,19 +1981,19 @@
       "concepts": [
         {
           "term": "HTTP PUT",
-          "definition": "Skapar eller ersätter en resurs på en känd ARM-resurs-URI."
+          "definition": "Creates or replaces a resource at a known Azure Resource Manager URI."
         },
         {
           "term": "HTTP PATCH",
-          "definition": "Uppdaterar utvalda egenskaper på en befintlig resurs."
+          "definition": "Updates selected properties of an existing resource."
         },
         {
           "term": "Resource provider",
-          "definition": "Azure-namnrymd som äger en resurstyp, exempelvis Microsoft.CognitiveServices."
+          "definition": "An Azure namespace that owns a resource type, such as Microsoft.CognitiveServices."
         },
         {
           "term": "API version",
-          "definition": "Version av ARM-resursens kontrakt som styr tillgängliga properties och beteenden."
+          "definition": "The version of an Azure Resource Manager resource contract that controls available properties and behavior."
         }
       ]
     },
@@ -2005,15 +2005,15 @@
       "concepts": [
         {
           "term": "{{$userId}}",
-          "definition": "Dokumenterad scope-placeholder som partitionerar agentminne per användaridentitet."
+          "definition": "`{{$userId}}` is the special scope value that Foundry resolves to the end user's identity. It intentionally preserves a user's memory across separate conversations, so it is the opposite of session-only isolation."
         },
         {
           "term": "global memory scope",
-          "definition": "Gemensamt scope där minnen inte isoleras per användare och därför kräver särskild försiktighet."
+          "definition": "A shared memory scope in which memories are not isolated by user and therefore require special care."
         },
         {
           "term": "memory_store_name",
-          "definition": "Namnet på det memory store som MemorySearchTool ska använda."
+          "definition": "The name of the memory store that MemorySearchTool should use."
         }
       ]
     },
@@ -2025,19 +2025,19 @@
       "concepts": [
         {
           "term": "Quality gate",
-          "definition": "Regel som blockerar nästa leveranssteg när definierade kvalitetskrav inte uppfylls."
+          "definition": "A rule that blocks the next delivery step when defined quality requirements are not met."
         },
         {
           "term": "Evaluation threshold",
-          "definition": "Minsta eller högsta tillåtna metric-nivå som avgör om evaluationen godkänns."
+          "definition": "A minimum or maximum allowed metric value that determines whether an evaluation passes."
         },
         {
           "term": "Branch protection",
-          "definition": "GitHub-regler som kan kräva godkända status checks innan en branch får mergas."
+          "definition": "GitHub rules that can require successful status checks before changes are merged into a branch."
         },
         {
           "term": "OIDC federation",
-          "definition": "Låter ett workflow hämta kortlivade Azure-token utan att lagra en långlivad client secret."
+          "definition": "Lets a workflow obtain short-lived Azure tokens without storing a long-lived client secret."
         }
       ]
     }
