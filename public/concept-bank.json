@@ -1,95 +1,55 @@
 {
-  "version": 1,
+  "version": 2,
   "mastery": {
     "correctStreak": 3,
     "minimumAccuracy": 0.7
   },
   "groups": [
     {
-      "id": "deployment-types-1",
-      "title": "Deployment types · 1",
+      "id": "deployment-types",
+      "title": "Model deployment types",
       "domain": "Plan and manage",
       "kind": "concept",
       "concepts": [
         {
           "term": "Standard",
-          "definition": "A pay-as-you-go Azure OpenAI deployment type that uses shared service capacity and scales with available quota. Model processing stays within the deployment's Azure geography rather than being globally routed."
+          "definition": "A pay-as-you-go deployment that processes requests within the selected Azure geography and does not reserve PTUs."
         },
         {
           "term": "Global Standard",
-          "definition": "A pay-as-you-go Azure OpenAI deployment type that can route inference requests across supported global Azure regions to use available capacity."
+          "definition": "A pay-as-you-go deployment that can route inference across supported global Azure regions to access more available capacity."
         },
         {
           "term": "Global Provisioned",
-          "definition": "A provisioned Azure OpenAI deployment type that uses reserved provisioned throughput units (PTUs) while allowing inference processing to be routed globally."
+          "definition": "A global deployment that uses reserved provisioned throughput units (PTUs) for predictable capacity."
         },
         {
-          "term": "serverless API",
-          "definition": "A Foundry deployment option where Microsoft hosts the model infrastructure and you call the model through an API. Usage is typically billed per request or token instead of requiring you to manage dedicated VM compute."
+          "term": "Provisioned throughput",
+          "definition": "Reserved model capacity purchased in PTUs to provide predictable throughput for steady workloads."
         }
       ]
     },
     {
-      "id": "deployment-types-2",
-      "title": "Deployment types · 2",
-      "domain": "Plan and manage",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "batch",
-          "definition": "An asynchronous processing mode for large offline workloads. You submit many requests as a job and retrieve the results later, trading interactive latency for higher-throughput processing."
-        },
-        {
-          "term": "self-hosted container",
-          "definition": "A deployment approach where a model or AI service runs in a container on compute that you manage. It gives you more infrastructure control but uses your own VM, CPU, or GPU capacity."
-        }
-      ]
-    },
-    {
-      "id": "model-types-and-optimization-1",
-      "title": "Model types and optimization · 1",
+      "id": "model-types",
+      "title": "Model types",
       "domain": "Plan and manage",
       "kind": "concept",
       "concepts": [
         {
           "term": "large language model (LLM)",
-          "definition": "An LLM is designed for long-context natural-language generation and multi-step reasoning. An SLM prioritizes efficiency, while multimodal and key-phrase models solve different tasks."
+          "definition": "A language model designed for broad natural-language generation, understanding, and multi-step reasoning."
         },
         {
           "term": "small language model (SLM)",
-          "definition": "A smaller language model designed to use less compute than a large language model. SLMs are commonly chosen for lower latency, lower cost, or narrower tasks where maximum reasoning capability is unnecessary."
+          "definition": "A smaller language model optimized for lower cost and latency, usually with less capability than a large language model."
         },
         {
           "term": "embedding model",
-          "definition": "A model that converts text, images, or other supported input into numeric vectors called embeddings. Similar meanings produce vectors that are closer together, which enables semantic similarity search and retrieval."
+          "definition": "A model that converts content into numeric vectors so semantic similarity can be measured."
         },
         {
           "term": "multimodal model",
-          "definition": "A model that can process or generate more than one type of data, such as text, images, audio, or video, within the same interaction."
-        }
-      ]
-    },
-    {
-      "id": "model-types-and-optimization-2",
-      "title": "Model types and optimization · 2",
-      "domain": "Plan and manage",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "image generation model",
-          "definition": "A generative model that creates or edits images from text prompts, reference images, or both."
-        },
-        {
-          "term": "Whisper model",
-          "definition": "A speech-to-text model used to transcribe spoken audio into text."
-        },
-        {
-          "term": "model fine-tuning",
-          "definition": "A model-customization technique that continues training a pretrained model on task-specific examples so its behavior, style, or task performance better matches a target use case."
-        },
-        {
-          "term": "model cascade",
-          "definition": "A routing pattern that sends simpler requests to a cheaper model and escalates harder requests to a more capable model."
+          "definition": "A model that can process more than one type of input or output, such as text, images, or audio."
         }
       ]
     },
@@ -101,19 +61,19 @@
       "concepts": [
         {
           "term": "File search",
-          "definition": "An agent tool that indexes files uploaded or attached to the agent and retrieves relevant passages from those files when answering a request."
+          "definition": "Retrieves relevant passages from files made available directly to an agent."
         },
         {
           "term": "Code interpreter",
-          "definition": "Code Interpreter gives the agent a sandboxed Python execution environment for calculations and data processing. It is the tool designed for performing computations during a conversation."
+          "definition": "Runs code in an isolated environment for calculations, data analysis, and file processing."
         },
         {
           "term": "Azure AI Search tool",
-          "definition": "An agent tool that queries a separately managed Azure AI Search index so the agent can retrieve indexed enterprise or application data."
+          "definition": "Lets an agent retrieve grounding content from a separately managed Azure AI Search index."
         },
         {
           "term": "Grounding with Bing Search",
-          "definition": "An agent grounding tool that retrieves current public web information through Bing and supplies relevant results to the model as source context."
+          "definition": "Lets an agent retrieve current public web information and use it as grounding for a response."
         }
       ]
     },
@@ -126,12 +86,24 @@
         {
           "term": "Computer use",
           "definition": "A tool that lets an agent interact with a graphical user interface by observing the screen and taking actions."
+        },
+        {
+          "term": "Function calling",
+          "definition": "The model returns a structured function request with arguments; the application executes it and sends back the result."
+        },
+        {
+          "term": "OpenAPI tool",
+          "definition": "A tool that lets an agent call HTTP operations described by an OpenAPI specification."
+        },
+        {
+          "term": "MCP",
+          "definition": "Model Context Protocol, a standard protocol for exposing tools, resources, and prompts to AI clients."
         }
       ]
     },
     {
-      "id": "agent-orchestration-and-state-1",
-      "title": "Agent orchestration and state · 1",
+      "id": "agent-orchestration",
+      "title": "Agent orchestration",
       "domain": "Agents",
       "kind": "concept",
       "concepts": [
@@ -154,58 +126,62 @@
       ]
     },
     {
-      "id": "agent-orchestration-and-state-2",
-      "title": "Agent orchestration and state · 2",
+      "id": "agent-state",
+      "title": "Conversation state and memory",
       "domain": "Agents",
       "kind": "concept",
       "concepts": [
         {
           "term": "Conversation history",
-          "definition": "The ordered messages from a single conversation. It gives the model context from earlier turns in that conversation but is separate from durable memory that can persist across conversations."
+          "definition": "Messages retained within a conversation and used as short-term context for later turns."
         },
         {
           "term": "Orchestration-managed session context",
-          "definition": "Temporary state maintained by an orchestration session, such as intermediate values or conversation context. It normally lasts for the session rather than acting as durable cross-conversation memory."
+          "definition": "Session context preserves state managed by the current orchestration session. It is temporary and not durable cross-conversation memory."
         },
         {
           "term": "Agent memory",
           "definition": "Persistent memory that lets an agent reuse relevant information across separate conversations."
+        },
+        {
+          "term": "Persistent memory",
+          "definition": "Stores user- or task-specific information that can be retrieved in later conversations."
         }
       ]
     },
     {
-      "id": "search-and-rag-1",
-      "title": "Search and RAG · 1",
+      "id": "rag-approaches",
+      "title": "RAG approaches",
       "domain": "Search and RAG",
       "kind": "concept",
       "concepts": [
         {
           "term": "Retrieval Augmented Generation (RAG)",
-          "definition": "A pattern where an application retrieves relevant external information at request time and adds it to the model's context so the generated answer can be grounded in that information."
+          "definition": "Retrieves external information at inference time and supplies it as grounding context to a generative model."
         },
         {
           "term": "classic Retrieval Augmented Generation (RAG)",
-          "definition": "A basic RAG pattern where the user's query is used to retrieve relevant chunks, and those chunks are then sent to the model as context for generation."
+          "definition": "Uses a predefined retrieval step to find relevant content before sending the query and retrieved context to the model."
         },
         {
           "term": "agentic Retrieval Augmented Generation (RAG)",
-          "definition": "Agentic RAG can decompose a complex request into parallel subqueries, use conversation context to plan retrieval, and combine evidence from multiple chunks."
+          "definition": "Uses an agent to plan, reformulate, decompose, or repeat retrieval before generating an answer."
         },
         {
           "term": "iterative retrieval",
-          "definition": "A retrieval pattern that performs multiple retrieval passes, often refining or expanding later searches based on information found in earlier passes."
+          "definition": "Repeats retrieval in multiple passes when the first search does not provide enough useful evidence."
         }
       ]
     },
     {
-      "id": "search-and-rag-2",
-      "title": "Search and RAG · 2",
+      "id": "search-types",
+      "title": "Search types",
       "domain": "Search and RAG",
       "kind": "concept",
       "concepts": [
         {
           "term": "vector search",
-          "definition": "Vector search compares embeddings and retrieves content by semantic similarity even when the query and document use different wording."
+          "definition": "Compares embedding vectors to retrieve semantically similar content even when the wording differs."
         },
         {
           "term": "keyword search",
@@ -213,86 +189,66 @@
         },
         {
           "term": "hybrid search",
-          "definition": "Hybrid search combines lexical and vector retrieval, allowing exact product identifiers and semantically similar descriptions to contribute to the result set."
+          "definition": "Runs keyword and vector retrieval together and combines their result rankings."
         },
         {
-          "term": "semantic search",
-          "definition": "Search enhanced by language understanding; in Azure AI Search, semantic ranker reranks an initial text result set."
+          "term": "semantic ranking",
+          "definition": "Uses language understanding to rerank an initial search result set for improved relevance."
         }
       ]
     },
     {
-      "id": "search-and-rag-3",
-      "title": "Search and RAG · 3",
+      "id": "search-pipeline",
+      "title": "Azure AI Search pipeline",
       "domain": "Search and RAG",
       "kind": "concept",
       "concepts": [
         {
-          "term": "semantic ranking",
-          "definition": "A ranking step that uses language understanding to rerank an initial set of search results by semantic relevance to the query."
+          "term": "Data source",
+          "definition": "Defines where indexable content is located and how an Azure AI Search indexer connects to it."
         },
         {
-          "term": "suggesters",
-          "definition": "Azure AI Search components used for type-ahead suggestions and autocomplete from configured text fields while a user is entering a query."
+          "term": "indexer",
+          "definition": "A component that reads content from a data source and populates or refreshes a search index."
         },
         {
-          "term": "analyzers",
-          "definition": "Text-processing components in Azure AI Search that tokenize and normalize text during indexing and querying so lexical matching works consistently."
+          "term": "skillset",
+          "definition": "A collection of Azure AI Search skills executed as an enrichment pipeline during indexing."
+        },
+        {
+          "term": "Search index",
+          "definition": "A searchable schema containing fields and documents against which queries run."
         }
       ]
     },
     {
-      "id": "search-indexing-skills-1",
-      "title": "Search indexing skills · 1",
+      "id": "search-skills",
+      "title": "Search enrichment skills",
       "domain": "Search and RAG",
       "kind": "concept",
       "concepts": [
         {
           "term": "Azure OpenAI Embedding",
-          "definition": "Azure OpenAI Embedding converts each text chunk into a numeric embedding vector. Azure AI Search stores those vectors so vector queries can retrieve semantically similar chunks even when wording differs."
+          "definition": "Converts text into numeric embedding vectors that can be stored and compared for semantic retrieval."
         },
         {
           "term": "Text Split",
-          "definition": "Text Split divides long document text into smaller pages/chunks that fit retrieval and embedding limits. Smaller retrieval-sized chunks improve the granularity of Azure AI Search retrieval."
+          "definition": "Splits long text into smaller chunks for indexing, embedding, and retrieval."
         },
         {
           "term": "Merge",
-          "definition": "An Azure AI Search enrichment skill that combines text or other enrichment outputs into a single field, often after content has been extracted from multiple sources."
-        },
-        {
-          "term": "Entity Recognition",
-          "definition": "A language-processing skill that identifies named entities in text, such as people, organizations, locations, dates, or other supported entity types."
-        }
-      ]
-    },
-    {
-      "id": "search-indexing-skills-2",
-      "title": "Search indexing skills · 2",
-      "domain": "Search and RAG",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Language Detection",
-          "definition": "A language-processing skill that identifies the language of supplied text so later processing can use the appropriate language-specific behavior."
-        },
-        {
-          "term": "key phrase extraction",
-          "definition": "A language-processing capability that identifies the main phrases or important concepts in existing text."
+          "definition": "Combines text or enriched content into one field inside an Azure AI Search enrichment pipeline."
         },
         {
           "term": "Shaper skill",
           "definition": "An Azure AI Search skill that restructures enriched data into a new complex shape."
-        },
-        {
-          "term": "indexer",
-          "definition": "A component that reads content from a data source and populates or refreshes a search index."
         }
       ]
     },
     {
-      "id": "azure-ai-services-1",
-      "title": "Azure AI services · 1",
-      "domain": "Azure services",
+      "id": "core-services",
+      "title": "Core Azure AI services",
+      "domain": "Plan and manage",
       "kind": "concept",
       "concepts": [
         {
@@ -301,11 +257,11 @@
         },
         {
           "term": "Azure AI Search",
-          "definition": "A managed Azure search service for indexing and querying content. It supports lexical, vector, hybrid, and semantic retrieval and is commonly used as the retrieval layer in RAG solutions."
+          "definition": "A managed search service for keyword, vector, hybrid, and semantic retrieval over indexed content."
         },
         {
           "term": "Azure Content Understanding",
-          "definition": "An Azure AI service for analyzing multimodal content such as documents, images, audio, and video and producing structured outputs with source-grounding information."
+          "definition": "Analyzes documents, images, audio, or video according to a schema and returns structured, source-grounded fields."
         },
         {
           "term": "Azure Document Intelligence",
@@ -314,9 +270,9 @@
       ]
     },
     {
-      "id": "azure-ai-services-2",
-      "title": "Azure AI services · 2",
-      "domain": "Azure services",
+      "id": "service-selection",
+      "title": "Specialized Azure AI services",
+      "domain": "Plan and manage",
       "kind": "concept",
       "concepts": [
         {
@@ -329,185 +285,153 @@
         },
         {
           "term": "Image Analysis",
-          "definition": "A computer-vision capability that analyzes images and returns visual information such as tags, captions, objects, and other supported image features."
+          "definition": "Analyzes visual content to return features such as captions, tags, objects, and detected people."
         },
         {
           "term": "Application Insights",
-          "definition": "An Azure Monitor service for application observability that collects and analyzes telemetry such as requests, dependencies, exceptions, performance data, and distributed traces."
+          "definition": "Collects and visualizes application telemetry such as requests, dependencies, exceptions, performance data, and traces."
         }
       ]
     },
     {
-      "id": "azure-ai-services-3",
-      "title": "Azure AI services · 3",
-      "domain": "Azure services",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Log Analytics workspace",
-          "definition": "An Azure Monitor workspace that stores log and telemetry data and lets you query it with Kusto Query Language (KQL)."
-        },
-        {
-          "term": "Microsoft Sentinel",
-          "definition": "A cloud-native SIEM and SOAR service that analyzes security data, detects threats, supports incident investigation, and automates security-response workflows."
-        }
-      ]
-    },
-    {
-      "id": "document-and-content-understanding-1",
-      "title": "Document and content understanding · 1",
+      "id": "document-processing",
+      "title": "Document processing",
       "domain": "Information extraction",
       "kind": "concept",
       "concepts": [
         {
           "term": "optical character recognition (OCR)",
-          "definition": "A technology that converts text found in images or scanned documents into machine-readable text so it can be searched, analyzed, or processed by software."
+          "definition": "Converts printed or handwritten text in images and scanned documents into machine-readable text."
         },
         {
           "term": "Document Extraction",
-          "definition": "A document-analysis capability that extracts content and structured fields from documents so the information can be used by downstream applications or search pipelines."
+          "definition": "Extracts text, structure, and fields from documents so the content can be processed by an application."
         },
         {
           "term": "Document Layout",
-          "definition": "A document-analysis capability that extracts page structure and layout information, such as text positions, paragraphs, tables, and other structural elements."
+          "definition": "Extracts text together with document structure such as paragraphs, tables, selection marks, and positions."
         },
         {
           "term": "prebuilt-read",
-          "definition": "A prebuilt Document Intelligence model focused on optical character recognition (OCR). It extracts printed and handwritten text plus basic location information from documents and images."
+          "definition": "A prebuilt Document Intelligence model focused on extracting printed and handwritten text."
         }
       ]
     },
     {
-      "id": "document-and-content-understanding-2",
-      "title": "Document and content understanding · 2",
+      "id": "content-understanding-tasks",
+      "title": "Content Understanding task modes",
       "domain": "Information extraction",
       "kind": "concept",
       "concepts": [
         {
-          "term": "prebuilt-layout",
-          "definition": "The prebuilt-layout model extracts structural elements such as tables and can detect barcodes and QR codes; prebuilt-read focuses on OCR text."
-        },
-        {
-          "term": "prebuilt-documentSearch",
-          "definition": "The prebuilt document-search analyzer produces retrieval-oriented content that preserves useful document structure and links for downstream agent grounding."
-        },
-        {
           "term": "Single-file task in standard mode",
-          "definition": "A Content Understanding task configuration that analyzes one file independently in standard mode. It is intended for straightforward, high-volume content analysis without cross-document reasoning."
+          "definition": "A cost-effective Content Understanding mode for high-volume analysis of one independent file at a time."
         },
         {
           "term": "Single-file task in pro mode",
-          "definition": "A Content Understanding task configuration that analyzes one file with the additional reasoning capabilities available in pro mode."
-        }
-      ]
-    },
-    {
-      "id": "document-and-content-understanding-3",
-      "title": "Document and content understanding · 3",
-      "domain": "Information extraction",
-      "kind": "concept",
-      "concepts": [
+          "definition": "An advanced Content Understanding mode for one file when greater reasoning capability is needed."
+        },
         {
           "term": "Multi-file task in pro mode",
-          "definition": "A Content Understanding task configuration that analyzes multiple files together in pro mode, enabling reasoning or comparison across documents and reference data."
+          "definition": "An advanced Content Understanding mode that can reason across multiple files and reference data."
         }
       ]
     },
     {
-      "id": "content-understanding-output-projections-1",
+      "id": "knowledge-store-projections",
       "title": "Knowledge store projections",
       "domain": "Information extraction",
       "kind": "concept",
       "concepts": [
         {
           "term": "File projection",
-          "definition": "File projection writes binary or file-like enrichment outputs to blob storage. Unstructured JSON is better preserved as an object."
+          "definition": "Projects binary normalized images from an enrichment tree into Azure Blob Storage."
         },
         {
           "term": "Object projection",
-          "definition": "Object projection stores a hierarchical JSON object and preserves the structure of unstructured enrichment data."
+          "definition": "Projects enriched content as hierarchical JSON objects into Azure Blob Storage."
         },
         {
           "term": "Table projection",
-          "definition": "A knowledge-store projection that writes enriched data into a tabular row-and-column structure in Azure Table Storage."
+          "definition": "Projects enriched data as rows and columns into Azure Table Storage."
         }
       ]
     },
     {
-      "id": "identity-and-credentials-1",
-      "title": "Identity and credentials · 1",
+      "id": "managed-identities",
+      "title": "Managed identities",
       "domain": "Security",
       "kind": "concept",
       "concepts": [
         {
           "term": "system-assigned managed identity",
-          "definition": "An Azure-managed identity whose lifecycle is tied to the resource on which it is enabled."
+          "definition": "An Azure-managed identity whose lifecycle is tied to a single Azure resource."
         },
         {
           "term": "user-assigned managed identity",
-          "definition": "A standalone Microsoft Entra managed identity that you create as its own Azure resource and can attach to one or more supported Azure resources. Its lifecycle is independent of those resources."
+          "definition": "An independent Azure-managed identity that can be attached to one or more Azure resources."
         },
         {
-          "term": "DefaultAzureCredential",
-          "definition": "An Azure Identity credential chain that tries several supported authentication methods in order, such as local developer credentials or managed identity, so the same application code can authenticate across environments without embedding a service key."
+          "term": "AccountManagedIdentity",
+          "definition": "An authentication type that uses the Foundry account's managed identity instead of a stored key."
         },
         {
-          "term": "ClientSecretCredential",
-          "definition": "An Azure Identity credential that authenticates an application with a Microsoft Entra tenant ID, client ID, and client secret."
+          "term": "identity passthrough",
+          "definition": "An authentication pattern that forwards the caller's Microsoft Entra identity to an underlying tool or API."
         }
       ]
     },
     {
-      "id": "identity-and-credentials-2",
-      "title": "Identity and credentials · 2",
+      "id": "credentials",
+      "title": "Azure credentials",
       "domain": "Security",
       "kind": "concept",
       "concepts": [
         {
+          "term": "DefaultAzureCredential",
+          "definition": "An Azure Identity credential chain that uses available Microsoft Entra credentials, including managed identity in Azure."
+        },
+        {
+          "term": "ClientSecretCredential",
+          "definition": "Authenticates an application to Microsoft Entra ID with a tenant ID, client ID, and client secret."
+        },
+        {
           "term": "AzureKeyCredential",
-          "definition": "An Azure SDK credential object that authenticates requests with a static service API key."
-        },
-        {
-          "term": "AccountManagedIdentity",
-          "definition": "A connection authentication option that uses the Foundry account's managed identity to access another Azure resource without storing a secret in the connection."
-        },
-        {
-          "term": "AccountKey",
-          "definition": "A connection authentication option that uses a shared account key as the credential."
+          "definition": "An SDK credential object that authenticates with a static service or API key."
         },
         {
           "term": "ApiKey",
-          "definition": "ApiKey represents an API-key credential. Azure Key Vault uses Microsoft Entra authorization for this managed-identity connection."
+          "definition": "A credential type that authenticates requests by sending a static API key."
         }
       ]
     },
     {
-      "id": "rbac-roles-1",
-      "title": "RBAC roles · 1",
+      "id": "ai-rbac-roles",
+      "title": "Azure AI RBAC roles",
       "domain": "Security",
       "kind": "concept",
       "concepts": [
         {
           "term": "Cognitive Services OpenAI User",
-          "definition": "An Azure RBAC data-plane role that allows an identity to use Azure OpenAI model inference without granting broad resource-management permissions."
+          "definition": "A data-plane role that allows an identity to invoke Azure OpenAI model deployments."
         },
         {
           "term": "Cognitive Services User",
-          "definition": "An Azure RBAC data-plane role that grants access to supported Azure AI service operations for an assigned identity."
+          "definition": "A data-plane role that allows an identity to use supported Azure AI services."
         },
         {
           "term": "Cognitive Services Data Reader",
-          "definition": "An Azure RBAC role intended for read access to supported Cognitive Services data and metadata."
+          "definition": "A read-oriented data-plane role for service data and metadata."
         },
         {
           "term": "Contributor",
-          "definition": "An Azure control-plane RBAC role that can create and manage Azure resources but cannot assign Azure RBAC roles. Data-plane permissions depend on the service and are granted separately when required."
+          "definition": "A broad control-plane role for creating and changing Azure resources, without automatically granting all data-plane permissions."
         }
       ]
     },
     {
-      "id": "rbac-roles-2",
-      "title": "RBAC roles · 2",
+      "id": "data-rbac-roles",
+      "title": "Data access roles",
       "domain": "Security",
       "kind": "concept",
       "concepts": [
@@ -520,64 +444,48 @@
           "definition": "An Azure data-plane role that allows an identity to read, write, and delete blob data."
         },
         {
-          "term": "Storage Queue Data Contributor",
-          "definition": "An Azure data-plane role that allows an identity to read and modify queue data."
+          "term": "Search Index Data Reader",
+          "definition": "An Azure data-plane role that allows an identity to read and query documents in search indexes."
         },
         {
-          "term": "Key Vault Secrets User",
-          "definition": "An Azure role that allows an identity to read secret values from Azure Key Vault."
+          "term": "Search Index Data Contributor",
+          "definition": "An Azure data-plane role that allows an identity to add, update, and delete documents in search indexes."
         }
       ]
     },
     {
-      "id": "api-authentication-schemes-1",
-      "title": "API authentication schemes · 1",
+      "id": "api-authentication",
+      "title": "API authentication",
       "domain": "Security",
       "kind": "concept",
       "concepts": [
         {
           "term": "API key security scheme",
-          "definition": "An OpenAPI security scheme of type `apiKey` that declares where an API key must be sent, such as a specific header, query parameter, or cookie."
+          "definition": "An OpenAPI authentication scheme that defines where an API key must be sent, such as in a request header."
         },
         {
           "term": "Bearer token security scheme",
-          "definition": "An HTTP authentication scheme that sends a bearer token in the `Authorization` header, typically as `Authorization: Bearer <token>`."
+          "definition": "An OpenAPI authentication scheme that sends a bearer token in the Authorization header."
         },
         {
           "term": "Azure Key Vault connection",
-          "definition": "A connection that lets an application or agent securely access secrets stored in Azure Key Vault instead of hard-coding secret values in application code."
+          "definition": "A project connection that provides controlled access to secrets stored in Azure Key Vault."
         },
         {
-          "term": "identity passthrough",
-          "definition": "An authentication pattern that forwards the caller's Microsoft Entra identity to an underlying tool or API."
+          "term": "Keyless connection",
+          "definition": "A connection that uses Microsoft Entra identity and RBAC instead of a stored API key."
         }
       ]
     },
     {
-      "id": "api-authentication-schemes-2",
-      "title": "API authentication schemes · 2",
-      "domain": "Security",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "distinct agent identity",
-          "definition": "A separate identity assigned to a published agent or client so its tool access is isolated and auditable."
-        },
-        {
-          "term": "shared project agent identity",
-          "definition": "A project-level identity that can be shared by multiple agents or clients."
-        }
-      ]
-    },
-    {
-      "id": "evaluators-and-quality-metrics-1",
-      "title": "Evaluators and quality metrics · 1",
+      "id": "quality-evaluators",
+      "title": "Response quality evaluators",
       "domain": "Evaluation",
       "kind": "concept",
       "concepts": [
         {
           "term": "Groundedness",
-          "definition": "Groundedness measures whether statements in the response are supported by the supplied context, making it a core RAG evaluation metric."
+          "definition": "Measures whether claims in a response are supported by the supplied source context."
         },
         {
           "term": "Relevance",
@@ -585,227 +493,127 @@
         },
         {
           "term": "Fluency",
-          "definition": "Fluency measures grammatical quality and readability of the generated response. A response can be fluent even when retrieval is poor or claims are unsupported."
+          "definition": "Measures grammatical quality, readability, and natural language flow."
         },
         {
           "term": "Coherence",
-          "definition": "An evaluation metric that measures whether a response is logically organized, internally consistent, and easy to follow as a whole."
+          "definition": "Measures whether a response is logically organized and internally consistent."
         }
       ]
     },
     {
-      "id": "evaluators-and-quality-metrics-2",
-      "title": "Evaluators and quality metrics · 2",
+      "id": "evaluation-scope",
+      "title": "Evaluation scope",
       "domain": "Evaluation",
       "kind": "concept",
       "concepts": [
         {
           "term": "Response Completeness",
-          "definition": "An evaluation metric that measures whether a response covers the information needed to fully answer the request or task."
+          "definition": "Measures whether a response covers all information required to answer the task."
         },
         {
           "term": "groundedness evaluator",
-          "definition": "An evaluator that checks whether claims in a generated response are supported by the source context supplied to the model."
+          "definition": "Checks whether claims in a generated response are supported by the supplied source context."
         },
         {
           "term": "Retrieval Augmented Generation (RAG) evaluator",
-          "definition": "RAG retrieves external source content and supplies it as grounding context before generation. Groundedness evaluation checks whether generated claims are supported by the supplied source context."
-        },
-        {
-          "term": "fluency evaluator",
-          "definition": "An evaluator that measures language quality, including grammar, readability, and how naturally the response is written."
-        }
-      ]
-    },
-    {
-      "id": "evaluators-and-quality-metrics-3",
-      "title": "Evaluators and quality metrics · 3",
-      "domain": "Evaluation",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "similarity evaluators",
-          "definition": "Evaluators that compare generated output with a reference answer using lexical, semantic, or embedding-based similarity."
+          "definition": "Evaluates retrieval and generation quality together in a RAG solution."
         },
         {
           "term": "Risk and safety metrics",
-          "definition": "Evaluation metrics that measure whether model input or output contains harmful, unsafe, or policy-relevant content categories."
+          "definition": "Measure harmful, unsafe, or policy-violating content in model inputs or outputs."
         }
       ]
     },
     {
-      "id": "safety-and-guardrails-1",
-      "title": "Safety and guardrails · 1",
+      "id": "prompt-protection",
+      "title": "Prompt and data protection",
       "domain": "Responsible AI",
       "kind": "concept",
       "concepts": [
         {
           "term": "prompt shields",
-          "definition": "Safety controls that detect prompt-injection attempts, including malicious instructions written directly by a user or embedded in external content."
+          "definition": "Detect direct and indirect prompt-injection attempts that try to override model instructions."
         },
         {
           "term": "prompt shields for user prompts",
-          "definition": "Prompt Shield protection that examines instructions supplied directly in the user's prompt for attempts to override or manipulate the model's intended instructions."
+          "definition": "Detect direct prompt-injection attempts in instructions provided by the user."
         },
         {
           "term": "prompt shields for documents",
-          "definition": "Prompt Shield protection that examines external or retrieved content for indirect prompt-injection instructions that should be treated as untrusted data."
+          "definition": "Detect indirect prompt-injection instructions hidden in retrieved documents or other external content."
         },
         {
           "term": "Personally identifiable information (PII) Detection",
-          "definition": "A capability that detects personal information such as names, addresses, identifiers, or other supported PII categories so applications can flag, block, or redact it."
+          "definition": "Identifies personal information so it can be masked, blocked, or handled according to policy."
         }
       ]
     },
     {
-      "id": "safety-and-guardrails-2",
-      "title": "Safety and guardrails · 2",
+      "id": "safety-controls",
+      "title": "Safety controls",
       "domain": "Responsible AI",
       "kind": "concept",
       "concepts": [
         {
           "term": "self-harm content filtering",
-          "definition": "A content-safety filter that classifies self-harm-related text and can block content according to configured severity thresholds."
+          "definition": "Classifies and can block content associated with self-harm according to configured severity thresholds."
         },
         {
           "term": "violence content filtering",
-          "definition": "A content-safety filter that classifies violent content and can block it according to configured severity thresholds."
-        },
-        {
-          "term": "image moderation",
-          "definition": "Automated analysis of images to detect categories of harmful or inappropriate visual content so an application can allow, flag, or block the image."
+          "definition": "Classifies and can block violent content according to configured severity thresholds."
         },
         {
           "term": "Protected material",
-          "definition": "A safety capability that detects known protected text or code that a model may reproduce, helping applications identify potential protected-material output."
-        }
-      ]
-    },
-    {
-      "id": "safety-and-guardrails-3",
-      "title": "Safety and guardrails · 3",
-      "domain": "Responsible AI",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Indirect attack",
-          "definition": "A prompt-injection attack in which malicious instructions are hidden inside external content such as retrieved documents, web pages, emails, or tool results."
+          "definition": "Detects known protected text or code that a model may reproduce."
         },
         {
           "term": "custom guardrail",
-          "definition": "Application-defined logic that validates or constrains model inputs, outputs, or tool actions according to rules specific to the application's policy or workflow."
+          "definition": "An application-defined rule that validates or constrains model inputs, outputs, or tool behavior."
         }
       ]
     },
     {
-      "id": "responsible-ai-principles-1",
-      "title": "Responsible AI principles",
-      "domain": "Responsible AI",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "fairness",
-          "definition": "A Responsible AI principle focused on ensuring AI systems treat people equitably and do not create unjustified differences in outcomes across groups."
-        },
-        {
-          "term": "transparency",
-          "definition": "Transparency requires communicating how and when an AI system is used, including notifying users that their submitted data is being processed."
-        },
-        {
-          "term": "inclusiveness",
-          "definition": "Inclusiveness focuses on designing systems that empower people with different abilities and backgrounds. User notification is more directly an issue of transparency."
-        },
-        {
-          "term": "reliability and safety",
-          "definition": "A Responsible AI principle focused on making AI systems operate consistently, handle failures and unexpected conditions safely, and reduce the risk of harm."
-        }
-      ]
-    },
-    {
-      "id": "observability-and-telemetry-1",
-      "title": "Observability and telemetry · 1",
+      "id": "observability",
+      "title": "Observability metrics",
       "domain": "Monitoring",
       "kind": "concept",
       "concepts": [
         {
           "term": "tracing",
-          "definition": "Tracing exposes the ordered spans, tool calls, model calls, exceptions, and latency for one run, making it suitable for diagnosing both slow execution and incorrect reasoning after correct tool output."
+          "definition": "Records ordered spans for model calls, tool calls, errors, and timing during an application or agent run."
         },
-        {
-          "term": "Hierarchical spans",
-          "definition": "A trace is made of spans that represent individual operations. Hierarchical parent/child spans preserve the nested structure of an agent run, so model calls, agent handoffs, and tool calls can be audited in their execution context."
-        },
-        {
-          "term": "Tool call attributes",
-          "definition": "Metadata attached to a tool-call trace span, such as the tool name, arguments, result, status, or timing information. These attributes make individual tool invocations easier to inspect and audit."
-        },
-        {
-          "term": "OpenTelemetry",
-          "definition": "OpenTelemetry provides the instrumentation, span model, and exporters used to trace the Python service's model and tool operations. Those spans can be exported to Application Insights to provide end-to-end tracing outside the Foundry portal."
-        }
-      ]
-    },
-    {
-      "id": "observability-and-telemetry-2",
-      "title": "Observability and telemetry · 2",
-      "domain": "Monitoring",
-      "kind": "concept",
-      "concepts": [
         {
           "term": "token usage",
-          "definition": "Token analytics separates input, output, and tool-related token consumption, allowing a cost increase to be diagnosed even when request volume is unchanged."
+          "definition": "Measures how many input and output tokens a model request consumes, which helps track usage and cost."
         },
         {
           "term": "latency",
-          "definition": "The time taken for a request or operation to complete. In AI systems it can be measured for the overall request or separately for model calls, tool calls, and other processing steps."
+          "definition": "Measures how long a request, model call, tool call, or workflow step takes."
         },
         {
           "term": "run success rate",
-          "definition": "Run success rate shows the proportion of runs that complete successfully. Costs can rise while the success rate and request count remain unchanged."
-        },
-        {
-          "term": "Model Availability Rate",
-          "definition": "A metric that measures how often a model or deployment is available to serve requests."
+          "definition": "The percentage of agent or workflow runs that complete successfully."
         }
       ]
     },
     {
-      "id": "observability-and-telemetry-3",
-      "title": "Observability and telemetry · 3",
-      "domain": "Monitoring",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Provisioned Utilization",
-          "definition": "A metric that shows how much of the reserved model capacity is being used."
-        },
-        {
-          "term": "RequestResponse",
-          "definition": "RequestResponse logging captures model request and response diagnostics needed to investigate failed or unexpected inference calls."
-        },
-        {
-          "term": "Trace sampling policy",
-          "definition": "A rule that controls which traces, or what proportion of traces, are collected."
-        }
-      ]
-    },
-    {
-      "id": "speech-1",
-      "title": "Speech · 1",
-      "domain": "Text and speech",
+      "id": "speech",
+      "title": "Speech capabilities",
+      "domain": "Speech",
       "kind": "concept",
       "concepts": [
         {
           "term": "real-time speech to text",
-          "definition": "A speech-recognition mode that continuously transcribes live or streaming audio into text with low latency, making partial and final recognition results available during the stream."
+          "definition": "Transcribes streaming speech into text with low latency."
         },
         {
           "term": "batch transcription",
-          "definition": "An asynchronous speech-recognition mode for prerecorded audio files. Files are submitted as a job and the completed transcription is retrieved later."
+          "definition": "Transcribes prerecorded audio files asynchronously in batch jobs."
         },
         {
           "term": "text to speech",
-          "definition": "A speech-synthesis capability that converts written text into generated spoken audio using a selected voice."
+          "definition": "Synthesizes spoken audio from written text."
         },
         {
           "term": "speech translation",
@@ -814,480 +622,52 @@
       ]
     },
     {
-      "id": "speech-2",
-      "title": "Speech · 2",
-      "domain": "Text and speech",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "custom neural voice",
-          "definition": "A neural text-to-speech voice trained for a specific voice identity and approved use case."
-        },
-        {
-          "term": "Speech Synthesis Markup Language (SSML)",
-          "definition": "Markup used to control speech synthesis details such as pronunciation, pauses, rate, pitch, and emphasis."
-        },
-        {
-          "term": "custom speech project ID",
-          "definition": "The project property must identify the Custom Speech project that owns the fine-tuned model. A Foundry project ID or endpoint URL identifies a different resource."
-        },
-        {
-          "term": "custom speech endpoint URL",
-          "definition": "The network address used to send speech-recognition requests to a deployed Custom Speech model."
-        }
-      ]
-    },
-    {
-      "id": "realtime-audio-transport-1",
-      "title": "Realtime audio transport",
-      "domain": "Text and speech",
+      "id": "realtime-transports",
+      "title": "Realtime transports",
+      "domain": "Speech",
       "kind": "concept",
       "concepts": [
         {
           "term": "WebRTC",
-          "definition": "A real-time communication protocol designed for low-latency audio, video, and data exchange between clients. It is well suited to interactive browser and mobile real-time experiences."
+          "definition": "A low-latency realtime media transport commonly used for interactive audio and video in browser or mobile clients."
         },
         {
           "term": "WebSocket",
-          "definition": "A persistent bidirectional connection between a client and server. It is commonly used for streaming events or audio when an application needs continuous two-way communication over a single connection."
+          "definition": "A persistent bidirectional connection commonly used for server-to-server realtime events and audio streaming."
         },
         {
           "term": "SIP",
-          "definition": "Session Initiation Protocol, a signaling protocol used to establish and manage voice or video calls in telephony systems."
-        },
-        {
-          "term": "RTMP",
-          "definition": "Real-Time Messaging Protocol, a streaming protocol commonly used for live media ingest or delivery."
+          "definition": "A signaling protocol used to connect realtime services with telephone and voice communication systems."
         }
       ]
     },
     {
-      "id": "important-sdk-and-api-classes-1",
-      "title": "Content Safety SDK values",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "AnalyzeTextOptions",
-          "definition": "An SDK options object that specifies the text and categories used in a Content Safety text-analysis request."
-        },
-        {
-          "term": "TextCategory.SELF_HARM",
-          "definition": "An SDK enum value representing the self-harm category in Content Safety analysis."
-        }
-      ]
-    },
-    {
-      "id": "prompting-and-sampling-1",
-      "title": "Prompting and sampling · 1",
+      "id": "prompting",
+      "title": "Prompting and generation controls",
       "domain": "Generative AI",
       "kind": "concept",
       "concepts": [
         {
           "term": "few-shot learning",
-          "definition": "A prompting approach where the model is shown a small number of representative input-output examples so it can infer the desired task, format, or classification behavior without retraining."
+          "definition": "Provides a small number of examples in the prompt so the model can imitate the required behavior or format."
         },
         {
           "term": "zero-shot learning",
-          "definition": "A prompting approach where the model performs a task from instructions alone, without being shown labeled examples of the desired input-output behavior."
-        },
-        {
-          "term": "chain of thought",
-          "definition": "A reasoning approach in which a model performs intermediate reasoning steps before arriving at an answer. It is a prompting or reasoning concept rather than a retrieval architecture."
-        },
-        {
-          "term": "Sampling",
-          "definition": "The process of selecting the next token from a model's probability distribution."
-        }
-      ]
-    },
-    {
-      "id": "prompting-and-sampling-2",
-      "title": "Prompting and sampling · 2",
-      "domain": "Generative AI",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "top-p sampling",
-          "definition": "Limits token selection to the smallest candidate set whose cumulative probability reaches p."
+          "definition": "Prompts a model to perform a task from instructions without providing demonstration examples."
         },
         {
           "term": "temperature",
           "definition": "A parameter that controls how concentrated or varied the model's token probabilities are."
         },
         {
-          "term": "presence penalty",
-          "definition": "A parameter that can reduce the likelihood of repeating concepts that have already appeared."
-        },
-        {
-          "term": "max_tokens",
-          "definition": "The maximum number of tokens the model is allowed to generate in its response."
-        }
-      ]
-    },
-    {
-      "id": "prompting-and-sampling-3",
-      "title": "Prompting and sampling · 3",
-      "domain": "Generative AI",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "stop sequences",
-          "definition": "Sequences that cause the model to stop generating when they are encountered."
-        },
-        {
-          "term": "random seed",
-          "definition": "A value that can make sampling more reproducible when the model and API support it."
-        },
-        {
-          "term": "system message",
-          "definition": "High-priority instructions that define the model's overall role, behavior, and constraints."
-        }
-      ]
-    },
-    {
-      "id": "authentication-methods-and-tokens-1",
-      "title": "Authentication methods and tokens · 1",
-      "domain": "Security",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "OpenID Connect (OIDC)",
-          "definition": "An identity layer built on OAuth 2.0 that supports federated authentication and ID tokens."
-        },
-        {
-          "term": "OAuth token",
-          "definition": "A token used for delegated or application access under the OAuth authorization framework."
-        },
-        {
-          "term": "personal access token (PAT)",
-          "definition": "A PAT is a stored GitHub secret with a lifecycle and broad misuse risk. OIDC allows the workflow to obtain short-lived Azure credentials without storing a cloud secret."
-        },
-        {
-          "term": "shared access signature (SAS) token",
-          "definition": "A time-limited, permission-scoped token that delegates access to Azure Storage resources."
-        }
-      ]
-    },
-    {
-      "id": "authentication-methods-and-tokens-2",
-      "title": "Authentication methods and tokens · 2",
-      "domain": "Security",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "subscription key",
-          "definition": "A service key used to authenticate requests to an Azure service endpoint."
-        },
-        {
-          "term": "Storage account access keys",
-          "definition": "Long-lived shared secrets that provide broad authentication to an Azure Storage account. They are separate from Microsoft Entra identity and RBAC-based authentication."
-        },
-        {
-          "term": "X.509 certificate",
-          "definition": "A digital certificate that binds a public key to an identity and can be used to authenticate applications, services, users, or devices."
-        }
-      ]
-    },
-    {
-      "id": "image-generation-and-editing-1",
-      "title": "Image generation and editing · 1",
-      "domain": "Computer vision",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "mask-based inpainting",
-          "definition": "Image editing that regenerates only the area selected by a mask."
-        },
-        {
-          "term": "image_to_image",
-          "definition": "A generation mode that uses an existing image as the visual starting point."
-        },
-        {
-          "term": "text_to_image",
-          "definition": "A generation mode that creates an image from a text prompt."
-        },
-        {
-          "term": "image_variation",
-          "definition": "A generation mode that creates a new variation of a reference image."
-        }
-      ]
-    },
-    {
-      "id": "image-generation-and-editing-2",
-      "title": "Image generation and editing · 2",
-      "domain": "Computer vision",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "input_fidelity",
-          "definition": "A parameter that controls how strongly an image edit preserves characteristics of the input image."
-        },
-        {
-          "term": "guidance scale",
-          "definition": "A parameter that controls how strongly image generation follows the prompt."
-        }
-      ]
-    },
-    {
-      "id": "evaluation-metrics-and-scores-1",
-      "title": "Evaluation metrics and scores · 1",
-      "domain": "Evaluation",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "GPT similarity",
-          "definition": "A model-assisted metric that judges similarity between generated output and a reference or target answer."
-        },
-        {
-          "term": "F1 score",
-          "definition": "The harmonic mean of precision and recall: 2 × precision × recall / (precision + recall)."
-        },
-        {
-          "term": "ROUGE score",
-          "definition": "A text-similarity metric that measures overlap between generated text and reference text."
-        },
-        {
-          "term": "prediction drift metrics",
-          "definition": "Metrics that track how a model's input data, predictions, or statistical behavior change over time compared with a baseline."
-        }
-      ]
-    },
-    {
-      "id": "evaluation-metrics-and-scores-2",
-      "title": "Evaluation metrics and scores · 2",
-      "domain": "Evaluation",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "AI quality (AI assisted) metrics",
-          "definition": "Quality metrics judged by an evaluator model, such as groundedness, relevance, coherence, or other semantic qualities that are difficult to measure with simple string matching."
-        },
-        {
-          "term": "AI quality (NLP) metrics",
-          "definition": "Traditional natural-language-processing metrics that compare generated and reference text using measurable text properties such as token, n-gram, or semantic similarity."
-        },
-        {
-          "term": "confidence score",
-          "definition": "A numeric estimate of how certain a model, analysis, or extraction is about its result."
-        },
-        {
-          "term": "search.score",
-          "definition": "An Azure AI Search relevance score assigned to a result for a specific query."
-        }
-      ]
-    },
-    {
-      "id": "search-access-and-index-management-1",
-      "title": "Search access and index management · 1",
-      "domain": "Search and RAG",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "query key",
-          "definition": "An Azure AI Search key with restricted permission to run queries against indexes."
-        },
-        {
-          "term": "admin key",
-          "definition": "An Azure AI Search key with broad data-plane administrative access."
-        },
-        {
-          "term": "indexer status",
-          "definition": "The current execution state and most recent result of an Azure AI Search indexer."
-        },
-        {
-          "term": "indexer failure history",
-          "definition": "A record of failures that occurred during previous indexer runs."
-        }
-      ]
-    },
-    {
-      "id": "search-access-and-index-management-2",
-      "title": "Search access and index management · 2",
-      "domain": "Search and RAG",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "outputFieldMappings",
-          "definition": "Indexer settings that map enriched skill outputs to fields in the target search index."
-        },
-        {
-          "term": "normalized_images",
-          "definition": "A collection of normalized page-image objects created during Azure AI Search document enrichment."
-        },
-        {
-          "term": "skillset",
-          "definition": "A collection of Azure AI Search skills executed as an enrichment pipeline during indexing."
-        }
-      ]
-    },
-    {
-      "id": "additional-azure-and-data-services-1",
-      "title": "Additional Azure and data services · 1",
-      "domain": "Azure services",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Azure AI Immersive Reader",
-          "definition": "Immersive Reader provides reading aids such as text spacing, line focus, syllables, picture dictionary, and read-aloud, directly supporting users with dyslexia and comprehension differences."
-        },
-        {
-          "term": "Microsoft Fabric",
-          "definition": "Microsoft's integrated platform for data engineering, analytics, data science, and business intelligence."
-        },
-        {
-          "term": "Microsoft Graph API",
-          "definition": "An API for accessing Microsoft 365 and Microsoft Entra resources and data."
-        },
-        {
-          "term": "Azure Machine Learning",
-          "definition": "An Azure platform for training, registering, deploying, and managing machine-learning models."
-        }
-      ]
-    },
-    {
-      "id": "additional-azure-and-data-services-2",
-      "title": "Additional Azure and data services · 2",
-      "domain": "Azure services",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Azure Monitor Agent",
-          "definition": "An Azure Monitor agent installed on supported machines to collect operating-system, application, and guest telemetry according to configured data-collection rules."
-        },
-        {
-          "term": "Foundry Local",
-          "definition": "A local runtime and development environment for supported Foundry models and workflows."
-        }
-      ]
-    },
-    {
-      "id": "language-and-text-analysis-1",
-      "title": "Language and text analysis",
-      "domain": "Text and speech",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Text Translation",
-          "definition": "An Azure AI Translator capability that translates already available text from one language to another."
-        },
-        {
-          "term": "document translation",
-          "definition": "Translates complete documents while preserving their structure and formatting where possible."
-        },
-        {
-          "term": "TextAnalytics",
-          "definition": "An Azure resource kind associated with Azure AI Language capabilities such as sentiment analysis, entity recognition, key phrase extraction, and related text-analysis features."
-        },
-        {
-          "term": "LanguageAuthoring",
-          "definition": "An Azure resource kind used for authoring supported Azure AI Language projects, such as custom text classification or custom named entity recognition."
-        }
-      ]
-    },
-    {
-      "id": "safety-controls-1",
-      "title": "Safety controls · 1",
-      "domain": "Responsible AI",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "blocklists",
-          "definition": "Custom lists of terms or phrases that a safety system should identify and block."
-        },
-        {
-          "term": "Spotlighting",
-          "definition": "A technique that marks external text as untrusted data so a model can distinguish it from instructions."
-        },
-        {
-          "term": "Hateful and unfair content",
-          "definition": "A content-safety category that detects hateful, discriminatory, or unfair language directed at people or groups."
-        },
-        {
-          "term": "Violent content",
-          "definition": "Violent content detects descriptions or depictions of violence. It is unrelated to protected-text or protected-code detection."
-        }
-      ]
-    },
-    {
-      "id": "safety-controls-2",
-      "title": "Safety controls · 2",
-      "domain": "Responsible AI",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "groundedness detection filter",
-          "definition": "A safety control that identifies generated claims that are unsupported by the supplied source context."
-        }
-      ]
-    },
-    {
-      "id": "agent-and-api-objects-1",
-      "title": "Agent and API state objects · 1",
-      "domain": "Agents",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "agent",
-          "definition": "A reusable AI configuration that combines a model with instructions, tools, knowledge, and other settings to perform tasks on behalf of an application or user."
-        },
-        {
-          "term": "conversation",
-          "definition": "A conversation stores the ordered messages and outputs for a continuing interaction, allowing the same support case to resume across requests."
-        },
-        {
-          "term": "session",
-          "definition": "A temporary execution or interaction scope used to keep state isolated for a particular session. A session identifier must be unique when it is used as a partition or memory scope."
-        },
-        {
-          "term": "threads and runs",
-          "definition": "A legacy Agents/Assistants pattern in which a thread stores messages and a run executes an agent against that state."
-        }
-      ]
-    },
-    {
-      "id": "agent-and-api-objects-2",
-      "title": "Agent and API state objects · 2",
-      "domain": "Agents",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "chat completions",
-          "definition": "A model API pattern where an application sends a sequence of chat messages and receives a generated assistant response."
-        },
-        {
-          "term": "Responses API",
-          "definition": "An API for model responses that supports multimodal input, tools, and a unified structured response format."
-        },
-        {
-          "term": "output item",
-          "definition": "A structured item produced by a model response, such as a message, tool call, reasoning item, or another supported output type."
-        }
-      ]
-    },
-    {
-      "id": "sdk-and-code-concepts-1",
-      "title": "SDK and code concepts",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "KQL",
-          "definition": "Kusto Query Language, used to query log, telemetry, and analytics data in Azure."
-        },
-        {
-          "term": "client.analyze_image",
-          "definition": "An SDK method that submits an image for analysis and returns visual analysis results."
-        },
-        {
-          "term": "client.analyze_text",
-          "definition": "An SDK method that submits text for analysis and returns language-analysis results."
+          "term": "top-p sampling",
+          "definition": "Limits token selection to the smallest candidate set whose cumulative probability reaches p."
         }
       ]
     },
     {
       "id": "foundry-building-blocks",
-      "title": "Foundry building blocks",
+      "title": "Foundry agent building blocks",
       "domain": "Agents",
       "kind": "concept",
       "concepts": [
@@ -1310,52 +690,8 @@
       ]
     },
     {
-      "id": "agent-tool-integration",
-      "title": "Agent tool integration",
-      "domain": "Agents",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Function calling",
-          "definition": "The model returns a structured function request with arguments; the application executes it and sends back the result."
-        },
-        {
-          "term": "Function tool",
-          "definition": "An application-defined function exposed to an agent with a name, description, and argument schema."
-        },
-        {
-          "term": "OpenAPI tool",
-          "definition": "A tool that lets an agent call HTTP operations described by an OpenAPI specification."
-        },
-        {
-          "term": "MCP",
-          "definition": "Model Context Protocol, a standard protocol for exposing tools, resources, and prompts to AI clients."
-        }
-      ]
-    },
-    {
-      "id": "mcp-components",
-      "title": "MCP components",
-      "domain": "Agents",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "MCP server",
-          "definition": "A server that exposes tools, resources, or prompts through Model Context Protocol."
-        },
-        {
-          "term": "MCP tool",
-          "definition": "An invokable capability described and exposed by an MCP server."
-        },
-        {
-          "term": "MCP client",
-          "definition": "A client that connects to MCP servers, discovers their capabilities, and invokes their tools."
-        }
-      ]
-    },
-    {
-      "id": "tool-choice-values",
-      "title": "tool_choice values",
+      "id": "tool-choice",
+      "title": "Tool choice values",
       "domain": "Agents",
       "kind": "concept",
       "concepts": [
@@ -1378,39 +714,11 @@
       ]
     },
     {
-      "id": "agent-approval-and-controls",
-      "title": "Agent approval and controls",
-      "domain": "Agents",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Human approval",
-          "definition": "Pauses a workflow or tool call until a person approves or rejects the action."
-        },
-        {
-          "term": "Approval checkpoint",
-          "definition": "A workflow node that requires a human decision before a sensitive next step can run."
-        },
-        {
-          "term": "Condition statement",
-          "definition": "Evaluates a condition and selects which branch of a workflow should execute."
-        },
-        {
-          "term": "Ask a question node",
-          "definition": "A workflow node that collects an answer or approval from a person."
-        }
-      ]
-    },
-    {
-      "id": "agent-memory-components",
+      "id": "agent-memory",
       "title": "Agent memory components",
       "domain": "Agents",
       "kind": "concept",
       "concepts": [
-        {
-          "term": "Persistent memory",
-          "definition": "Stores user- or task-specific information that can be retrieved in later conversations."
-        },
         {
           "term": "Memory store",
           "definition": "Persistent storage in which agent memories are saved and searched."
@@ -1422,27 +730,15 @@
         {
           "term": "Memory scope",
           "definition": "A partition key that determines which memories a run can save and retrieve, such as one scope per user."
-        }
-      ]
-    },
-    {
-      "id": "search-index-components",
-      "title": "Search index components",
-      "domain": "Search and RAG",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Data source",
-          "definition": "Defines where indexable content is located and how an Azure AI Search indexer connects to it."
         },
         {
-          "term": "Search index",
-          "definition": "A searchable schema containing fields and documents against which queries run."
+          "term": "{{$userId}}",
+          "definition": "A documented memory-scope placeholder that partitions persistent agent memory by user identity."
         }
       ]
     },
     {
-      "id": "chunking-strategies",
+      "id": "chunking",
       "title": "Chunking strategies",
       "domain": "Search and RAG",
       "kind": "concept",
@@ -1466,50 +762,6 @@
       ]
     },
     {
-      "id": "azure-ai-search-data-roles",
-      "title": "Azure AI Search data roles",
-      "domain": "Security",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Search Index Data Reader",
-          "definition": "An Azure data-plane role that allows an identity to read and query documents in search indexes."
-        },
-        {
-          "term": "Search Index Data Contributor",
-          "definition": "An Azure data-plane role that allows an identity to add, update, and delete documents in search indexes."
-        },
-        {
-          "term": "Search Service Contributor",
-          "definition": "An Azure control-plane role for managing a Search service without automatically granting access to index data."
-        }
-      ]
-    },
-    {
-      "id": "network-and-keyless-access",
-      "title": "Network and keyless access",
-      "domain": "Security",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Private endpoint",
-          "definition": "Assigns an Azure PaaS service a private IP address inside a virtual network."
-        },
-        {
-          "term": "Managed private endpoint",
-          "definition": "A private endpoint created and managed from one managed Azure service to another resource."
-        },
-        {
-          "term": "Keyless connection",
-          "definition": "A connection that authenticates with Microsoft Entra identity and Azure RBAC instead of storing an API key or other shared secret."
-        },
-        {
-          "term": "RBAC",
-          "definition": "Role-Based Access Control, which assigns roles to identities at a defined Azure scope."
-        }
-      ]
-    },
-    {
       "id": "content-understanding-analyzers",
       "title": "Content Understanding analyzers",
       "domain": "Information extraction",
@@ -1521,7 +773,7 @@
         },
         {
           "term": "Prebuilt analyzer",
-          "definition": "A ready-made Content Understanding analyzer for a common content-analysis scenario, with Microsoft-provided behavior and schema conventions."
+          "definition": "A ready-made analyzer for a common scenario that does not require defining the full field schema."
         },
         {
           "term": "Custom analyzer",
@@ -1558,138 +810,6 @@
       ]
     },
     {
-      "id": "content-safety-controls",
-      "title": "Content safety controls",
-      "domain": "Responsible AI",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Content Safety",
-          "definition": "An Azure service that classifies and can filter harmful text and image content in supported categories."
-        },
-        {
-          "term": "Blocklist",
-          "definition": "A custom list of terms that should be detected in addition to built-in safety classifiers."
-        },
-        {
-          "term": "Groundedness detection",
-          "definition": "Identifies claims in generated output that are unsupported by the supplied context."
-        }
-      ]
-    },
-    {
-      "id": "responses-api-operations",
-      "title": "Responses API operations",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "responses.create()",
-          "definition": "Creates a new Responses API request using the specified model, input, and tools."
-        },
-        {
-          "term": "responses.retrieve()",
-          "definition": "Retrieves a previously stored response object by its ID."
-        },
-        {
-          "term": "responses.compact()",
-          "definition": "Compacts conversation state to reduce the amount of history that must be carried forward."
-        },
-        {
-          "term": "response.output_text",
-          "definition": "A convenience property that collects the text output from a Responses API response."
-        }
-      ]
-    },
-    {
-      "id": "agent-sdk-operations",
-      "title": "Agent SDK operations",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "agents.get()",
-          "definition": "An SDK operation that retrieves an existing agent resource or agent definition by its identifier."
-        },
-        {
-          "term": "agents.get_version()",
-          "definition": "An SDK operation that retrieves a specific published version of an agent by its version identifier."
-        },
-        {
-          "term": "agents.create_version()",
-          "definition": "Creates or publishes a new version of an agent definition."
-        },
-        {
-          "term": "runs.create_and_process()",
-          "definition": "Starts an agent run and processes it until it reaches a completed or waiting state."
-        }
-      ]
-    },
-    {
-      "id": "video-api-operations",
-      "title": "Video API operations",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "client.videos.create()",
-          "definition": "An SDK operation that starts an asynchronous video-generation job and returns an object that can be used to track the job."
-        },
-        {
-          "term": "client.videos.retrieve()",
-          "definition": "Retrieves the current status and metadata of a video-generation job."
-        },
-        {
-          "term": "download_content()",
-          "definition": "Downloads the generated video bytes after the job completes."
-        },
-        {
-          "term": "video.status",
-          "definition": "Shows whether a video-generation job is queued, running, completed, or failed."
-        }
-      ]
-    },
-    {
-      "id": "content-safety-sdk",
-      "title": "Content Safety SDK",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "ContentSafetyClient",
-          "definition": "The SDK client used to call an Azure AI Content Safety endpoint."
-        },
-        {
-          "term": "client.analyze_text()",
-          "definition": "Sends a text-analysis request to Content Safety and returns category results."
-        }
-      ]
-    },
-    {
-      "id": "azure-cli-encryption-flags",
-      "title": "Azure CLI encryption flags",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "--assign-identity",
-          "definition": "An Azure CLI flag that enables or assigns a managed identity to a supported Azure resource so that resource can authenticate to other Azure services through Microsoft Entra ID."
-        },
-        {
-          "term": "--encryption",
-          "definition": "An Azure CLI flag used to supply customer-managed-key encryption settings, such as the Key Vault key configuration for a supported resource."
-        },
-        {
-          "term": "--kind",
-          "definition": "Specifies the type of Cognitive Services resource to create, such as OpenAI."
-        },
-        {
-          "term": "--sku",
-          "definition": "Specifies the pricing or capacity tier of the resource."
-        }
-      ]
-    },
-    {
       "id": "model-version-policies",
       "title": "Model version policies",
       "domain": "Plan and manage",
@@ -1714,8 +834,8 @@
       ]
     },
     {
-      "id": "quota-and-capacity",
-      "title": "Quota and capacity",
+      "id": "capacity-and-retries",
+      "title": "Capacity and retry behavior",
       "domain": "Plan and manage",
       "kind": "concept",
       "concepts": [
@@ -1728,56 +848,12 @@
           "definition": "A limit on how many requests or tokens can be processed during a time interval."
         },
         {
-          "term": "Provisioned throughput",
-          "definition": "Reserved model capacity purchased in PTUs to provide more predictable throughput."
-        }
-      ]
-    },
-    {
-      "id": "http-failures",
-      "title": "HTTP failures",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "HTTP 400",
-          "definition": "Bad Request: the request is invalid, for example because of malformed input or an exceeded input limit."
-        },
-        {
-          "term": "HTTP 401",
-          "definition": "Unauthorized: authentication is missing or the credential or token is invalid."
-        },
-        {
-          "term": "HTTP 403",
-          "definition": "Forbidden: the request reached the service and the caller is authenticated, but the caller does not have permission to perform the requested operation."
-        },
-        {
-          "term": "HTTP 429",
-          "definition": "Too Many Requests: the service rate limit or available quota has been exceeded."
-        }
-      ]
-    },
-    {
-      "id": "retry-behavior",
-      "title": "Retry behavior",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "Retry",
-          "definition": "Another attempt made after a temporary failure that may succeed later."
-        },
-        {
           "term": "Exponential backoff",
           "definition": "Increases the waiting time between retries to reduce load and repeated collisions."
         },
         {
           "term": "Jitter",
-          "definition": "Random variation added to retry delays so many clients do not retry at exactly the same time and create another traffic spike."
-        },
-        {
-          "term": "Throttling",
-          "definition": "The service limits request throughput when a client exceeds capacity or rate limits."
+          "definition": "Adds random variation to retry delays so many clients do not retry at the same moment."
         }
       ]
     },
@@ -1802,242 +878,6 @@
         {
           "term": "IoU",
           "definition": "Intersection over Union, the overlap between predicted and actual bounding boxes divided by their union."
-        }
-      ]
-    },
-    {
-      "id": "detection-outcomes",
-      "title": "Detection outcomes",
-      "domain": "Computer vision",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "True positive",
-          "definition": "A reported detection that correctly matches a real object under the evaluation rule."
-        },
-        {
-          "term": "False positive",
-          "definition": "A prediction that reports an object or condition as present when it is actually absent."
-        },
-        {
-          "term": "False negative",
-          "definition": "A real object that the model fails to detect."
-        },
-        {
-          "term": "Confidence threshold",
-          "definition": "The minimum confidence score required for a prediction to be counted or displayed."
-        }
-      ]
-    },
-    {
-      "id": "legacy-vision-material",
-      "title": "Legacy vision material",
-      "domain": "Computer vision",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Azure Custom Vision",
-          "definition": "A legacy Azure service for training custom image-classification and object-detection models."
-        },
-        {
-          "term": "Brand detection",
-          "definition": "A vision feature that identifies known brands or logos and can return their name, confidence, and region."
-        },
-        {
-          "term": "Bounding box",
-          "definition": "A rectangular region that locates an object using coordinates and dimensions."
-        },
-        {
-          "term": "Bounding polygon",
-          "definition": "A set of points describing the more exact position and shape of a region in a document or image."
-        }
-      ]
-    },
-    {
-      "id": "multimodal-message-items",
-      "title": "Multimodal message items",
-      "domain": "Computer vision",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "type: text",
-          "definition": "Marks a content item as text in a multimodal message array."
-        },
-        {
-          "term": "type: image_url",
-          "definition": "Marks a content item as an image reference that the model should process visually."
-        },
-        {
-          "term": "Base64 data URL",
-          "definition": "Base64-encoded image data embedded in a data URL where the API supports image URL input."
-        },
-        {
-          "term": "image_url",
-          "definition": "The field containing an image URL or supported data URL in an image content item."
-        }
-      ]
-    },
-    {
-      "id": "document-intelligence-output",
-      "title": "Document Intelligence output",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "ContentFormat.MARKDOWN",
-          "definition": "An SDK enum value that requests Markdown as the text format for document-analysis output."
-        },
-        {
-          "term": "output_content_format",
-          "definition": "A parameter that specifies the text format used in Document Intelligence results."
-        },
-        {
-          "term": "output=figures",
-          "definition": "Requests figure output so detected figures can be returned or downloaded."
-        },
-        {
-          "term": "content=markdown",
-          "definition": "Requests Markdown format in a supported REST or tool call for document analysis."
-        }
-      ]
-    },
-    {
-      "id": "pii-redaction-payload",
-      "title": "PII redaction payload",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "PiiEntityRecognition",
-          "definition": "A kind value that selects personally identifiable information entity recognition."
-        },
-        {
-          "term": "piiCategories",
-          "definition": "A list specifying which types of personally identifiable information the analysis should target."
-        },
-        {
-          "term": "EntityMask",
-          "definition": "A redaction policy that replaces detected PII entities with a mask."
-        },
-        {
-          "term": "redactedText",
-          "definition": "The result field containing the text after detected PII has been masked."
-        }
-      ]
-    },
-    {
-      "id": "power-fx-checks",
-      "title": "Power Fx checks",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "IsBlank(Local.Var01)",
-          "definition": "A Power Fx expression that returns `true` when `Local.Var01` is blank or has no value."
-        },
-        {
-          "term": "IsEmpty(Local.Var01)",
-          "definition": "`IsEmpty` is a Power Fx function for checking whether a table contains no records. It is normally used with table or collection values rather than a single scalar value."
-        },
-        {
-          "term": "Not(IsBlank(Local.Var01))",
-          "definition": "A Power Fx expression that returns `true` when `Local.Var01` contains a value."
-        },
-        {
-          "term": "Upper(Local.Var01)",
-          "definition": "Returns the text value of Local.Var01 converted to uppercase."
-        }
-      ]
-    },
-    {
-      "id": "bicep-building-blocks",
-      "title": "Bicep building blocks",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "existing resource",
-          "definition": "References an Azure resource that already exists without attempting to create it again."
-        },
-        {
-          "term": "parent",
-          "definition": "Specifies the parent resource of a nested Bicep resource."
-        },
-        {
-          "term": "scope",
-          "definition": "Specifies the subscription, resource group, or resource at which a Bicep declaration is resolved or deployed."
-        },
-        {
-          "term": "resourceGroup()",
-          "definition": "A Bicep function that returns information about the current or specified resource group."
-        }
-      ]
-    },
-    {
-      "id": "arm-resource-operations",
-      "title": "ARM resource operations",
-      "domain": "Code and SDK",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "HTTP PUT",
-          "definition": "Creates or replaces a resource at a known Azure Resource Manager URI."
-        },
-        {
-          "term": "HTTP PATCH",
-          "definition": "An HTTP method used to update selected properties of an existing resource without replacing the entire resource representation."
-        },
-        {
-          "term": "Resource provider",
-          "definition": "An Azure namespace that owns a resource type, such as Microsoft.CognitiveServices."
-        },
-        {
-          "term": "API version",
-          "definition": "The version of an Azure Resource Manager resource contract that controls available properties and behavior."
-        }
-      ]
-    },
-    {
-      "id": "memory-scopes",
-      "title": "Memory scopes",
-      "domain": "Agents",
-      "kind": "code",
-      "concepts": [
-        {
-          "term": "{{$userId}}",
-          "definition": "A Foundry memory-scope value that resolves to the current end user's identity. Using it partitions memories by user so the same user's memories can be retrieved across separate conversations."
-        },
-        {
-          "term": "global memory scope",
-          "definition": "A shared memory scope in which saved memories are available across users or sessions that use the same global scope, rather than being partitioned per user."
-        },
-        {
-          "term": "memory_store_name",
-          "definition": "The name of the memory store that MemorySearchTool should use."
-        }
-      ]
-    },
-    {
-      "id": "ci-cd-evaluation-controls",
-      "title": "CI/CD evaluation controls",
-      "domain": "Plan and manage",
-      "kind": "concept",
-      "concepts": [
-        {
-          "term": "Quality gate",
-          "definition": "A CI/CD rule that allows or blocks a delivery step based on whether defined quality conditions or evaluation thresholds have been met."
-        },
-        {
-          "term": "Evaluation threshold",
-          "definition": "A minimum or maximum allowed metric value that determines whether an evaluation passes."
-        },
-        {
-          "term": "Branch protection",
-          "definition": "GitHub rules that can require successful status checks before changes are merged into a branch."
-        },
-        {
-          "term": "OIDC federation",
-          "definition": "Lets a workflow obtain short-lived Azure tokens without storing a long-lived client secret."
         }
       ]
     }
