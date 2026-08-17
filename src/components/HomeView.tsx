@@ -256,7 +256,7 @@ export function HomeView({
             <p>Simulate a full exam without feedback until you submit.</p>
             <div className="mode-detail"><span>Questions</span><strong>60 weighted</strong></div>
             <div className="mode-detail"><span>Domain mix</span><strong>Official weighting</strong></div>
-            <div className="mode-detail"><span>Time limit</span><strong>120 minutes</strong></div>
+            <div className="mode-detail"><span>Time limit</span><strong>100 minutes</strong></div>
             <div className="mode-detail"><span>Practice target</span><strong>80%</strong></div>
             <button
               className="primary-button full exam-button"

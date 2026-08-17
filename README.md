@@ -23,7 +23,7 @@ Every normal answer option and every dropdown, yes/no, or drag-and-drop target
 includes an English explanation. Explanations are displayed after the answer
 has been checked.
 
-Exam mode includes 60 random questions, a 120-minute countdown, question
+Exam mode includes 60 random questions, a 100-minute countdown, question
 flagging and navigation, automatic submission when time expires, an 80 percent
 practice target, and answer review only after the exam has been submitted. This
 practice target does not reproduce Microsoft's scaled 700-point scoring system.

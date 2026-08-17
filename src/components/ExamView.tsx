@@ -8,7 +8,7 @@ import { CaseStudyPanel } from "./CaseStudyPanel";
 import { CodeAnswerTemplate } from "./CodeAnswerTemplate";
 import { QuestionSupportingContent } from "./QuestionSupportingContent";
 
-const EXAM_SECONDS = 120 * 60;
+const EXAM_SECONDS = 100 * 60;
 
 type ExamViewProps = {
   question: Question;
