@@ -13,19 +13,19 @@
       "concepts": [
         {
           "term": "Standard",
-          "definition": "Standard is a pay-as-you-go deployment type that scales with request demand without reserving provisioned throughput units (PTUs). Unlike Global Standard, processing stays within the deployment's Azure geography, so it fits the EU data-residency requirement."
+          "definition": "A pay-as-you-go Azure OpenAI deployment type that uses shared service capacity and scales with available quota. Model processing stays within the deployment's Azure geography rather than being globally routed."
         },
         {
           "term": "Global Standard",
-          "definition": "Global Standard can route inference traffic across supported global regions. That conflicts with the requirement that model processing remain within the EU."
+          "definition": "A pay-as-you-go Azure OpenAI deployment type that can route inference requests across supported global Azure regions to use available capacity."
         },
         {
           "term": "Global Provisioned",
-          "definition": "Global Provisioned uses reserved provisioned throughput and can route processing globally. The scenario explicitly requires dynamic scaling without reserved throughput and requires EU data residency."
+          "definition": "A provisioned Azure OpenAI deployment type that uses reserved provisioned throughput units (PTUs) while allowing inference processing to be routed globally."
         },
         {
           "term": "serverless API",
-          "definition": "Serverless API is the broader Foundry deployment option under which pay-per-token deployment types are exposed. The question asks specifically for the deployment type, not the deployment option."
+          "definition": "A Foundry deployment option where Microsoft hosts the model infrastructure and you call the model through an API. Usage is typically billed per request or token instead of requiring you to manage dedicated VM compute."
         }
       ]
     },
@@ -37,11 +37,11 @@
       "concepts": [
         {
           "term": "batch",
-          "definition": "Batch is asynchronous and optimized for offline high-throughput jobs, so it does not meet the real-time inference requirement."
+          "definition": "An asynchronous processing mode for large offline workloads. You submit many requests as a job and retrieve the results later, trading interactive latency for higher-throughput processing."
         },
         {
           "term": "self-hosted container",
-          "definition": "A self-hosted/managed-compute container uses dedicated compute capacity and therefore conflicts with the requirement to avoid subscription VM/vCPU capacity."
+          "definition": "A deployment approach where a model or AI service runs in a container on compute that you manage. It gives you more infrastructure control but uses your own VM, CPU, or GPU capacity."
         }
       ]
     },
@@ -57,15 +57,15 @@
         },
         {
           "term": "small language model (SLM)",
-          "definition": "An SLM offers lower latency and cost with reduced capacity. It can handle simpler tasks, but it is not the best fit for the required context-aware generation and complex reasoning."
+          "definition": "A smaller language model designed to use less compute than a large language model. SLMs are commonly chosen for lower latency, lower cost, or narrower tasks where maximum reasoning capability is unnecessary."
         },
         {
           "term": "embedding model",
-          "definition": "An embedding model converts documents and queries into numeric vectors whose distance represents semantic similarity. Those vectors are what the search solution requires."
+          "definition": "A model that converts text, images, or other supported input into numeric vectors called embeddings. Similar meanings produce vectors that are closer together, which enables semantic similarity search and retrieval."
         },
         {
           "term": "multimodal model",
-          "definition": "A multimodal model processes combinations such as text and images. The scenario only requires grounded natural-language support responses, so multimodal capability is not the deciding requirement."
+          "definition": "A model that can process or generate more than one type of data, such as text, images, audio, or video, within the same interaction."
         }
       ]
     },
@@ -77,7 +77,7 @@
       "concepts": [
         {
           "term": "image generation model",
-          "definition": "An image-generation model creates images from prompts or reference media. It does not encode policy text into vectors for search."
+          "definition": "A generative model that creates or edits images from text prompts, reference images, or both."
         },
         {
           "term": "Whisper model",
@@ -85,7 +85,7 @@
         },
         {
           "term": "model fine-tuning",
-          "definition": "Fine-tuning changes a model's learned behavior using training examples. It is a model-improvement technique, not a measurement of whether a particular response is grounded in supplied sources."
+          "definition": "A model-customization technique that continues training a pretrained model on task-specific examples so its behavior, style, or task performance better matches a target use case."
         },
         {
           "term": "model cascade",
@@ -101,7 +101,7 @@
       "concepts": [
         {
           "term": "File search",
-          "definition": "File Search indexes files attached or uploaded for the agent and retrieves relevant passages from them. It matches the requirement to answer from documents uploaded directly to the agent."
+          "definition": "An agent tool that indexes files uploaded or attached to the agent and retrieves relevant passages from those files when answering a request."
         },
         {
           "term": "Code interpreter",
@@ -109,11 +109,11 @@
         },
         {
           "term": "Azure AI Search tool",
-          "definition": "Azure AI Search retrieves content from a separately managed Search index. The scenario's curated files can be grounded directly with the agent's file-search capability instead."
+          "definition": "An agent tool that queries a separately managed Azure AI Search index so the agent can retrieve indexed enterprise or application data."
         },
         {
           "term": "Grounding with Bing Search",
-          "definition": "Grounding with Bing Search lets an agent retrieve current public web information and use it as grounding. It matches the requirement for up-to-date information from public websites; File Search targets uploaded files and Code Interpreter executes code."
+          "definition": "An agent grounding tool that retrieves current public web information through Bing and supplies relevant results to the model as source context."
         }
       ]
     },
@@ -161,11 +161,11 @@
       "concepts": [
         {
           "term": "Conversation history",
-          "definition": "Conversation history retains messages inside one conversation. It does not automatically remember preferences across separate conversations."
+          "definition": "The ordered messages from a single conversation. It gives the model context from earlier turns in that conversation but is separate from durable memory that can persist across conversations."
         },
         {
           "term": "Orchestration-managed session context",
-          "definition": "Session context preserves state managed by the current orchestration session. It is temporary and not durable cross-conversation memory."
+          "definition": "Temporary state maintained by an orchestration session, such as intermediate values or conversation context. It normally lasts for the session rather than acting as durable cross-conversation memory."
         },
         {
           "term": "Agent memory",
@@ -181,11 +181,11 @@
       "concepts": [
         {
           "term": "Retrieval Augmented Generation (RAG)",
-          "definition": "RAG retrieves external information at run time and adds it as grounding context. The task instead asks to demonstrate the desired classification behavior with labeled examples inside the prompt, so retrieval is unnecessary."
+          "definition": "A pattern where an application retrieves relevant external information at request time and adds it to the model's context so the generated answer can be grounded in that information."
         },
         {
           "term": "classic Retrieval Augmented Generation (RAG)",
-          "definition": "Classic RAG typically performs a retrieval step from the user's query and then sends retrieved chunks to the model. It lacks the agentic query decomposition, conversation-aware planning, and parallel subquery execution required here."
+          "definition": "A basic RAG pattern where the user's query is used to retrieve relevant chunks, and those chunks are then sent to the model as context for generation."
         },
         {
           "term": "agentic Retrieval Augmented Generation (RAG)",
@@ -193,7 +193,7 @@
         },
         {
           "term": "iterative retrieval",
-          "definition": "Iterative retrieval performs repeated retrieval passes, but by itself it does not provide the conversational query planning, decomposition, and parallel subquery execution described in the requirements."
+          "definition": "A retrieval pattern that performs multiple retrieval passes, often refining or expanding later searches based on information found in earlier passes."
         }
       ]
     },
@@ -229,15 +229,15 @@
       "concepts": [
         {
           "term": "semantic ranking",
-          "definition": "Semantic ranking reranks an existing text result set for relevance. It improves ranking but still needs an initial keyword or vector retrieval method."
+          "definition": "A ranking step that uses language understanding to rerank an initial set of search results by semantic relevance to the query."
         },
         {
           "term": "suggesters",
-          "definition": "Suggesters provide type-ahead and autocomplete suggestions from configured text fields. They are not used for semantic document retrieval in RAG."
+          "definition": "Azure AI Search components used for type-ahead suggestions and autocomplete from configured text fields while a user is entering a query."
         },
         {
           "term": "analyzers",
-          "definition": "Analyzers tokenize and normalize text during indexing and querying. They support lexical search but do not create embedding-based semantic similarity."
+          "definition": "Text-processing components in Azure AI Search that tokenize and normalize text during indexing and querying so lexical matching works consistently."
         }
       ]
     },
@@ -257,11 +257,11 @@
         },
         {
           "term": "Merge",
-          "definition": "The Merge skill combines text or inserted content into one field. It does not perform OCR or split long content for indexing."
+          "definition": "An Azure AI Search enrichment skill that combines text or other enrichment outputs into a single field, often after content has been extracted from multiple sources."
         },
         {
           "term": "Entity Recognition",
-          "definition": "Entity Recognition finds named entities such as people, organizations, and locations. It does not extract image text or divide long document text into searchable chunks."
+          "definition": "A language-processing skill that identifies named entities in text, such as people, organizations, locations, dates, or other supported entity types."
         }
       ]
     },
@@ -273,11 +273,11 @@
       "concepts": [
         {
           "term": "Language Detection",
-          "definition": "Language Detection identifies the language of text. It is useful for multilingual processing but does not satisfy the OCR and chunking requirements here."
+          "definition": "A language-processing skill that identifies the language of supplied text so later processing can use the appropriate language-specific behavior."
         },
         {
           "term": "key phrase extraction",
-          "definition": "Key phrase extraction identifies important phrases in existing text. It does not read scanned images or create appropriately sized search chunks."
+          "definition": "A language-processing capability that identifies the main phrases or important concepts in existing text."
         },
         {
           "term": "Shaper skill",
@@ -301,11 +301,11 @@
         },
         {
           "term": "Azure AI Search",
-          "definition": "Azure AI Search supplies the private-document index and supports semantic and vector retrieval. Extraction services can prepare content but do not replace the search layer."
+          "definition": "A managed Azure search service for indexing and querying content. It supports lexical, vector, hybrid, and semantic retrieval and is commonly used as the retrieval layer in RAG solutions."
         },
         {
           "term": "Azure Content Understanding",
-          "definition": "Azure Content Understanding produces multimodal document representations with source grounding for text and visual regions, supporting the requested page-level citations and polygons."
+          "definition": "An Azure AI service for analyzing multimodal content such as documents, images, audio, and video and producing structured outputs with source-grounding information."
         },
         {
           "term": "Azure Document Intelligence",
@@ -329,11 +329,11 @@
         },
         {
           "term": "Image Analysis",
-          "definition": "Image Analysis describes visual features such as objects, tags, and captions. It is not optimized for structured invoice fields and document tables."
+          "definition": "A computer-vision capability that analyzes images and returns visual information such as tags, captions, objects, and other supported image features."
         },
         {
           "term": "Application Insights",
-          "definition": "Application Insights is Azure Monitor's application observability backend for requests, dependencies, exceptions, performance data, and distributed traces. It can receive and visualize the agent application's trace data, so it is one of the two appropriate components."
+          "definition": "An Azure Monitor service for application observability that collects and analyzes telemetry such as requests, dependencies, exceptions, performance data, and distributed traces."
         }
       ]
     },
@@ -345,11 +345,11 @@
       "concepts": [
         {
           "term": "Log Analytics workspace",
-          "definition": "A Log Analytics workspace stores and queries logs that resources send to it, but it does not by itself instrument a Python agent application or create end-to-end LLM/tool spans. Additional telemetry instrumentation/export is still required."
+          "definition": "An Azure Monitor workspace that stores log and telemetry data and lets you query it with Kusto Query Language (KQL)."
         },
         {
           "term": "Microsoft Sentinel",
-          "definition": "Microsoft Sentinel is a SIEM/SOAR service for security analytics and incident response. It can consume logs, but it is not the application-tracing instrumentation or backend used to capture agent latency breakdowns and exceptions."
+          "definition": "A cloud-native SIEM and SOAR service that analyzes security data, detects threats, supports incident investigation, and automates security-response workflows."
         }
       ]
     },
@@ -361,19 +361,19 @@
       "concepts": [
         {
           "term": "optical character recognition (OCR)",
-          "definition": "OCR converts printed text in the scanned invoice images into machine-readable text that can be mapped into searchable index fields."
+          "definition": "A technology that converts text found in images or scanned documents into machine-readable text so it can be searched, analyzed, or processed by software."
         },
         {
           "term": "Document Extraction",
-          "definition": "Document Extraction extracts document content and fields, but it is not the single multimodal Search skill that produces page-level text and image locations with bounding polygons."
+          "definition": "A document-analysis capability that extracts content and structured fields from documents so the information can be used by downstream applications or search pipelines."
         },
         {
           "term": "Document Layout",
-          "definition": "Document Layout focuses on page structure and text layout. The multimodal extraction skill is required when citations must cover both text and images with locations."
+          "definition": "A document-analysis capability that extracts page structure and layout information, such as text positions, paragraphs, tables, and other structural elements."
         },
         {
           "term": "prebuilt-read",
-          "definition": "OCR or the prebuilt-read analyzer extracts printed and handwritten text, but does not preserve the full document structure needed for layout-aware processing. The prebuilt-layout analyzer extracts text together with structural elements such as tables, selection marks, and document layout."
+          "definition": "A prebuilt Document Intelligence model focused on optical character recognition (OCR). It extracts printed and handwritten text plus basic location information from documents and images."
         }
       ]
     },
@@ -393,11 +393,11 @@
         },
         {
           "term": "Single-file task in standard mode",
-          "definition": "Standard mode is designed for high-volume, cost-effective analysis of a single file. Pipeline1 processes standalone PDF invoices and does not require cross-document reasoning or reference data, so a single-file task in standard mode is appropriate."
+          "definition": "A Content Understanding task configuration that analyzes one file independently in standard mode. It is intended for straightforward, high-volume content analysis without cross-document reasoning."
         },
         {
           "term": "Single-file task in pro mode",
-          "definition": "An advanced Content Understanding task for analyzing one document with greater reasoning capability."
+          "definition": "A Content Understanding task configuration that analyzes one file with the additional reasoning capabilities available in pro mode."
         }
       ]
     },
@@ -409,7 +409,7 @@
       "concepts": [
         {
           "term": "Multi-file task in pro mode",
-          "definition": "Pro mode adds advanced multi-step reasoning and support for multiple files/reference data. Pipeline2 must compare information across documents and validate it against reference data, so it needs a multi-file task in pro mode."
+          "definition": "A Content Understanding task configuration that analyzes multiple files together in pro mode, enabling reasoning or comparison across documents and reference data."
         }
       ]
     },
@@ -429,7 +429,7 @@
         },
         {
           "term": "Table projection",
-          "definition": "Table projection flattens data into rows and columns in Azure Table Storage. It is not the best match for preserving arbitrary nested JSON."
+          "definition": "A knowledge-store projection that writes enriched data into a tabular row-and-column structure in Azure Table Storage."
         }
       ]
     },
@@ -445,15 +445,15 @@
         },
         {
           "term": "user-assigned managed identity",
-          "definition": "A user-assigned managed identity can represent Azure workloads, but a GitHub-hosted runner signs in to Azure through federated OIDC rather than directly using managed identity metadata."
+          "definition": "A standalone Microsoft Entra managed identity that you create as its own Azure resource and can attach to one or more supported Azure resources. Its lifecycle is independent of those resources."
         },
         {
           "term": "DefaultAzureCredential",
-          "definition": "DefaultAzureCredential is an Azure Identity credential chain that can obtain Microsoft Entra tokens from a managed identity when the app runs on an Azure host with managed identity enabled. It avoids storing API keys or client secrets, so it meets the managed-identity requirement."
+          "definition": "An Azure Identity credential chain that tries several supported authentication methods in order, such as local developer credentials or managed identity, so the same application code can authenticate across environments without embedding a service key."
         },
         {
           "term": "ClientSecretCredential",
-          "definition": "ClientSecretCredential uses a tenant ID, client ID, and stored client secret. It is an application credential, not managed identity authentication."
+          "definition": "An Azure Identity credential that authenticates an application with a Microsoft Entra tenant ID, client ID, and client secret."
         }
       ]
     },
@@ -465,15 +465,15 @@
       "concepts": [
         {
           "term": "AzureKeyCredential",
-          "definition": "AzureKeyCredential authenticates with a static service key. It cannot satisfy the requirement to use a Microsoft Entra managed identity."
+          "definition": "An Azure SDK credential object that authenticates requests with a static service API key."
         },
         {
           "term": "AccountManagedIdentity",
-          "definition": "AccountManagedIdentity tells the connection to authenticate as the Foundry account's managed identity without storing a secret."
+          "definition": "A connection authentication option that uses the Foundry account's managed identity to access another Azure resource without storing a secret in the connection."
         },
         {
           "term": "AccountKey",
-          "definition": "AccountKey authenticates with a shared account key. Key Vault access in this design uses the Foundry account's managed identity instead."
+          "definition": "A connection authentication option that uses a shared account key as the credential."
         },
         {
           "term": "ApiKey",
@@ -489,19 +489,19 @@
       "concepts": [
         {
           "term": "Cognitive Services OpenAI User",
-          "definition": "Authentication succeeded, so the 403 indicates missing data-plane authorization. Cognitive Services OpenAI User grants model inference with less privilege than Contributor."
+          "definition": "An Azure RBAC data-plane role that allows an identity to use Azure OpenAI model inference without granting broad resource-management permissions."
         },
         {
           "term": "Cognitive Services User",
-          "definition": "Cognitive Services User grants data-plane access to supported Azure AI services generally. Azure OpenAI inference requires the OpenAI-specific user role in this scenario."
+          "definition": "An Azure RBAC data-plane role that grants access to supported Azure AI service operations for an assigned identity."
         },
         {
           "term": "Cognitive Services Data Reader",
-          "definition": "Cognitive Services Data Reader is intended for reading service data and metadata. It does not grant permission to invoke an Azure OpenAI model deployment."
+          "definition": "An Azure RBAC role intended for read access to supported Cognitive Services data and metadata."
         },
         {
           "term": "Contributor",
-          "definition": "Contributor manages Azure resources in the control plane, such as creating or changing deployments. It does not by itself grant Azure OpenAI data-plane inference access."
+          "definition": "An Azure control-plane RBAC role that can create and manage Azure resources but cannot assign Azure RBAC roles. Data-plane permissions depend on the service and are granted separately when required."
         }
       ]
     },
@@ -537,15 +537,15 @@
       "concepts": [
         {
           "term": "API key security scheme",
-          "definition": "An OpenAPI apiKey security scheme declares where the header key belongs and lets the tool inject the value from the configured project connection."
+          "definition": "An OpenAPI security scheme of type `apiKey` that declares where an API key must be sent, such as a specific header, query parameter, or cookie."
         },
         {
           "term": "Bearer token security scheme",
-          "definition": "A bearer security scheme sends a token in the Authorization header. The weather service expects an API key in its own header, so an apiKey security scheme is required instead."
+          "definition": "An HTTP authentication scheme that sends a bearer token in the `Authorization` header, typically as `Authorization: Bearer <token>`."
         },
         {
           "term": "Azure Key Vault connection",
-          "definition": "An Azure Key Vault connection can provide secure access to secrets, but the OpenAPI document still needs an apiKey security scheme so the tool knows where to place the credential."
+          "definition": "A connection that lets an application or agent securely access secrets stored in Azure Key Vault instead of hard-coding secret values in application code."
         },
         {
           "term": "identity passthrough",
@@ -589,7 +589,7 @@
         },
         {
           "term": "Coherence",
-          "definition": "Coherence measures whether the response is logically organized and internally consistent. It does not directly test retrieval quality or source support."
+          "definition": "An evaluation metric that measures whether a response is logically organized, internally consistent, and easy to follow as a whole."
         }
       ]
     },
@@ -601,11 +601,11 @@
       "concepts": [
         {
           "term": "Response Completeness",
-          "definition": "Response Completeness measures whether the answer covers required information. It does not specifically assess whether retrieval found the right evidence or whether claims are grounded."
+          "definition": "An evaluation metric that measures whether a response covers the information needed to fully answer the request or task."
         },
         {
           "term": "groundedness evaluator",
-          "definition": "Groundedness evaluation checks whether generated claims are supported by the retrieved source material. RAG evaluation is broader and fine-tuning does not directly measure factual support."
+          "definition": "An evaluator that checks whether claims in a generated response are supported by the source context supplied to the model."
         },
         {
           "term": "Retrieval Augmented Generation (RAG) evaluator",
@@ -613,7 +613,7 @@
         },
         {
           "term": "fluency evaluator",
-          "definition": "The fluency evaluator measures language quality and readability. It does not provide groundedness, relevance, or harmful-content category scores."
+          "definition": "An evaluator that measures language quality, including grammar, readability, and how naturally the response is written."
         }
       ]
     },
@@ -625,11 +625,11 @@
       "concepts": [
         {
           "term": "similarity evaluators",
-          "definition": "Similarity evaluators compare generated and reference text using lexical or embedding similarity. They are not the evaluation category for RAG groundedness and safety."
+          "definition": "Evaluators that compare generated output with a reference answer using lexical, semantic, or embedding-based similarity."
         },
         {
           "term": "Risk and safety metrics",
-          "definition": "Risk and safety metrics evaluate harmful or policy-violating content categories. They are the relevant signal for responses flagged for policy violations; latency and token metrics instead measure performance or usage."
+          "definition": "Evaluation metrics that measure whether model input or output contains harmful, unsafe, or policy-relevant content categories."
         }
       ]
     },
@@ -641,19 +641,19 @@
       "concepts": [
         {
           "term": "prompt shields",
-          "definition": "Prompt Shields detect direct and indirect prompt-injection attempts. They protect model instructions, but they do not perform PII detection or redaction."
+          "definition": "Safety controls that detect prompt-injection attempts, including malicious instructions written directly by a user or embedded in external content."
         },
         {
           "term": "prompt shields for user prompts",
-          "definition": "Prompt Shields for User Prompts inspect instructions supplied directly by the user as the prompt. Here the risky text is appended as external OCR/document context, so the document/indirect-attack shield is the appropriate scope instead."
+          "definition": "Prompt Shield protection that examines instructions supplied directly in the user's prompt for attempts to override or manipulate the model's intended instructions."
         },
         {
           "term": "prompt shields for documents",
-          "definition": "Prompt Shields for Documents inspect third-party or retrieved text for indirect prompt-injection instructions. Because the OCR result is appended as untrusted contextual text, the document shield is the control that targets the stated attack."
+          "definition": "Prompt Shield protection that examines external or retrieved content for indirect prompt-injection instructions that should be treated as untrusted data."
         },
         {
           "term": "Personally identifiable information (PII) Detection",
-          "definition": "PII Detection identifies sensitive personal information so it can be removed or blocked before customer data is exposed. Content-category filters and Prompt Shields address different risks."
+          "definition": "A capability that detects personal information such as names, addresses, identifiers, or other supported PII categories so applications can flag, block, or redact it."
         }
       ]
     },
@@ -665,19 +665,19 @@
       "concepts": [
         {
           "term": "self-harm content filtering",
-          "definition": "Self-harm content filtering detects and optionally blocks text associated with self-harm at configured severity levels. It does not identify or redact personal data such as names, addresses, or account numbers."
+          "definition": "A content-safety filter that classifies self-harm-related text and can block content according to configured severity thresholds."
         },
         {
           "term": "violence content filtering",
-          "definition": "Violence content filtering classifies violent content and can block it by severity. It does not detect the personal information required by this compliance scenario."
+          "definition": "A content-safety filter that classifies violent content and can block it according to configured severity thresholds."
         },
         {
           "term": "image moderation",
-          "definition": "Image moderation classifies harmful visual content such as violence or sexual content. The problem here is not visual harm; it is malicious instructions contained in OCR-extracted text, so image moderation addresses a different risk."
+          "definition": "Automated analysis of images to detect categories of harmful or inappropriate visual content so an application can allow, flag, or block the image."
         },
         {
           "term": "Protected material",
-          "definition": "Protected material detection looks for known protected text or code that the model may reproduce. It does not generally detect arbitrary confidential, proprietary, or personally identifiable information. Therefore it is only correct if the question's 'sensitive or proprietary information' specifically means protected/copyrighted material."
+          "definition": "A safety capability that detects known protected text or code that a model may reproduce, helping applications identify potential protected-material output."
         }
       ]
     },
@@ -689,11 +689,11 @@
       "concepts": [
         {
           "term": "Indirect attack",
-          "definition": "Indirect attack detects malicious instructions embedded in retrieved content. It addresses prompt injection, not copyrighted or protected material."
+          "definition": "A prompt-injection attack in which malicious instructions are hidden inside external content such as retrieved documents, web pages, emails, or tool results."
         },
         {
           "term": "custom guardrail",
-          "definition": "A custom guardrail validates or constrains inputs, outputs, or tool behavior according to a policy. It does not specifically score whether every generated claim is supported by retrieved evidence."
+          "definition": "Application-defined logic that validates or constrains model inputs, outputs, or tool actions according to rules specific to the application's policy or workflow."
         }
       ]
     },
@@ -705,7 +705,7 @@
       "concepts": [
         {
           "term": "fairness",
-          "definition": "Fairness concerns equitable treatment and avoiding systematic performance differences across groups. Informing users that their data is processed is not primarily a fairness control."
+          "definition": "A Responsible AI principle focused on ensuring AI systems treat people equitably and do not create unjustified differences in outcomes across groups."
         },
         {
           "term": "transparency",
@@ -717,7 +717,7 @@
         },
         {
           "term": "reliability and safety",
-          "definition": "Reliability and safety concern consistent operation, robustness, and harm prevention. A processing notice explains system use rather than improving technical reliability."
+          "definition": "A Responsible AI principle focused on making AI systems operate consistently, handle failures and unexpected conditions safely, and reduce the risk of harm."
         }
       ]
     },
@@ -737,7 +737,7 @@
         },
         {
           "term": "Tool call attributes",
-          "definition": "Tool-call span attributes are metadata fields attached to tool invocation spans. They can record the tool name plus invocation arguments and returned results, which is the metadata required for auditing tool use."
+          "definition": "Metadata attached to a tool-call trace span, such as the tool name, arguments, result, status, or timing information. These attributes make individual tool invocations easier to inspect and audit."
         },
         {
           "term": "OpenTelemetry",
@@ -757,7 +757,7 @@
         },
         {
           "term": "latency",
-          "definition": "Latency measures how long requests, model calls, and tool calls take. It helps diagnose performance delays, not a cost increase when traffic volume is unchanged."
+          "definition": "The time taken for a request or operation to complete. In AI systems it can be measured for the overall request or separately for model calls, tool calls, and other processing steps."
         },
         {
           "term": "run success rate",
@@ -797,15 +797,15 @@
       "concepts": [
         {
           "term": "real-time speech to text",
-          "definition": "Transcribes streaming speech into text with low latency."
+          "definition": "A speech-recognition mode that continuously transcribes live or streaming audio into text with low latency, making partial and final recognition results available during the stream."
         },
         {
           "term": "batch transcription",
-          "definition": "Transcribes prerecorded audio files asynchronously in batch jobs."
+          "definition": "An asynchronous speech-recognition mode for prerecorded audio files. Files are submitted as a job and the completed transcription is retrieved later."
         },
         {
           "term": "text to speech",
-          "definition": "Synthesizes spoken audio from written text."
+          "definition": "A speech-synthesis capability that converts written text into generated spoken audio using a selected voice."
         },
         {
           "term": "speech translation",
@@ -833,7 +833,7 @@
         },
         {
           "term": "custom speech endpoint URL",
-          "definition": "The custom endpoint URL is the address used to send recognition requests to a deployed model. It is not the project identifier requested by this API field."
+          "definition": "The network address used to send speech-recognition requests to a deployed Custom Speech model."
         }
       ]
     },
@@ -845,19 +845,19 @@
       "concepts": [
         {
           "term": "WebRTC",
-          "definition": "WebRTC is designed for interactive client-side audio/video and is Microsoft's recommended GPT Realtime transport for web and mobile clients. Microsoft lists it as the lowest-latency option (about 50–100 ms), so it matches a browser app targeting roughly 100 ms latency."
+          "definition": "A real-time communication protocol designed for low-latency audio, video, and data exchange between clients. It is well suited to interactive browser and mobile real-time experiences."
         },
         {
           "term": "WebSocket",
-          "definition": "WebSocket is supported by GPT Realtime, but Microsoft recommends it mainly for server-to-server scenarios where the lowest latency is not required. Its documented latency is higher (roughly 100–300 ms) than WebRTC, so it does not best meet the browser/~100 ms requirement."
+          "definition": "A persistent bidirectional connection between a client and server. It is commonly used for streaming events or audio when an application needs continuous two-way communication over a single connection."
         },
         {
           "term": "SIP",
-          "definition": "SIP is a telephony signaling protocol intended for phone-system integration. It is a supported Realtime connection method for telephony, not the best choice for a browser web app."
+          "definition": "Session Initiation Protocol, a signaling protocol used to establish and manage voice or video calls in telephony systems."
         },
         {
           "term": "RTMP",
-          "definition": "RTMP is a media streaming protocol commonly used for live video delivery or ingest, but it is not one of the GPT Realtime API connection methods documented by Microsoft."
+          "definition": "Real-Time Messaging Protocol, a streaming protocol commonly used for live media ingest or delivery."
         }
       ]
     },
@@ -885,15 +885,15 @@
       "concepts": [
         {
           "term": "few-shot learning",
-          "definition": "Few-shot prompting includes representative labeled examples so the model can imitate the required support-ticket classifications without retraining."
+          "definition": "A prompting approach where the model is shown a small number of representative input-output examples so it can infer the desired task, format, or classification behavior without retraining."
         },
         {
           "term": "zero-shot learning",
-          "definition": "Zero-shot prompting gives instructions without examples. It relies on the model to infer the desired label format and therefore does not meet the requirement to show correct classifications."
+          "definition": "A prompting approach where the model performs a task from instructions alone, without being shown labeled examples of the desired input-output behavior."
         },
         {
           "term": "chain of thought",
-          "definition": "Chain-of-thought is a reasoning/prompting concept, not a retrieval architecture. It does not connect the application to Azure AI Search or run parallel retrieval queries."
+          "definition": "A reasoning approach in which a model performs intermediate reasoning steps before arriving at an answer. It is a prompting or reasoning concept rather than a retrieval architecture."
         },
         {
           "term": "Sampling",
@@ -981,11 +981,11 @@
         },
         {
           "term": "Storage account access keys",
-          "definition": "Storage access keys are long-lived shared secrets. They violate the requirement for identity-based, keyless access."
+          "definition": "Long-lived shared secrets that provide broad authentication to an Azure Storage account. They are separate from Microsoft Entra identity and RBAC-based authentication."
         },
         {
           "term": "X.509 certificate",
-          "definition": "A digital certificate that can authenticate an application or service instead of using a client secret."
+          "definition": "A digital certificate that binds a public key to an identity and can be used to authenticate applications, services, users, or devices."
         }
       ]
     },
@@ -1049,7 +1049,7 @@
         },
         {
           "term": "prediction drift metrics",
-          "definition": "Prediction drift measures changes in a predictive model's data or behavior over time. Azure AI Search relevance is diagnosed with search and retrieval evaluation metrics instead."
+          "definition": "Metrics that track how a model's input data, predictions, or statistical behavior change over time compared with a baseline."
         }
       ]
     },
@@ -1061,11 +1061,11 @@
       "concepts": [
         {
           "term": "AI quality (AI assisted) metrics",
-          "definition": "AI-assisted quality metrics use an evaluator model to judge qualities such as groundedness and relevance. They supply the requested RAG quality scores."
+          "definition": "Quality metrics judged by an evaluator model, such as groundedness, relevance, coherence, or other semantic qualities that are difficult to measure with simple string matching."
         },
         {
           "term": "AI quality (NLP) metrics",
-          "definition": "AI quality NLP metrics are traditional text metrics and evaluators. The requested groundedness and relevance measures are AI-assisted quality evaluators rather than only NLP similarity metrics."
+          "definition": "Traditional natural-language-processing metrics that compare generated and reference text using measurable text properties such as token, n-gram, or semantic similarity."
         },
         {
           "term": "confidence score",
@@ -1153,7 +1153,7 @@
       "concepts": [
         {
           "term": "Azure Monitor Agent",
-          "definition": "Azure Monitor Agent collects operating-system and guest telemetry from supported machines. It does not instrument LLM calls, tool calls, or agent-run spans inside this Python application."
+          "definition": "An Azure Monitor agent installed on supported machines to collect operating-system, application, and guest telemetry according to configured data-collection rules."
         },
         {
           "term": "Foundry Local",
@@ -1169,7 +1169,7 @@
       "concepts": [
         {
           "term": "Text Translation",
-          "definition": "Text Translation converts already extracted text between languages. It does not perform OCR on scanned invoices."
+          "definition": "An Azure AI Translator capability that translates already available text from one language to another."
         },
         {
           "term": "document translation",
@@ -1177,11 +1177,11 @@
         },
         {
           "term": "TextAnalytics",
-          "definition": "`TextAnalytics` creates a Language-specific resource. It cannot also provide OCR/vision through the same account."
+          "definition": "An Azure resource kind associated with Azure AI Language capabilities such as sentiment analysis, entity recognition, key phrase extraction, and related text-analysis features."
         },
         {
           "term": "LanguageAuthoring",
-          "definition": "LanguageAuthoring is used for authoring Azure Language projects such as classification or NER. It does not host the required generative model."
+          "definition": "An Azure resource kind used for authoring supported Azure AI Language projects, such as custom text classification or custom named entity recognition."
         }
       ]
     },
@@ -1201,7 +1201,7 @@
         },
         {
           "term": "Hateful and unfair content",
-          "definition": "Hateful and unfair content detects discriminatory or hateful language. It does not detect copied protected text or code."
+          "definition": "A content-safety category that detects hateful, discriminatory, or unfair language directed at people or groups."
         },
         {
           "term": "Violent content",
@@ -1229,7 +1229,7 @@
       "concepts": [
         {
           "term": "agent",
-          "definition": "The agent definition contains instructions, model settings, and tools shared across users. It should not be used as the state container for one customer's case."
+          "definition": "A reusable AI configuration that combines a model with instructions, tools, knowledge, and other settings to perform tasks on behalf of an application or user."
         },
         {
           "term": "conversation",
@@ -1237,7 +1237,7 @@
         },
         {
           "term": "session",
-          "definition": "A session-specific scope can prevent cross-session memory only when the application supplies a different scope value for every session. The literal value `session` alone would be a shared static partition, which is why the wording is ambiguous."
+          "definition": "A temporary execution or interaction scope used to keep state isolated for a particular session. A session identifier must be unique when it is used as a partition or memory scope."
         },
         {
           "term": "threads and runs",
@@ -1253,7 +1253,7 @@
       "concepts": [
         {
           "term": "chat completions",
-          "definition": "Chat completions generate or reason over text supplied in a prompt. They are not the specialized document-analysis capability for extracting invoice fields and layout."
+          "definition": "A model API pattern where an application sends a sequence of chat messages and receives a generated assistant response."
         },
         {
           "term": "Responses API",
@@ -1261,7 +1261,7 @@
         },
         {
           "term": "output item",
-          "definition": "An output item is one piece of content produced during a response, such as a message or tool call. It does not represent the persistent multi-turn support case."
+          "definition": "A structured item produced by a model response, such as a message, tool call, reasoning item, or another supported output type."
         }
       ]
     },
@@ -1501,7 +1501,7 @@
         },
         {
           "term": "Keyless connection",
-          "definition": "A connection that uses Microsoft Entra identity and RBAC instead of a stored API key."
+          "definition": "A connection that authenticates with Microsoft Entra identity and Azure RBAC instead of storing an API key or other shared secret."
         },
         {
           "term": "RBAC",
@@ -1521,7 +1521,7 @@
         },
         {
           "term": "Prebuilt analyzer",
-          "definition": "A ready-made analyzer for a common scenario that does not require defining the full field schema."
+          "definition": "A ready-made Content Understanding analyzer for a common content-analysis scenario, with Microsoft-provided behavior and schema conventions."
         },
         {
           "term": "Custom analyzer",
@@ -1609,11 +1609,11 @@
       "concepts": [
         {
           "term": "agents.get()",
-          "definition": "Retrieves an existing agent definition or agent resource."
+          "definition": "An SDK operation that retrieves an existing agent resource or agent definition by its identifier."
         },
         {
           "term": "agents.get_version()",
-          "definition": "Retrieves a specific published version of an agent."
+          "definition": "An SDK operation that retrieves a specific published version of an agent by its version identifier."
         },
         {
           "term": "agents.create_version()",
@@ -1633,7 +1633,7 @@
       "concepts": [
         {
           "term": "client.videos.create()",
-          "definition": "Starts an asynchronous video-generation job."
+          "definition": "An SDK operation that starts an asynchronous video-generation job and returns an object that can be used to track the job."
         },
         {
           "term": "client.videos.retrieve()",
@@ -1673,11 +1673,11 @@
       "concepts": [
         {
           "term": "--assign-identity",
-          "definition": "`--assign-identity` enables a managed identity on the Cognitive Services/OpenAI resource. That identity is needed for Key Vault access, but this switch does not take the encryption JSON shown in the next line."
+          "definition": "An Azure CLI flag that enables or assigns a managed identity to a supported Azure resource so that resource can authenticate to other Azure services through Microsoft Entra ID."
         },
         {
           "term": "--encryption",
-          "definition": "`--encryption` accepts the customer-managed-key configuration containing `keySource: Microsoft.KeyVault` and `keyVaultProperties`. Microsoft’s CLI example enables the managed identity with `--assign-identity` and then supplies the Key Vault encryption configuration with `--encryption`."
+          "definition": "An Azure CLI flag used to supply customer-managed-key encryption settings, such as the Key Vault key configuration for a supported resource."
         },
         {
           "term": "--kind",
@@ -1749,7 +1749,7 @@
         },
         {
           "term": "HTTP 403",
-          "definition": "Forbidden: the identity is authenticated but does not have the required permission."
+          "definition": "Forbidden: the request reached the service and the caller is authenticated, but the caller does not have permission to perform the requested operation."
         },
         {
           "term": "HTTP 429",
@@ -1773,7 +1773,7 @@
         },
         {
           "term": "Jitter",
-          "definition": "Adds random variation to retry delays so many clients do not retry at the same moment."
+          "definition": "Random variation added to retry delays so many clients do not retry at exactly the same time and create another traffic spike."
         },
         {
           "term": "Throttling",
@@ -1817,7 +1817,7 @@
         },
         {
           "term": "False positive",
-          "definition": "A reported detection that should not count as a correct match."
+          "definition": "A prediction that reports an object or condition as present when it is actually absent."
         },
         {
           "term": "False negative",
@@ -1933,15 +1933,15 @@
       "concepts": [
         {
           "term": "IsBlank(Local.Var01)",
-          "definition": "IsBlank(Local.Var01) is true when the local variable has no value. The workflow needs the opposite condition so it continues after the user supplied an answer."
+          "definition": "A Power Fx expression that returns `true` when `Local.Var01` is blank or has no value."
         },
         {
           "term": "IsEmpty(Local.Var01)",
-          "definition": "IsEmpty is intended for an empty table or collection in Power Fx. Var01 stores one response value, so IsBlank is the appropriate test."
+          "definition": "`IsEmpty` is a Power Fx function for checking whether a table contains no records. It is normally used with table or collection values rather than a single scalar value."
         },
         {
           "term": "Not(IsBlank(Local.Var01))",
-          "definition": "Not(IsBlank(Local.Var01)) is true only after the local response variable contains a value, allowing the next step to run."
+          "definition": "A Power Fx expression that returns `true` when `Local.Var01` contains a value."
         },
         {
           "term": "Upper(Local.Var01)",
@@ -1985,7 +1985,7 @@
         },
         {
           "term": "HTTP PATCH",
-          "definition": "Updates selected properties of an existing resource."
+          "definition": "An HTTP method used to update selected properties of an existing resource without replacing the entire resource representation."
         },
         {
           "term": "Resource provider",
@@ -2005,11 +2005,11 @@
       "concepts": [
         {
           "term": "{{$userId}}",
-          "definition": "`{{$userId}}` is the special scope value that Foundry resolves to the end user's identity. It intentionally preserves a user's memory across separate conversations, so it is the opposite of session-only isolation."
+          "definition": "A Foundry memory-scope value that resolves to the current end user's identity. Using it partitions memories by user so the same user's memories can be retrieved across separate conversations."
         },
         {
           "term": "global memory scope",
-          "definition": "A shared memory scope in which memories are not isolated by user and therefore require special care."
+          "definition": "A shared memory scope in which saved memories are available across users or sessions that use the same global scope, rather than being partitioned per user."
         },
         {
           "term": "memory_store_name",
@@ -2025,7 +2025,7 @@
       "concepts": [
         {
           "term": "Quality gate",
-          "definition": "A rule that blocks the next delivery step when defined quality requirements are not met."
+          "definition": "A CI/CD rule that allows or blocks a delivery step based on whether defined quality conditions or evaluation thresholds have been met."
         },
         {
           "term": "Evaluation threshold",
