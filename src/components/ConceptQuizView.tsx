@@ -87,7 +87,7 @@ export function ConceptQuizView({ userId, onHome }: { userId: string; onHome: ()
   const [answeredCount, setAnsweredCount] = useState(0);
   const [singleAnswer, setSingleAnswer] = useState("");
   const [matches, setMatches] = useState<Record<string, string>>({});
-  const [selectedDefinition, setSelectedDefinition] = useState("");
+  const [selectedConcept, setSelectedConcept] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [results, setResults] = useState<Record<string, boolean>>({});
   const [finished, setFinished] = useState(false);
@@ -152,7 +152,7 @@ export function ConceptQuizView({ userId, onHome }: { userId: string; onHome: ()
     setAnsweredCount(0);
     setSingleAnswer("");
     setMatches({});
-    setSelectedDefinition("");
+    setSelectedConcept("");
     setSubmitted(false);
     setResults({});
     setFinished(false);
@@ -162,7 +162,7 @@ export function ConceptQuizView({ userId, onHome }: { userId: string; onHome: ()
 
   function restart() { startPool(pool); }
 
-  function placeDefinition(key: string, definition: string) {
+  function placeConcept(key: string, definition: string) {
     if (submitted) return;
     setMatches((currentMatches) => {
       const next = { ...currentMatches };
@@ -176,7 +176,7 @@ export function ConceptQuizView({ userId, onHome }: { userId: string; onHome: ()
       next[key] = definition;
       return next;
     });
-    setSelectedDefinition("");
+    setSelectedConcept("");
   }
 
   function submit() {
@@ -210,7 +210,7 @@ export function ConceptQuizView({ userId, onHome }: { userId: string; onHome: ()
     setIndex((value) => value + 1);
     setSingleAnswer("");
     setMatches({});
-    setSelectedDefinition("");
+    setSelectedConcept("");
     setSubmitted(false);
     setResults({});
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -296,7 +296,7 @@ export function ConceptQuizView({ userId, onHome }: { userId: string; onHome: ()
           <span className="question-total">Question {index + 1} of {round.length} · {current.concepts.length} concept{current.concepts.length === 1 ? "" : "s"}</span>
           <h1>{isMatching ? current.title : current.kind === "code" ? `What does ${current.concepts[0].term} do?` : `What does “${current.concepts[0].term}” mean?`}</h1>
           {isMatching
-            ? <MatchingQuestion group={current} matches={matches} definitions={definitions} selectedDefinition={selectedDefinition} submitted={submitted} results={results} onSelectDefinition={setSelectedDefinition} onPlace={placeDefinition} />
+            ? <MatchingQuestion group={current} matches={matches} definitions={definitions} selectedConcept={selectedConcept} submitted={submitted} results={results} onSelectConcept={setSelectedConcept} onPlace={placeConcept} />
             : <SingleDefinitionQuestion choices={singleChoices} selected={singleAnswer} correctDefinition={current.concepts[0].definition} submitted={submitted} onSelect={setSingleAnswer} />}
           {submitted && <div className={`concept-feedback ${Object.values(results).every(Boolean) ? "correct" : "wrong"}`}>
             <strong>{Object.values(results).every(Boolean) ? "All correct" : `${Object.values(results).filter(Boolean).length} of ${current.concepts.length} correct`}</strong>
@@ -330,48 +330,53 @@ function SingleDefinitionQuestion({ choices, selected, correctDefinition, submit
   })}</div>;
 }
 
-function MatchingQuestion({ group, matches, definitions, selectedDefinition, submitted, results, onSelectDefinition, onPlace }: {
+function MatchingQuestion({ group, matches, definitions, selectedConcept, submitted, results, onSelectConcept, onPlace }: {
   group: ConceptGroup;
   matches: Record<string, string>;
   definitions: string[];
-  selectedDefinition: string;
+  selectedConcept: string;
   submitted: boolean;
   results: Record<string, boolean>;
-  onSelectDefinition: (definition: string) => void;
+  onSelectConcept: (key: string) => void;
   onPlace: (key: string, definition: string) => void;
 }) {
-  const used = new Set(Object.values(matches));
+  const used = new Set(Object.keys(matches).filter((key) => matches[key]));
   return <div className="concept-match-layout">
     <div className="concept-definition-bank">
-      <strong>Explanations</strong>
-      <small>Drag one explanation to each concept, or tap an explanation and then its box.</small>
-      {definitions.map((definition) => <button
-        type="button"
-        draggable={!submitted}
-        disabled={submitted}
-        className={`concept-definition ${selectedDefinition === definition ? "selected" : ""} ${used.has(definition) ? "used" : ""}`}
-        key={definition}
-        onClick={() => onSelectDefinition(selectedDefinition === definition ? "" : definition)}
-        onDragStart={(event) => event.dataTransfer.setData("text/plain", definition)}
-      >{definition}</button>)}
-    </div>
-    <div className="concept-targets">
-      <strong>Concept boxes</strong>
+      <strong>Concepts</strong>
+      <small>Drag each concept to its definition, or tap a concept and then a definition box.</small>
       {group.concepts.map((concept) => {
         const key = conceptKey(concept);
-        const value = matches[key] ?? "";
-        const state = submitted ? results[key] ? "correct" : "wrong" : "";
-        return <div className={`concept-target-row ${state}`} key={key}>
-          <span>{concept.term}</span>
+        return <button
+          type="button"
+          draggable={!submitted}
+          disabled={submitted}
+          className={`concept-definition concept-term-card ${selectedConcept === key ? "selected" : ""} ${used.has(key) ? "used" : ""}`}
+          key={key}
+          onClick={() => onSelectConcept(selectedConcept === key ? "" : key)}
+          onDragStart={(event) => event.dataTransfer.setData("text/plain", key)}
+        >{concept.term}</button>;
+      })}
+    </div>
+    <div className="concept-targets">
+      <strong>Definitions</strong>
+      {definitions.map((definition) => {
+        const correctConcept = group.concepts.find((concept) => concept.definition === definition)!;
+        const correctKey = conceptKey(correctConcept);
+        const placedKey = Object.keys(matches).find((key) => matches[key] === definition) ?? "";
+        const placedConcept = group.concepts.find((concept) => conceptKey(concept) === placedKey);
+        const state = submitted ? results[correctKey] ? "correct" : "wrong" : "";
+        return <div className={`concept-target-row ${state}`} key={definition}>
+          <span>{definition}</span>
           <div
-            className={`concept-target ${value ? "filled" : ""}`}
+            className={`concept-target ${placedConcept ? "filled" : ""}`}
             role="button"
             tabIndex={submitted ? -1 : 0}
             onDragOver={(event) => { if (!submitted) event.preventDefault(); }}
-            onDrop={(event) => { event.preventDefault(); onPlace(key, event.dataTransfer.getData("text/plain")); }}
-            onClick={() => selectedDefinition ? onPlace(key, selectedDefinition) : value && !submitted ? onPlace(key, "") : undefined}
-          >{value || "Drop or tap an explanation here"}</div>
-          {submitted && !results[key] && <small><strong>Correct:</strong> {concept.definition}</small>}
+            onDrop={(event) => { event.preventDefault(); onPlace(event.dataTransfer.getData("text/plain"), definition); }}
+            onClick={() => selectedConcept ? onPlace(selectedConcept, definition) : placedKey && !submitted ? onPlace(placedKey, "") : undefined}
+          >{placedConcept?.term || "Drop or tap a concept here"}</div>
+          {submitted && !results[correctKey] && <small><strong>Correct:</strong> {correctConcept.term}</small>}
         </div>;
       })}
     </div>
