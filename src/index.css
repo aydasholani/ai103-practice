@@ -247,3 +247,212 @@ footer { min-height: 90px; padding: 20px clamp(24px, 7vw, 110px); display: flex;
   .drag-choice-panel, .drag-target-list { padding: 12px; }
   .practice-filters { padding: 12px; }.practice-filters .select-label { width: 100%; }
 }
+
+/* Dark mode */
+.theme-toggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  min-height: 42px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #c8d3e1;
+  border-radius: 999px;
+  color: #26364d;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(16, 42, 86, .16);
+  font-size: 13px;
+  font-weight: 750;
+}
+.theme-toggle:hover { border-color: var(--blue); }
+.theme-toggle > span:first-child { font-size: 18px; line-height: 1; }
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #e8eef8;
+  --muted: #a9b5c6;
+  --line: #334158;
+  --soft: #202b3b;
+  --blue: #75a7ff;
+  --blue-dark: #518cf3;
+  --navy: #e8eef8;
+  --green: #65d3a5;
+  --red: #ff8d98;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] .concept-page {
+  background: #0d1420;
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] footer,
+html[data-theme="dark"] .mode-card,
+html[data-theme="dark"] .concept-card,
+html[data-theme="dark"] .concept-list-panel,
+html[data-theme="dark"] .domain-list,
+html[data-theme="dark"] .domain-row,
+html[data-theme="dark"] .history-list,
+html[data-theme="dark"] .question-card,
+html[data-theme="dark"] .insight-card,
+html[data-theme="dark"] .resource-links a,
+html[data-theme="dark"] .supporting-table,
+html[data-theme="dark"] .result-card,
+html[data-theme="dark"] .exam-navigator,
+html[data-theme="dark"] .question-grid button,
+html[data-theme="dark"] .review-question,
+html[data-theme="dark"] .auth-card,
+html[data-theme="dark"] .case-study-panel {
+  background: #151e2e;
+}
+
+html[data-theme="dark"] .concept-definition-bank,
+html[data-theme="dark"] .concept-targets,
+html[data-theme="dark"] .drag-choice-panel,
+html[data-theme="dark"] .drag-target-list,
+html[data-theme="dark"] .table-head,
+html[data-theme="dark"] .learning-tools,
+html[data-theme="dark"] .question-status,
+html[data-theme="dark"] .practice-filters,
+html[data-theme="dark"] .supporting-table th,
+html[data-theme="dark"] .case-study-panel nav,
+html[data-theme="dark"] .case-review-screen,
+html[data-theme="dark"] .context-box,
+html[data-theme="dark"] .concept-feedback {
+  background: #1b2638;
+}
+
+html[data-theme="dark"] .concept-answer,
+html[data-theme="dark"] .concept-definition,
+html[data-theme="dark"] .concept-target,
+html[data-theme="dark"] .drag-choice,
+html[data-theme="dark"] .drag-target,
+html[data-theme="dark"] .answer-option,
+html[data-theme="dark"] select,
+html[data-theme="dark"] input,
+html[data-theme="dark"] .secondary-button,
+html[data-theme="dark"] .confidence-buttons button,
+html[data-theme="dark"] .flag-button,
+html[data-theme="dark"] .case-study-panel nav button.active,
+html[data-theme="dark"] .case-review-grid button {
+  border-color: #43516a;
+  color: var(--ink);
+  background: #111a28;
+}
+
+html[data-theme="dark"] .concept-answer:hover:not(:disabled),
+html[data-theme="dark"] .concept-answer.selected,
+html[data-theme="dark"] .concept-definition:hover:not(:disabled),
+html[data-theme="dark"] .concept-definition.selected,
+html[data-theme="dark"] .concept-target:hover,
+html[data-theme="dark"] .drag-choice:hover,
+html[data-theme="dark"] .drag-choice.selected,
+html[data-theme="dark"] .drag-target.ready,
+html[data-theme="dark"] .drag-target:hover,
+html[data-theme="dark"] .answer-option:hover,
+html[data-theme="dark"] .answer-option.selected,
+html[data-theme="dark"] .domain-row:hover,
+html[data-theme="dark"] .question-grid button.answered,
+html[data-theme="dark"] .case-review-grid button.answered {
+  border-color: #6799ef;
+  color: #dce9ff;
+  background: #1b3153;
+}
+
+html[data-theme="dark"] .concept-answer.correct,
+html[data-theme="dark"] .concept-target-row.correct .concept-target,
+html[data-theme="dark"] .drag-target-row.correct-drop .drag-target,
+html[data-theme="dark"] .drag-target.correct-drop,
+html[data-theme="dark"] .answer-option.correct,
+html[data-theme="dark"] .correct-select select,
+html[data-theme="dark"] .feedback.success,
+html[data-theme="dark"] .status-mastered,
+html[data-theme="dark"] .mastered-button.active {
+  border-color: #3a9d79;
+  color: #b9f2da;
+  background: #14382e;
+}
+
+html[data-theme="dark"] .concept-answer.wrong,
+html[data-theme="dark"] .concept-target-row.wrong .concept-target,
+html[data-theme="dark"] .drag-target-row.wrong-drop .drag-target,
+html[data-theme="dark"] .drag-target.wrong-drop,
+html[data-theme="dark"] .answer-option.wrong,
+html[data-theme="dark"] .wrong-select select,
+html[data-theme="dark"] .feedback.error,
+html[data-theme="dark"] .status-needs_practice {
+  border-color: #b85f69;
+  color: #ffd1d5;
+  background: #421f29;
+}
+
+html[data-theme="dark"] .status-learning,
+html[data-theme="dark"] .confidence-buttons button.active,
+html[data-theme="dark"] .case-section-notice {
+  border-color: #557bb7;
+  color: #c9dcff;
+  background: #182d4d;
+}
+
+html[data-theme="dark"] .community-notes {
+  border-color: #3d5575;
+  color: #c0cee0;
+  background: #17263a;
+}
+html[data-theme="dark"] .community-notes summary,
+html[data-theme="dark"] .community-notes.open-note > strong { color: #a9c9ff; }
+html[data-theme="dark"] .community-notes.disputed,
+html[data-theme="dark"] .locked-section-notice,
+html[data-theme="dark"] .concept-setup-warning,
+html[data-theme="dark"] .auth-message,
+html[data-theme="dark"] .flag-button.active {
+  border-color: #8c743c;
+  color: #f4d990 !important;
+  background: #352d19;
+}
+
+html[data-theme="dark"] .result-page,
+html[data-theme="dark"] .auth-page {
+  background: radial-gradient(circle at 50% 15%, #182d50, transparent 40%), #0d1420;
+}
+html[data-theme="dark"] .result-ring { background: conic-gradient(var(--blue) var(--score), #2b374a 0); }
+html[data-theme="dark"] .result-ring::after { background: #151e2e; }
+html[data-theme="dark"] .case-study-title { color: #fff; background: #0b1730; }
+
+html[data-theme="dark"] .concept-definition,
+html[data-theme="dark"] .concept-target,
+html[data-theme="dark"] .concept-target.filled,
+html[data-theme="dark"] .concept-target-row > span,
+html[data-theme="dark"] .concept-target-row > small,
+html[data-theme="dark"] .drag-choice,
+html[data-theme="dark"] .drag-target,
+html[data-theme="dark"] .drag-target-prompt,
+html[data-theme="dark"] .answer-option,
+html[data-theme="dark"] .context-box div,
+html[data-theme="dark"] .case-study-content,
+html[data-theme="dark"] .auth-card form label,
+html[data-theme="dark"] .select-label,
+html[data-theme="dark"] .text-button {
+  color: #c9d4e4;
+}
+
+html[data-theme="dark"] .domain-row:disabled,
+html[data-theme="dark"] .domain-row:disabled:hover,
+html[data-theme="dark"] .question-grid button:disabled { background: #1a2331; }
+html[data-theme="dark"] .table-head { color: #b5c1d1; }
+html[data-theme="dark"] .drop-placeholder { color: #91a0b4; }
+html[data-theme="dark"] .theme-toggle {
+  border-color: #465773;
+  color: #e6edf8;
+  background: #1b2638;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+@media (max-width: 520px) {
+  .theme-toggle { right: 12px; bottom: 12px; width: 44px; padding: 0; justify-content: center; }
+  .theme-toggle > span:last-child { display: none; }
+}
