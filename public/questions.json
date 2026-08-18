@@ -4939,5 +4939,847 @@
       "summary": "Extracted OCR text should use an object projection, not a file projection. Microsoft documents knowledge-store file projections as binary normalized images; object projections store JSON blobs.",
       "answerDisputed": false
     }
+  },
+  {
+    "id": 118,
+    "category": "Implement computer vision solutions",
+    "subcategory": "Create custom vision models",
+    "question": "You are building a Custom Vision model that will be deployed as part of an iOS app. You have images of cats and dogs, and each image contains either a cat or a dog.\n\nHow should you configure the project?",
+    "type": "hotspot",
+    "interactions": [
+      {
+        "id": "projectType",
+        "prompt": "Project type",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Classification",
+            "explanation": "Classification assigns a category to the complete image, which is the requirement here."
+          },
+          {
+            "id": "B",
+            "text": "Object Detection",
+            "explanation": "Object detection locates one or more objects with bounding boxes. The question only asks which single class describes the whole image."
+          }
+        ],
+        "correctAnswer": "A"
+      },
+      {
+        "id": "classificationType",
+        "prompt": "Classification type",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Multiclass (Single tag per image)",
+            "explanation": "Each image contains exactly one of the mutually exclusive classes: cat or dog."
+          },
+          {
+            "id": "B",
+            "text": "Multilabel (Multiple tags per image)",
+            "explanation": "Multilabel is intended for images that can have more than one tag at the same time."
+          }
+        ],
+        "correctAnswer": "A"
+      },
+      {
+        "id": "domain",
+        "prompt": "Domain",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Adult",
+            "explanation": "The Adult domain is for adult-content classification, not general animal classification or mobile export."
+          },
+          {
+            "id": "B",
+            "text": "Food",
+            "explanation": "The Food domain is specialized for food images and is not exportable unless its compact variant is selected."
+          },
+          {
+            "id": "C",
+            "text": "General",
+            "explanation": "The standard General domain is suitable for broad image classification but cannot be exported for local mobile use."
+          },
+          {
+            "id": "D",
+            "text": "General (compact)",
+            "explanation": "Compact domains can be exported, including to CoreML for an iOS app. General (compact) fits cats and dogs."
+          },
+          {
+            "id": "E",
+            "text": "Landmarks",
+            "explanation": "The Landmarks domain is specialized for landmarks and the non-compact variant is not the correct mobile-export choice."
+          },
+          {
+            "id": "F",
+            "text": "Landmarks (compact)",
+            "explanation": "This is exportable but specialized for landmarks rather than cats and dogs."
+          },
+          {
+            "id": "G",
+            "text": "Retail",
+            "explanation": "The Retail domain is intended for retail products and the non-compact variant cannot be exported."
+          },
+          {
+            "id": "H",
+            "text": "Retail (compact)",
+            "explanation": "This is exportable but specialized for retail products rather than general animal images."
+          }
+        ],
+        "correctAnswer": "D"
+      }
+    ]
+  },
+  {
+    "id": 119,
+    "category": "Implement generative AI and agentic solutions",
+    "subcategory": "Build agents with tools and grounding",
+    "question": "A Microsoft Foundry agent has an MCP tool named kbsearch that queries an Azure AI Search knowledge base. Some runs answer from the base model without invoking kbsearch, so the responses lack grounded citations.\n\nYou need to deterministically force the agent to invoke a tool on each run. What should you do?",
+    "type": "single",
+    "supportingContent": [
+      {
+        "type": "code",
+        "language": "python",
+        "content": "run = project_client.agents.runs.create_and_process(\n    thread_id=thread.id,\n    agent_id=agent.id\n)"
+      }
+    ],
+    "options": [
+      {
+        "id": "A",
+        "text": "Add the response_format parameter to create_and_process().",
+        "explanation": "response_format controls the structure of the model response; it does not require a tool call."
+      },
+      {
+        "id": "B",
+        "text": "Replace create_and_process() with create_thread_and_process_run().",
+        "explanation": "Changing the helper method does not change the model's tool-selection policy."
+      },
+      {
+        "id": "C",
+        "text": "Add the toolset parameter to create_and_process().",
+        "explanation": "A toolset makes tools available, but availability alone still lets the model choose not to call one."
+      },
+      {
+        "id": "D",
+        "text": "Add the tool_choice parameter to create_and_process().",
+        "explanation": "tool_choice provides request-level control. Setting it to required forces the run to invoke one or more tools."
+      }
+    ],
+    "correctAnswers": [
+      "D"
+    ]
+  },
+  {
+    "id": 120,
+    "category": "Implement text analysis solutions",
+    "subcategory": "Extract entities and key information from text",
+    "question": "You call get_key_words() with the text:\n\nOur tour of London included a visit to Buckingham Palace\n\nWhat will the function output?",
+    "type": "single",
+    "supportingContent": [
+      {
+        "type": "code",
+        "language": "python",
+        "content": "def get_key_words(textAnalyticsClient, text):\n    response = textAnalyticsClient.recognize_entities(\n        documents=[text]\n    )[0]\n    print(\"Key Words:\")\n    for entity in response.entities:\n        print(\"\\t\\t\", entity.text)"
+      }
+    ],
+    "options": [
+      {
+        "id": "A",
+        "text": "London and Buckingham Palace only",
+        "explanation": "Named entity recognition identifies London as a location and Buckingham Palace as a named place. Generic words such as tour and visit are not named entities."
+      },
+      {
+        "id": "B",
+        "text": "Tour and visit only",
+        "explanation": "These are ordinary nouns/actions, not the named entities identified by recognize_entities()."
+      },
+      {
+        "id": "C",
+        "text": "The complete input sentence",
+        "explanation": "The loop prints each detected entity, not the complete document."
+      },
+      {
+        "id": "D",
+        "text": "London and Tour only",
+        "explanation": "London is an entity, but Tour is not; Buckingham Palace is the other named entity."
+      }
+    ],
+    "correctAnswers": [
+      "A"
+    ]
+  },
+  {
+    "id": 121,
+    "category": "Implement text analysis solutions",
+    "subcategory": "Link entities to knowledge bases",
+    "question": "The following code calls linked entity recognition for a document. For each statement, select Yes if it is true; otherwise, select No.",
+    "type": "yes_no_table",
+    "supportingContent": [
+      {
+        "type": "code",
+        "language": "python",
+        "content": "from azure.core.credentials import AzureKeyCredential\nfrom azure.ai.textanalytics import TextAnalyticsClient\n\ntext_analytics_client = TextAnalyticsClient(\n    endpoint=endpoint,\n    credential=AzureKeyCredential(key)\n)\ndocuments = [\n    \"Our tour guide took us up the Space Needle during our trip to Seattle last week.\"\n]\nresult = text_analytics_client.recognize_linked_entities(documents)"
+      }
+    ],
+    "interactions": [
+      {
+        "id": "statements",
+        "type": "yes_no_table",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Yes"
+          },
+          {
+            "id": "no",
+            "text": "No"
+          }
+        ],
+        "rows": [
+          {
+            "id": "row1",
+            "text": "The code will detect the language of the documents.",
+            "correctAnswer": "no",
+            "explanation": "No. recognize_linked_entities performs entity linking. Language detection requires a separate detect_language call."
+          },
+          {
+            "id": "row2",
+            "text": "The url attribute returned for each linked entity will be a Bing search link.",
+            "correctAnswer": "no",
+            "explanation": "No. url is the URL of the identified knowledge-base entry, commonly a Wikipedia page, not a Bing search-results link."
+          },
+          {
+            "id": "row3",
+            "text": "The matches attribute returned for each linked entity will provide the location in a document where the entity is referenced.",
+            "correctAnswer": "yes",
+            "explanation": "Yes. Each match includes offset and length information that identifies where the entity mention occurs in the document."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 122,
+    "category": "Plan and manage an Azure AI solution",
+    "subcategory": "Select and deploy models",
+    "question": "A Microsoft Foundry support-ticket app must compare candidate models by quality, cost, and throughput, and must avoid hosting model weights in your Azure subscription. What should you configure?",
+    "type": "hotspot",
+    "interactions": [
+      {
+        "id": "modelEvaluation",
+        "prompt": "Model evaluation",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Configure private endpoint access",
+            "explanation": "Private endpoints control network access; they do not compare models by quality, cost, and throughput."
+          },
+          {
+            "id": "B",
+            "text": "Use deployment lists and license tabs",
+            "explanation": "Deployment and licensing details do not provide the requested comparative benchmark view."
+          },
+          {
+            "id": "C",
+            "text": "Use tool catalog connections and run traces",
+            "explanation": "Tools and traces help inspect agent execution, not compare candidate foundation models."
+          },
+          {
+            "id": "D",
+            "text": "Use model catalog leaderboards and model cards",
+            "explanation": "Leaderboards provide comparative benchmark results, while model cards describe capabilities, costs, and deployment characteristics."
+          }
+        ],
+        "correctAnswer": "D"
+      },
+      {
+        "id": "deploymentOption",
+        "prompt": "Deployment option",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Bring your own model",
+            "explanation": "Bringing your own model normally requires you to host and operate the model weights."
+          },
+          {
+            "id": "B",
+            "text": "Build a vector index",
+            "explanation": "A vector index stores embeddings for retrieval; it is not a model deployment option."
+          },
+          {
+            "id": "C",
+            "text": "Use a serverless deployment",
+            "explanation": "Serverless API deployment lets the provider host and operate the model instead of placing model weights in your subscription."
+          },
+          {
+            "id": "D",
+            "text": "Use a managed compute deployment",
+            "explanation": "Managed compute deploys the model to compute in your subscription and therefore hosts the model there."
+          }
+        ],
+        "correctAnswer": "C"
+      }
+    ]
+  },
+  {
+    "id": 123,
+    "category": "Implement generative AI and agentic solutions",
+    "subcategory": "Use embeddings and vector representations",
+    "question": "You need to compare documents for semantic similarity. The solution must return numeric vectors that represent the tokens of each document and minimize development effort. Which Azure OpenAI model type should you use?",
+    "type": "single",
+    "options": [
+      {
+        "id": "A",
+        "text": "GPT-3.5",
+        "explanation": "GPT models generate language; they are not the specialized model type for producing semantic vector representations."
+      },
+      {
+        "id": "B",
+        "text": "embeddings",
+        "explanation": "Embedding models convert text into numeric vectors whose distance can be used to measure semantic similarity."
+      },
+      {
+        "id": "C",
+        "text": "GPT-4",
+        "explanation": "GPT-4 is a generative model. Using a dedicated embedding model is simpler and purpose-built for vector similarity."
+      },
+      {
+        "id": "D",
+        "text": "DALL-E",
+        "explanation": "DALL-E generates images and does not produce text embeddings for document similarity."
+      }
+    ],
+    "correctAnswers": [
+      "B"
+    ]
+  },
+  {
+    "id": 124,
+    "category": "Implement generative AI and agentic solutions",
+    "subcategory": "Design effective prompts and system messages",
+    "question": "An app uses the following code to provide definitions of common AI terms. For each statement, select Yes if it is true; otherwise, select No.",
+    "type": "yes_no_table",
+    "supportingContent": [
+      {
+        "type": "code",
+        "language": "python",
+        "content": "openai.api_key = key\nopenai.api_base = endpoint\nresponse = openai.ChatCompletion.create(\n    engine=deployment_name,\n    messages=[\n        {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n        {\"role\": \"user\", \"content\": \"What is an LLM?\"}\n    ]\n)\nprint(response[\"choices\"][0][\"message\"][\"content\"])"
+      }
+    ],
+    "interactions": [
+      {
+        "id": "statements",
+        "type": "yes_no_table",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Yes"
+          },
+          {
+            "id": "no",
+            "text": "No"
+          }
+        ],
+        "rows": [
+          {
+            "id": "row1",
+            "text": "The response is guaranteed to contain an explanation of large language models with a high degree of certainty.",
+            "correctAnswer": "no",
+            "explanation": "No. LLM is an ambiguous abbreviation, and generative output is probabilistic. The generic prompt does not guarantee the intended meaning."
+          },
+          {
+            "id": "row2",
+            "text": "Changing the user prompt to “What is an LLM in the context of AI models?” will be more likely to produce the intended response.",
+            "correctAnswer": "yes",
+            "explanation": "Yes. Adding the AI-model context removes ambiguity from the user's request."
+          },
+          {
+            "id": "row3",
+            "text": "Changing the system message to “You must answer only within the context of AI language models.” will give a higher likelihood of producing the intended response.",
+            "correctAnswer": "yes",
+            "explanation": "Yes. A more specific system instruction constrains the model to the intended domain."
+          }
+        ]
+      }
+    ],
+    "communityNotes": {
+      "summary": "The first statement is treated as No because the original prompt is ambiguous and model output is probabilistic; the two more specific prompts increase the likelihood of the intended AI definition.",
+      "answerDisputed": false
+    }
+  },
+  {
+    "id": 125,
+    "category": "Implement generative AI and agentic solutions",
+    "subcategory": "Connect applications to deployed models",
+    "question": "You have an Azure OpenAI model named AI1 and are building a web app by using the Azure OpenAI SDK. What information must you provide to connect the app to AI1?",
+    "type": "single",
+    "options": [
+      {
+        "id": "A",
+        "text": "the deployment name, key, and model name",
+        "explanation": "The model name does not replace the Azure resource endpoint, which is required to address the service."
+      },
+      {
+        "id": "B",
+        "text": "the endpoint, key, and model type",
+        "explanation": "The SDK must target the particular Azure deployment, not only a general model type."
+      },
+      {
+        "id": "C",
+        "text": "the deployment name, endpoint, and key",
+        "explanation": "The endpoint identifies the Azure resource, the key authenticates the request, and the deployment name identifies the deployed model."
+      },
+      {
+        "id": "D",
+        "text": "the endpoint, key, and model name",
+        "explanation": "Azure OpenAI requests target a deployment name; the underlying model name alone is insufficient."
+      }
+    ],
+    "correctAnswers": [
+      "C"
+    ]
+  },
+  {
+    "id": 126,
+    "category": "Plan and manage an Azure AI solution",
+    "subcategory": "Secure Azure AI resources",
+    "question": "An Azure solution will use Azure Language in Foundry Tools to process sensitive customer data. Only specific Azure processes must be able to access the service, with minimal administrative effort. What should you include?",
+    "type": "single",
+    "options": [
+      {
+        "id": "A",
+        "text": "Azure Application Gateway",
+        "explanation": "Application Gateway manages inbound web traffic but is not the built-in access-control mechanism for the Language resource."
+      },
+      {
+        "id": "B",
+        "text": "a virtual network gateway",
+        "explanation": "A VNet gateway connects networks over VPN or ExpressRoute. It is unnecessary for allowing selected Azure virtual networks or subnets."
+      },
+      {
+        "id": "C",
+        "text": "IPsec rules",
+        "explanation": "Managing IPsec rules would add operational overhead and is not the resource's native network access control."
+      },
+      {
+        "id": "D",
+        "text": "virtual network rules",
+        "explanation": "Virtual network rules restrict the resource to approved virtual networks or subnets and use Azure's native configuration with minimal administration."
+      }
+    ],
+    "correctAnswers": [
+      "D"
+    ]
+  },
+  {
+    "id": 127,
+    "category": "Plan and manage an Azure AI solution",
+    "subcategory": "Secure Azure AI resources",
+    "question": "A Microsoft Foundry Service resource named CSAccount1 is connected to VNet1. You must prevent external access and allow only specific resources, while minimizing administration. Which two actions should you perform?",
+    "type": "multiple",
+    "options": [
+      {
+        "id": "A",
+        "text": "In CSAccount1, modify the virtual network settings.",
+        "explanation": "Configure the Foundry resource firewall/network settings to deny public traffic and allow only the selected virtual network or subnet."
+      },
+      {
+        "id": "B",
+        "text": "In VNet1, create a virtual subnet.",
+        "explanation": "Creating an additional subnet is not required when an appropriate subnet in the existing VNet can be allowed."
+      },
+      {
+        "id": "C",
+        "text": "In VNet1, enable a service endpoint for CSAccount1.",
+        "explanation": "Enable the Microsoft.CognitiveServices service endpoint on the selected subnet so its traffic can reach the resource through the allowed VNet path."
+      },
+      {
+        "id": "D",
+        "text": "In CSAccount1, configure Access control (IAM).",
+        "explanation": "IAM controls identities and permissions but does not, by itself, prevent traffic from outside the virtual network."
+      },
+      {
+        "id": "E",
+        "text": "In VNet1, modify the general virtual network settings.",
+        "explanation": "The relevant VNet-side action is enabling the service endpoint on the chosen subnet, not a separate generic VNet modification."
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "C"
+    ]
+  },
+  {
+    "id": 128,
+    "category": "Implement information extraction solutions",
+    "subcategory": "Extract content from documents",
+    "question": "You have press releases stored as PDF files. You need to extract text from the files and perform sentiment analysis. Which service should you use for each task?",
+    "type": "hotspot",
+    "interactions": [
+      {
+        "id": "extractText",
+        "prompt": "Extract text",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Azure AI Search",
+            "explanation": "Search can index and enrich content, but Document Intelligence is the direct service for extracting text and structure from PDFs."
+          },
+          {
+            "id": "B",
+            "text": "Azure Vision in Foundry Tools",
+            "explanation": "Vision OCR can read images, but Document Intelligence is designed for document formats and document structure."
+          },
+          {
+            "id": "C",
+            "text": "Azure Document Intelligence in Foundry Tools",
+            "explanation": "Document Intelligence extracts text and structure from PDF documents."
+          }
+        ],
+        "correctAnswer": "C"
+      },
+      {
+        "id": "sentiment",
+        "prompt": "Perform sentiment analysis",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Azure AI Search",
+            "explanation": "Search provides retrieval and indexing rather than the dedicated sentiment API."
+          },
+          {
+            "id": "B",
+            "text": "Azure AI Computer Vision",
+            "explanation": "Computer Vision analyzes images, not the sentiment of extracted text."
+          },
+          {
+            "id": "C",
+            "text": "Azure Document Intelligence in Foundry Tools",
+            "explanation": "Document Intelligence extracts document content but does not provide the dedicated sentiment analysis operation."
+          },
+          {
+            "id": "D",
+            "text": "Azure Language in Foundry Tools",
+            "explanation": "Azure Language includes sentiment analysis and opinion mining for text."
+          }
+        ],
+        "correctAnswer": "D"
+      }
+    ]
+  },
+  {
+    "id": 129,
+    "category": "Implement computer vision solutions",
+    "subcategory": "Create custom vision models",
+    "question": "You need to identify defective products from a real-time production-line video feed. You have an image library of products that were manually approved or rejected. The solution must train a new model from that library and minimize development effort. What should you recommend?",
+    "type": "single",
+    "options": [
+      {
+        "id": "A",
+        "text": "Azure Vision in Foundry Tools",
+        "explanation": "Prebuilt Vision features analyze images but do not provide the simplest custom classifier training workflow for approved and rejected product examples."
+      },
+      {
+        "id": "B",
+        "text": "Azure AI Video Indexer",
+        "explanation": "Video Indexer extracts insights from video content but is not intended for training this custom defect classifier."
+      },
+      {
+        "id": "C",
+        "text": "Azure AI Custom Vision",
+        "explanation": "Custom Vision provides a low-code workflow to train an image classifier from labeled approved/rejected examples and use it on video frames."
+      },
+      {
+        "id": "D",
+        "text": "Azure Machine Learning",
+        "explanation": "Azure Machine Learning can build a custom model, but requires more development and operational work than Custom Vision."
+      }
+    ],
+    "correctAnswers": [
+      "C"
+    ]
+  },
+  {
+    "id": 130,
+    "category": "Implement text analysis solutions",
+    "subcategory": "Deploy Language service containers",
+    "question": "You run the following Azure Language sentiment-analysis container. For each statement, select Yes if it is true; otherwise, select No.",
+    "type": "yes_no_table",
+    "supportingContent": [
+      {
+        "type": "code",
+        "language": "shell",
+        "content": "docker run --rm -it -p 5000:5000 --memory 10g --cpus 2 \\\n  mcr.microsoft.com/azure-cognitive-services/textanalytics/sentiment \\\n  Eula=accept \\\n  Billing={ENDPOINT_URI} \\\n  ApiKey={API_KEY}"
+      }
+    ],
+    "interactions": [
+      {
+        "id": "statements",
+        "type": "yes_no_table",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Yes"
+          },
+          {
+            "id": "no",
+            "text": "No"
+          }
+        ],
+        "rows": [
+          {
+            "id": "row1",
+            "text": "Going to http://localhost:5000/status will query the Azure endpoint to verify whether the API key is valid.",
+            "correctAnswer": "no",
+            "explanation": "No. /status verifies the API key used to start the container without causing a query to the billing endpoint."
+          },
+          {
+            "id": "row2",
+            "text": "The container logging provider will write log data.",
+            "correctAnswer": "no",
+            "explanation": "No. The command does not configure an output mount or the logging settings required for file-based container logs. Console output can still be viewed through Docker."
+          },
+          {
+            "id": "row3",
+            "text": "Going to http://localhost:5000/swagger will provide documentation for the available endpoints.",
+            "correctAnswer": "yes",
+            "explanation": "Yes. The container exposes an interactive Swagger description of its supported REST endpoints."
+          }
+        ]
+      }
+    ],
+    "communityNotes": {
+      "summary": "The logging statement is interpreted as file/provider logging to an output mount. The shown command does not configure such a mount or logging settings.",
+      "caveats": [
+        "Docker can still expose console logs through `docker logs`; that is different from configuring the container logging provider and an output mount."
+      ],
+      "answerDisputed": false
+    }
+  },
+  {
+    "id": 131,
+    "category": "Plan and manage an Azure AI solution",
+    "subcategory": "Provision Azure AI resources",
+    "question": "An app will use the Speech and Language APIs. Each service must be accessed by using a single shared endpoint and credential. Which resource type should you create?",
+    "type": "single",
+    "options": [
+      {
+        "id": "A",
+        "text": "Azure Language in Foundry Tools",
+        "explanation": "A Language resource provides Language APIs only and does not combine Speech and Language behind one credential."
+      },
+      {
+        "id": "B",
+        "text": "Microsoft Foundry service",
+        "explanation": "A multi-service Foundry resource provides one endpoint and credential for supported services, including Speech and Language."
+      },
+      {
+        "id": "C",
+        "text": "Azure Speech in Foundry Tools",
+        "explanation": "A Speech resource provides Speech APIs only and does not also provide Language APIs."
+      },
+      {
+        "id": "D",
+        "text": "Content Safety in Foundry Control Plane",
+        "explanation": "Content Safety is a separate moderation service and does not provide Speech and Language APIs."
+      }
+    ],
+    "correctAnswers": [
+      "B"
+    ]
+  },
+  {
+    "id": 132,
+    "category": "Implement computer vision solutions",
+    "subcategory": "Extract text from images",
+    "question": "An app will include one million scanned magazine articles, each stored as an image file. You need to extract text from the images with minimal development effort. What should the solution include?",
+    "type": "single",
+    "options": [
+      {
+        "id": "A",
+        "text": "Azure Document Intelligence in Foundry Tools",
+        "explanation": "Document Intelligence can process documents, but the direct Read OCR API is the lower-effort choice for extracting text from image files at scale."
+      },
+      {
+        "id": "B",
+        "text": "the Read API in Azure Vision in Foundry Tools",
+        "explanation": "The Read API is the prebuilt OCR capability designed to extract printed and handwritten text from images and documents."
+      },
+      {
+        "id": "C",
+        "text": "Azure Vision in Foundry Tools Image Analysis",
+        "explanation": "Image Analysis describes visual content; the dedicated Read OCR API is the intended text-extraction feature."
+      },
+      {
+        "id": "D",
+        "text": "Azure Language in Foundry Tools",
+        "explanation": "Language analyzes text after it has been extracted; it does not perform OCR on image files."
+      }
+    ],
+    "correctAnswers": [
+      "B"
+    ]
+  },
+  {
+    "id": 133,
+    "category": "Implement text analysis solutions",
+    "subcategory": "Deploy Language service containers",
+    "question": "You must analyze confidential documents with Azure Language while ensuring the documents remain on-premises. A Microsoft Foundry Service resource is already provisioned. Which three actions should you perform in sequence?",
+    "type": "drag_drop",
+    "interactions": [
+      {
+        "id": "deploymentSequence",
+        "type": "drag_drop",
+        "choices": [
+          {
+            "id": "A",
+            "text": "Pull an image from Docker Hub."
+          },
+          {
+            "id": "B",
+            "text": "Run the container and specify an API key and the Endpoint URL of the Azure AI resource."
+          },
+          {
+            "id": "C",
+            "text": "Provision an on-premises Kubernetes cluster that is isolated from the internet."
+          },
+          {
+            "id": "D",
+            "text": "Provision an on-premises Kubernetes cluster that has internet connectivity."
+          },
+          {
+            "id": "E",
+            "text": "Provision an Azure Kubernetes Service (AKS) resource."
+          },
+          {
+            "id": "F",
+            "text": "Run the container and specify an App ID and Client Secret."
+          },
+          {
+            "id": "G",
+            "text": "Pull an image from the Microsoft Container Registry (MCR)."
+          }
+        ],
+        "targets": [
+          {
+            "id": "step1",
+            "prompt": "1",
+            "correctAnswer": "Provision an on-premises Kubernetes cluster that has internet connectivity.",
+            "explanation": "Use on-premises compute so the documents remain local. Connected containers require outbound connectivity for metering against the Azure resource."
+          },
+          {
+            "id": "step2",
+            "prompt": "2",
+            "correctAnswer": "Pull an image from the Microsoft Container Registry (MCR).",
+            "explanation": "Microsoft publishes Azure AI service container images in MCR, not Docker Hub."
+          },
+          {
+            "id": "step3",
+            "prompt": "3",
+            "correctAnswer": "Run the container and specify an API key and the Endpoint URL of the Azure AI resource.",
+            "explanation": "Connected containers require Eula acceptance plus the Azure billing endpoint and API key when started."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 134,
+    "category": "Implement computer vision solutions",
+    "subcategory": "Analyze images with Azure Vision",
+    "question": "You must configure an Azure Vision v3.2 Analyze request to identify whether an image is clipart or a line drawing. Complete the request.",
+    "type": "hotspot",
+    "interactions": [
+      {
+        "id": "httpMethod",
+        "prompt": "HTTP method",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "GET",
+            "explanation": "Analyze Image accepts an image URL or binary image in the body of a POST request, not GET."
+          },
+          {
+            "id": "B",
+            "text": "PATCH",
+            "explanation": "PATCH modifies a resource; it is not the Analyze Image operation's method."
+          },
+          {
+            "id": "C",
+            "text": "POST",
+            "explanation": "The Vision v3.2 Analyze Image operation uses POST."
+          }
+        ],
+        "correctAnswer": "C"
+      },
+      {
+        "id": "visualFeature",
+        "prompt": "visualFeatures value",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "description",
+            "explanation": "Description produces a natural-language image description, not the clipart and line-drawing flags."
+          },
+          {
+            "id": "B",
+            "text": "imageType",
+            "explanation": "The ImageType visual feature returns the clipArtType and lineDrawingType properties."
+          }
+        ],
+        "correctAnswer": "B"
+      }
+    ],
+    "answerTemplate": {
+      "language": "HTTP",
+      "content": "{{httpMethod}} https://<resource>.cognitiveservices.azure.com/vision/v3.2/analyze?visualFeatures={{visualFeature}}&details={string}&language=en"
+    }
+  },
+  {
+    "id": 135,
+    "category": "Implement computer vision solutions",
+    "subcategory": "Evaluate custom vision models",
+    "question": "You train an Azure Custom Vision classifier and need to evaluate it. Which two metrics are available for review?",
+    "type": "multiple",
+    "options": [
+      {
+        "id": "A",
+        "text": "F-score",
+        "explanation": "F-score can be derived from precision and recall, but it is not one of the two primary per-tag metrics shown for this Custom Vision evaluation question."
+      },
+      {
+        "id": "B",
+        "text": "area under the curve (AUC)",
+        "explanation": "AUC is not one of the Custom Vision portal's standard evaluation metrics for a trained classifier."
+      },
+      {
+        "id": "C",
+        "text": "precision",
+        "explanation": "Precision measures the proportion of predicted classifications that are correct."
+      },
+      {
+        "id": "D",
+        "text": "weighted accuracy",
+        "explanation": "Weighted accuracy is not one of the standard Custom Vision classifier evaluation metrics shown in the portal."
+      },
+      {
+        "id": "E",
+        "text": "recall",
+        "explanation": "Recall measures the proportion of actual classifications that the model successfully identifies."
+      }
+    ],
+    "correctAnswers": [
+      "C",
+      "E"
+    ]
   }
 ]
