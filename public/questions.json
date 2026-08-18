@@ -3105,7 +3105,7 @@
       }
     ],
     "correctAnswers": [
-      "A"
+      "B"
     ],
     "communityNotes": {
       "summary": "The source answer is disputed. Foundry Memory uses `scope` as an application-chosen partition key. A unique session or conversation ID would isolate sessions, but Microsoft documents `{{$userId}}` as the automatic placeholder and does not document `{{$conversationId}}` on the referenced Memory page.",
