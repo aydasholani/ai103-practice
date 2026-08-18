@@ -73,7 +73,7 @@
     "id": 2,
     "category": "Plan and manage an Azure AI solution",
     "subcategory": "Implement responsible AI across generative AI and agentic systems",
-    "question": "You need to configure Agent1 to meet the security and compliance requirements.\n\nWhat should you use?",
+    "question": "You need to configure Agent1 so that it does not reveal customer personally identifiable information (PII) if customer data is added accidentally to the product sheet repository in storage1.\n\nWhat should you use?",
     "type": "single",
     "context": "Case Study -\n\nThis is a case study. Case studies are not timed separately from other exam sections. You can use as much exam time as you would like to\n\ncomplete each case study. However, there might be additional case studies or other exam sections. Manage your time to ensure that you can\n\ncomplete all the exam sections in the time provided. Pay attention to the Exam Progress at the top of the screen so you have sufficient time to\n\ncomplete any exam sections that follow this case study.\n\nTo answer the case study questions, you will bed to reference information that is provided in the case. Case studies and associated questions\n\nmight contain exhibits or other resources that provide more information about the scenario described in the case. Information provided in an\n\nindividual question does not apply to the other questions in the case study.\n\nA Review Screen will appear at the end of this case study. From the Review Screen, you can review and change your answers before you move to\n\nthe next exam section. After you leave this case study, you will NOT be able to return to it.\n\nTo start the case study -\n\nTo display the first question in this case study, select the “Next” button. To the left of the question, a menu provides links to information such as\n\nbusiness requirements, the existing environment, and problem statements. Please read through all this information before answering any\n\nquestions. When you are ready to answer a question, select the “Question” button to return to the question.\n\nOverview -\n\nCompany Information -\n\nContoso, Ltd is a multinational retail company that builds, deploys, and manages generative AI and agent-based solutions by using Microsoft\n\nFoundry.\n\nExisting Environment -\n\nIdentity Environment -\n\nContoso uses Microsoft Entra ID for identity management, authentication, and authorization capabilities that enable agents to access\n\norganizational resources and services.\n\nContoso recently formed a new AI engineering team named Agent1Dev Team to optimize and maintain existing AI solutions.\n\nThe team collaborates with solution architects, DevOps engineers, and security engineers to design, implement. monitor, and secure AI\n\napplications.\n\nContoso also has a team named Agent1Test Team that is responsible for validating AI solutions before the solution deployments.\n\nGenerative Environment -\n\nContoso has a Microsoft Foundry deployment that contains two projects named Project1 and Project2.\n\nProject1 -\n\nProject1 contains a customer support agent named Agent1 that assists customers with product inquiries and troubleshooting requests.\n\nAgent1 has the following configurations:\n\nAgent1 uses a base model deployment.\n\nA safety evaluation pipeline is NOT enabled.\n\nTool invocation approval workflows are NOT enabled.\n\nConversation memory constraints are NOT configured.\n\nAgent1 interacts with customers by using digital support channels and answers general questions about Contoso products.\n\nProject1 is deployed to an Azure region located in the European Union (EU).\n\nAgent1Dev Team will use Project1 to optimize and maintain Agent1.\n\nProject2 -\n\nProject2 contains a deployed video generation model. The marketing department at Contoso has access to Project2 and plans to use the model to\n\ndevelop a video creation solution.\n\nDevelopment of the solution is incomplete.\n\nData Environment -\n\nContoso stores product-related information in Azure resources that support AI applications.\n\nThe Azure environment contains an Azure Blob Storage account named storage1 that stores product detail sheets for all the Contoso products.\n\nThe product sheets include specifications, feature descriptions, and product support information that Agent1 can use to answer customer\n\nquestions. The product sheets are stored in the PDF format.\n\nProblem Statements -\n\nContoso identifies the following issues:\n\nAgent1 has only general knowledge of the Contoso products.\n\nA recent chat interaction with Agent1 was analyzed for sentiment. The results of the analysis have NOT been processed yet.\n\nAgent1 does NOT use the detailed product information in the product sheets stored in storage1 when responding to customer questions.\n\nThe finance department at Contoso reports that vendor invoices must be reviewed manually to ensure that the invoices match the terms defined in\n\nthe vendor contracts. The invoices contain tables, logos, and varied layouts that make the documents difficult to process consistently.\n\nRequirements -\n\nPlanned Changes -\n\nContoso plans to implement the following changes:\n\nImplement a solution for Project1 that analyzes the vendor invoices by evaluating both the visual layout and the textual content of the invoices, so\n\nthat the invoice details can be verified against the vendor contract terms.\n\nUpdate the base model deployment used by Agent1 and standardize the model version to ensure continuity and consistent responses.\n\nEnable Agent1 to retrieve and use the detailed product information from the product sheets stored in storage1.\n\nImplement an indexing solution for the product sheets that Agent1 can use to answer customer questions.\n\nComplete the development of the video creation solution.\n\nTechnical Requirements -\n\nContoso identifies the following technical requirements:\n\nThe model deployment used by Agent1 must support scalable, high-throughput generative AI workloads and dynamically scale to handle variable\n\ncustomer support traffic, without requiring reserved throughput capacity.\n\nThe product sheets must be processed by using an indexing pipeline that enables semantic and vector search, so that Agent1 can retrieve the\n\nrelevant product information.\n\nResponses generated by using the product sheet information must be relevant, complete, and accurate.\n\nAgent1 must be able to use the product sheets to answer natural language questions about product details.\n\nThe model version used by Agent1 must remain consistent to ensure stable responses.\n\nThe data processed by the model must remain within the EU.\n\nSecurity and Compliance Requirements\n\nContoso identifies the following security and compliance requirements:\n\nAPI keys must NOT be used to access Foundry-deployed models.\n\nAccess to the Azure resources must follow the principle of least privilege.\n\nThe developers at Contoso must authenticate to Microsoft Foundry resources by using Microsoft Entra authentication.\n\nAccess to Project1 must be assigned to the members of Agent1Dev Team by using a security group named SC_Agent1_Dev.\n\nAccess to Project1 must be assigned to the members of Agent1Test Team by using a security group named SC_Agent1_Test.\n\nAgent1 must never reveal customer information, even if a document that contains customer data is added erroneously to the product sheet\n\nrepository in storage1.\n\nThe product sheets might contain images that include embedded text. Agent1 must be protected from malicious instructions potentially hidden\n\nwithin the images.\n\nBusiness Requirements -\n\nContoso identifies the following business requirements:\n\nUsers that interact with Agent1 must have a personalized experience in future interactions, including the ability for Agent1 to retain conversation\n\ncontext and recall relevant information from previous interactions.\n\nAgent1 must answer questions only about the products sold by Contoso.",
     "options": [
@@ -90,7 +90,7 @@
       {
         "id": "C",
         "text": "Personally identifiable information (PII) Detection",
-        "explanation": "PII Detection identifies sensitive personal information so it can be removed or blocked before customer data is exposed. Content-category filters and Prompt Shields address different risks."
+        "explanation": "PII Detection identifies personally identifiable information so it can be detected and redacted or blocked before it is exposed in the agent response."
       },
       {
         "id": "D",
@@ -102,11 +102,8 @@
       "C"
     ],
     "communityNotes": {
-      "summary": "PII Detection is the intended answer for the explicit requirement that Agent1 must never reveal customer information. Prompt Shields address the separate requirement about malicious instructions hidden in retrieved content.",
-      "caveats": [
-        "The case contains both a PII-leakage requirement and an indirect-prompt-injection requirement, but the question asks for only one control. The intended answer depends on which requirement the exam item is targeting."
-      ],
-      "answerDisputed": true
+      "summary": "The question now targets the case study's customer-PII requirement explicitly. Prompt Shields address the separate indirect prompt-injection requirement.",
+      "answerDisputed": false
     },
     "caseStudy": {
       "id": "contoso-agent-products",
@@ -360,23 +357,23 @@
         "options": [
           {
             "id": "A",
-            "text": "Select Tool call and set Action to Block.",
-            "explanation": "Blocking Tool call output would stop content returned by a tool. The risky data enters as user input and can appear in the model output, so this targets the wrong stages."
+            "text": "Select Tool call and set Action to Annotate and block.",
+            "explanation": "Tool-call scanning alone does not cover the user-supplied image flow or the final model output. The scenario needs protection at the relevant input/tool-response/output stages."
           },
           {
             "id": "B",
             "text": "Select User input and Output and set Action to Annotate.",
-            "explanation": "Annotate labels detections in user input and output but allows the content to continue. It does not enforce the required blocking action."
+            "explanation": "Annotate only records the detection and allows processing to continue. The requirement is to prevent harmful content from continuing or being returned."
           },
           {
             "id": "C",
             "text": "Select User input and Tool response and set Action to Annotate.",
-            "explanation": "This annotates user input and tool responses without blocking them, and it monitors tool response rather than the model output required by the scenario."
+            "explanation": "Annotate only does not block detected harmful content. The scenario requires an enforcement action."
           },
           {
             "id": "D",
-            "text": "Select User input, Output, Tool response, and Tool call and set Action to Block.",
-            "explanation": "This applies blocking across user input, model output, tool responses, and tool calls, preventing detected unsafe or disallowed content from continuing at any stage."
+            "text": "Select User input, Output, Tool response, and Tool call and set Action to Annotate and block.",
+            "explanation": "Annotate and block enforces the guardrail when disallowed content is detected across the relevant agent intervention points, preventing unsafe content from continuing through the run or being returned."
           }
         ],
         "correctAnswer": "D"
@@ -411,11 +408,8 @@
       }
     ],
     "communityNotes": {
-      "summary": "The storage-role answer is corrected to Storage Blob Data Contributor because Microsoft's current Content Safety blobUrl flow accepts Contributor or Owner, not Reader.",
-      "caveats": [
-        "This is an unusual case where the documented service requirement is broader than the permissions you might expect from a pure read operation."
-      ],
-      "answerDisputed": true
+      "summary": "Updated to Microsoft's current agent guardrail action wording, 'Annotate and block'. The blob-URL access answer remains Storage Blob Data Contributor because Microsoft documents Contributor or Owner for this Content Safety flow.",
+      "answerDisputed": false
     }
   },
   {
@@ -509,51 +503,51 @@
     "id": 11,
     "category": "Implement generative AI and agentic solutions",
     "subcategory": "Build agents by using Foundry",
-    "question": "You have a Microsoft Foundry project that contains an agent named PaymentAgent.\n\nPaymentAgent includes a function tool that issues customer refunds by using an external API.\n\nYou are creating a workflow in YAML.\n\nYou need to ensure that the workflow pauses for human approval and continues with the refund step only after approval is granted.\n\nHow should you complete the workflow definition? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
+    "question": "You have a Microsoft Foundry project that contains an agent named PaymentAgent.\n\nPaymentAgent includes a function tool that issues customer refunds by using an external API.\n\nYou are creating a declarative workflow in YAML.\n\nYou need to ensure that the workflow pauses for explicit human approval and continues with the refund step only after approval is granted.\n\nHow should you complete the workflow definition? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
     "type": "dropdown",
     "interactions": [
       {
         "id": "approvalType",
-        "prompt": "approval type",
+        "prompt": "Approval action kind",
         "type": "dropdown",
         "options": [
           {
             "id": "A",
-            "text": "ask_question",
-            "explanation": "ask_question pauses the workflow and collects a human response, providing the approval checkpoint before the refund tool can run."
+            "text": "Confirmation",
+            "explanation": "Confirmation is the declarative workflow action designed for an explicit yes/no approval and stores the Boolean result in a workflow variable."
           },
           {
             "id": "B",
-            "text": "basic_chat",
-            "explanation": "basic_chat runs a model conversation step. It does not pause execution and collect an explicit human approval decision."
+            "text": "Question",
+            "explanation": "Question pauses for user input, but Confirmation is the purpose-built action for an explicit approval decision."
           },
           {
             "id": "C",
-            "text": "data_transformation",
-            "explanation": "data_transformation reshapes or maps workflow data. It cannot ask a person to approve the proposed refund."
+            "text": "SendActivity",
+            "explanation": "SendActivity sends a message but does not pause and collect an approval decision."
           }
         ],
         "correctAnswer": "A"
       },
       {
         "id": "condition",
-        "prompt": "execute_refund condition",
+        "prompt": "Refund condition",
         "type": "dropdown",
         "options": [
           {
             "id": "A",
-            "text": "approval == \"approved\"",
-            "explanation": "approval == \"approved\" checks the human answer explicitly, so the refund tool runs only after approval."
+            "text": "=Local.approved",
+            "explanation": "The Confirmation action stores a Boolean result. The If action should proceed only when Local.approved evaluates to true."
           },
           {
             "id": "B",
-            "text": "propose_refund.output != null",
-            "explanation": "Checking whether the proposal has output only confirms that a refund was proposed. It does not confirm that a human approved it."
+            "text": "=Not(IsBlank(Local.approved))",
+            "explanation": "This only checks that a response exists. It would also be true when the user explicitly rejects the refund."
           },
           {
             "id": "C",
-            "text": "true",
-            "explanation": "A condition of true always executes the refund path and therefore bypasses the approval safeguard."
+            "text": "=true",
+            "explanation": "A constant true condition would bypass the approval safeguard."
           }
         ],
         "correctAnswer": "A"
@@ -561,7 +555,11 @@
     ],
     "answerTemplate": {
       "language": "YAML",
-      "content": "steps:\n  - id: propose_refund\n    type: agent\n    agent: PaymentAgent\n  - id: approval\n    type: {{approvalType}}\n  - id: execute_refund\n    type: agent\n    agent: PaymentAgent\n    condition: {{condition}}"
+      "content": "actions:\n  - kind: {{approvalType}}\n    id: approval\n    question:\n      text: \"Approve the proposed refund?\"\n    variable: Local.approved\n  - kind: If\n    condition: {{condition}}\n    then:\n      - kind: InvokeAzureAgent\n        id: execute_refund\n        agent:\n          name: PaymentAgent"
+    },
+    "communityNotes": {
+      "summary": "Updated from legacy pseudo-YAML to current declarative workflow concepts: Confirmation for approval and a Power Fx-like Boolean condition.",
+      "answerDisputed": false
     }
   },
   {
@@ -647,22 +645,22 @@
     "options": [
       {
         "id": "A",
-        "text": "tool_choice={“required”}",
-        "explanation": "The intended setting is `tool_choice=\"required\"`, which forces at least one tool call. The PDF option uses braces and smart quotes, so treat that formatting as a source typo rather than valid SDK syntax. If several tools are registered, `required` forces tool use but does not select a particular tool."
+        "text": "tool_choice=\"required\"",
+        "explanation": "`tool_choice=\"required\"` forces at least one tool call. Because this scenario describes only the MCP tool, it forces the agent to use that tool before completing the run."
       },
       {
         "id": "B",
-        "text": "tool_choice={“auto”}",
-        "explanation": "tool_choice=\"auto\" lets the model decide whether a tool is needed. Because the model may answer from its base knowledge, auto does not guarantee grounded retrieval or citations."
+        "text": "tool_choice=\"auto\"",
+        "explanation": "`auto` lets the model decide whether to use a tool, so it can still answer from base-model knowledge."
       },
       {
         "id": "C",
-        "text": "tool_choice={“type”:“knowledge_base”}",
+        "text": "tool_choice={\"type\": \"knowledge_base\"}",
         "explanation": "A knowledge_base tool type would only be valid if that exact supported tool type were registered. It is not the documented generic value for forcing tool use and does not match the MCP tool described here."
       },
       {
         "id": "D",
-        "text": "tool_choice ={“type”:“mcp”}",
+        "text": "tool_choice={\"type\": \"mcp\"}",
         "explanation": "A specific tool specification can force a registered tool, but a bare {\"type\":\"mcp\"} does not identify a particular MCP server/tool. The documented generic setting for mandatory tool use is tool_choice=\"required\"."
       }
     ],
@@ -670,10 +668,7 @@
       "A"
     ],
     "communityNotes": {
-      "summary": "The PDF wording is preserved. Its `tool_choice={“required”}` formatting is not the documented syntax; the current setting is `tool_choice=\"required\"`.",
-      "caveats": [
-        "A named/specific tool choice is stronger when the requirement is to force one particular MCP tool."
-      ],
+      "summary": "Corrected the source formatting. `tool_choice=\"required\"` is valid syntax and is sufficient here because the scenario describes only one available tool.",
       "answerDisputed": false
     }
   },
@@ -790,7 +785,7 @@
     "id": 18,
     "category": "Implement generative AI and agentic solutions",
     "subcategory": "Optimize and operationalize generative AI systems",
-    "question": "You have a Microsoft Foundry project that contains an internal Q&A agent.\n\nUsers report the following issues when they ask the agent questions:\n\nAn increase in the following response: “No relevant information found”\n\nPeriodic HTTP 429 rate limit exceeded errors during peak hours\n\nYou need to identify whether each issue is caused by model unavailability, resource limits, or inference failures.\n\nWhat should you do? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
+    "question": "You have a Microsoft Foundry project that contains an internal Q&A agent.\n\nThe model deployment uses provisioned throughput.\n\nUsers report the following issues when they ask the agent questions:\n\nAn increase in the following response: “No relevant information found”\n\nPeriodic HTTP 429 rate limit exceeded errors during peak hours\n\nYou need to identify whether each issue is caused by model unavailability, resource limits, or inference failures.\n\nWhat should you do? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
     "type": "dropdown",
     "interactions": [
       {
@@ -800,8 +795,8 @@
         "options": [
           {
             "id": "A",
-            "text": "Model Availability Rate and Provisioned Utilization",
-            "explanation": "Model Availability Rate reveals service availability, while Provisioned Utilization reveals whether capacity is saturated. Together they address missing answers and 429 throttling."
+            "text": "Model Availability Rate and Provisioned-managed Utilization V2",
+            "explanation": "Model Availability Rate shows server-side model availability. Provisioned-managed Utilization V2 shows PTU saturation; at 100% utilization, new calls can be throttled with HTTP 429."
           },
           {
             "id": "B",
@@ -851,11 +846,8 @@
       }
     ],
     "communityNotes": {
-      "summary": "RequestResponse logging is appropriate for inspecting inference failures. Model Availability Rate is relevant to service availability, but Provisioned Utilization is only meaningful for provisioned/PTU deployments.",
-      "caveats": [
-        "The scenario never states that the model deployment uses provisioned throughput. Therefore the metric pair that includes Provisioned Utilization is assumption-dependent, and 'No relevant information found' can also originate in retrieval/application logic rather than model unavailability."
-      ],
-      "answerDisputed": true
+      "summary": "The deployment is now explicitly provisioned, so the PTU utilization metric is applicable. The deprecated utilization metric name was updated to Provisioned-managed Utilization V2.",
+      "answerDisputed": false
     }
   },
   {
@@ -894,7 +886,7 @@
     "id": 20,
     "category": "Implement generative AI and agentic solutions",
     "subcategory": "Build agents by using Foundry",
-    "question": "You have a Microsoft Foundry project that contains an agent.\n\nThe agent uses tools to retrieve internal content and call external APIs. The agent is configured to let the model decide when to call the tools.\n\nYou need to publish the agent for a compliance workflow. The solution must meet the following requirements:\n\nEach workflow run must include a retrieval step before generating a response.\n\nTool calls must authenticate by using the published agent’s own identity.\n\nTool access must use an identity isolated from other project resources.\n\nTool access must use support audit tracing.\n\nWhat should you do? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
+    "question": "You have a Microsoft Foundry project that contains an agent.\n\nThe agent uses an Azure AI Search tool to retrieve internal content and also uses tools to call external APIs. The agent is configured to let the model decide when to call the tools.\n\nYou need to publish the agent for a compliance workflow. The solution must meet the following requirements:\n\nEach workflow run must include a retrieval step before generating a response.\n\nTool calls must authenticate by using the published agent’s own identity.\n\nTool access must use an identity isolated from other project resources.\n\nTool access must use support audit tracing.\n\nWhat should you do? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
     "type": "dropdown",
     "interactions": [
       {
@@ -905,17 +897,17 @@
           {
             "id": "A",
             "text": "auto",
-            "explanation": "auto lets the model decide whether a tool is necessary. The agent can therefore still answer without calling one."
+            "explanation": "`auto` lets the model decide whether to use a tool and which tool to use, so retrieval is not guaranteed."
           },
           {
             "id": "B",
-            "text": "none",
-            "explanation": "`none` disables tool invocation for the run, so the model must answer without retrieval or other tools. That directly violates the requirement that every workflow run include a retrieval step."
+            "text": "required",
+            "explanation": "`required` guarantees at least one tool call but does not guarantee that the Azure AI Search retrieval tool is the one selected when multiple tools are available."
           },
           {
             "id": "C",
-            "text": "required",
-            "explanation": "tool_choice=\"required\" prevents the model from completing the run without calling at least one tool. However, if the agent has both retrieval and external-API tools, `required` alone does not guarantee that the retrieval tool is the one selected; a named/specific tool choice or deterministic workflow step is needed for that stronger requirement."
+            "text": "{\"type\": \"azure_ai_search\"}",
+            "explanation": "A named tool choice for the Azure AI Search tool deterministically forces the retrieval tool for the run, satisfying the requirement that retrieval occur before the response is generated."
           }
         ],
         "correctAnswer": "C"
@@ -945,11 +937,8 @@
       }
     ],
     "communityNotes": {
-      "summary": "The identity answer is defensible, but tool_choice=\"required\" only guarantees some tool call, not specifically the retrieval step when multiple tools are available.",
-      "caveats": [
-        "Because the requirement says every run must include retrieval, none of the listed tool_choice values fully guarantees the stated behavior if more than one tool is registered."
-      ],
-      "answerDisputed": true
+      "summary": "Updated the tool-choice answer so the retrieval step itself is deterministic. `required` only guarantees some tool call when multiple tools are available.",
+      "answerDisputed": false
     }
   },
   {
@@ -1887,15 +1876,15 @@
       },
       {
         "id": "D",
-        "text": "Enable mask_inpainting and supply both the input image and a mask indicating which part of the image to modify.",
-        "explanation": "The option describes the correct mask-based editing concept: the mask identifies the region that may change while the surrounding image is retained. In the current API this is an image-edit request with an input image and mask; `mask_inpainting` is not the documented mode name."
+        "text": "Send an image edit request with the original image and a mask that identifies the region to modify.",
+        "explanation": "Current image editing APIs support an input image plus a mask for inpainting. The mask restricts the edit to the selected region while preserving the rest of the source image as much as possible."
       }
     ],
     "correctAnswers": [
       "D"
     ],
     "communityNotes": {
-      "summary": "Mask-based image editing is verified, but the current API expresses this as an image-edit request with an input image plus a mask rather than a `mask_inpainting` mode.",
+      "summary": "Corrected the option to the documented input-image + mask pattern instead of the non-documented `mask_inpainting` mode name.",
       "answerDisputed": false
     }
   },
@@ -2014,13 +2003,13 @@
           },
           {
             "id": "B",
-            "text": "Set action to block.",
-            "explanation": "Block stops content when Prompt Shields detects a disallowed indirect prompt-injection attack. Annotate only records the detection and allows processing to continue, so Block is required when malicious instructions must not reach the model."
+            "text": "Set action to Annotate and block.",
+            "explanation": "Annotate and block stops the run when Prompt Shields detects a document/indirect prompt-injection attack."
           },
           {
             "id": "C",
-            "text": "Set action to annotate.",
-            "explanation": "Annotate records the detected injection but still sends the content through the workflow. The requirement is to stop it."
+            "text": "Set action to Annotate only.",
+            "explanation": "Annotate only records the detection but allows the content to continue, so it does not meet the requirement to prevent the attack."
           }
         ],
         "correctAnswer": "B"
@@ -2033,7 +2022,7 @@
           {
             "id": "A",
             "text": "Enable Spotlighting.",
-            "explanation": "Spotlighting marks untrusted document content so the model can distinguish it from trusted instructions and is a documented mitigation for indirect prompt injection. However, Microsoft's current Foundry guardrails documentation says Spotlighting is not yet applicable to agents, so this option cannot currently satisfy the scenario as written."
+            "explanation": "Spotlighting can lower the trust of third-party document content for supported model flows, but Microsoft currently marks Spotlighting as not applicable to Foundry agents."
           },
           {
             "id": "B",
@@ -2042,19 +2031,16 @@
           },
           {
             "id": "C",
-            "text": "Use optical character recognition (OCR) to extract the text from the images first.",
-            "explanation": "OCR can expose text embedded in screenshot pixels so text-based prompt-injection controls can inspect it, but OCR by itself is only extraction; it does not classify or neutralize malicious instructions."
+            "text": "Use OCR to extract the embedded text and scan the extracted text as third-party document/tool-response content with Prompt Shields.",
+            "explanation": "Prompt Shields analyzes text. OCR exposes instructions embedded in screenshot pixels so the extracted third-party text can be scanned for indirect prompt injection before it influences the agent."
           }
         ],
-        "correctAnswer": "A"
+        "correctAnswer": "C"
       }
     ],
     "communityNotes": {
-      "summary": "Prompt Shields can detect indirect attacks, but the second intended mitigation is currently incompatible with the scenario: Spotlighting is supported for models but not yet for Foundry agents.",
-      "caveats": [
-        "Keep the historical/intended answer only as a study caveat; the current Microsoft guardrails table marks Spotlighting as not applicable to agents."
-      ],
-      "answerDisputed": true
+      "summary": "Removed Spotlighting as the agent answer. Current Microsoft documentation marks Spotlighting as available for models but not Foundry agents.",
+      "answerDisputed": false
     }
   },
   {
@@ -2726,57 +2712,9 @@
     "id": 68,
     "category": "Plan and manage an Azure AI solution",
     "subcategory": "Manage, monitor, and secure AI systems",
-    "question": "You need to ensure that Agent1Dev Team can access Agent1. The solution must meet the security and compliance requirements.\n\nHow should you complete the Python code? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
-    "type": "dropdown",
+    "question": "You need to ensure that the members of Agent1Dev Team can optimize and maintain Agent1 in Project1.\n\nAccess must be assigned by using the Microsoft Entra security group SC_Agent1_Dev and must follow the principle of least privilege.\n\nWhat should you do?",
+    "type": "single",
     "context": "Case Study\n\n-\n\nThis is a case study. Case studies are not timed separately from other exam sections. You can use as much exam time as you would like to\n\ncomplete each case study. However, there might be additional case studies or other exam sections. Manage your time to ensure that you can\n\ncomplete all the exam sections in the time provided. Pay attention to the Exam Progress at the top of the screen so you have sufficient time to\n\ncomplete any exam sections that follow this case study.\n\nTo answer the case study questions, you will bed to reference information that is provided in the case. Case studies and associated questions\n\nmight contain exhibits or other resources that provide more information about the scenario described in the case. Information provided in an\n\nindividual question does not apply to the other questions in the case study.\n\nA Review Screen will appear at the end of this case study. From the Review Screen, you can review and change your answers before you move to\n\nthe next exam section. After you leave this case study, you will NOT be able to return to it.\n\nTo start the case study\n\n-\n\nTo display the first question in this case study, select the “Next” button. To the left of the question, a menu provides links to information such as\n\nbusiness requirements, the existing environment, and problem statements. Please read through all this information before answering any\n\nquestions. When you are ready to answer a question, select the “Question” button to return to the question.\n\nOverview\n\n-\n\nCompany Information\n\n-\n\nContoso, Ltd is a multinational retail company that builds, deploys, and manages generative AI and agent-based solutions by using Microsoft\n\nFoundry.\n\nExisting Environment\n\n-\n\nIdentity Environment\n\n-\n\nContoso uses Microsoft Entra ID for identity management, authentication, and authorization capabilities that enable agents to access\n\norganizational resources and services.\n\nContoso recently formed a new AI engineering team named Agent1Dev Team to optimize and maintain existing AI solutions.\n\nThe team collaborates with solution architects, DevOps engineers, and security engineers to design, implement. monitor, and secure AI\n\napplications.\n\nContoso also has a team named Agent1Test Team that is responsible for validating AI solutions before the solution deployments.\n\nGenerative Environment\n\n-\n\nContoso has a Microsoft Foundry deployment that contains two projects named Project1 and Project2.\n\nProject1\n\n-\n\nProject1 contains a customer support agent named Agent1 that assists customers with product inquiries and troubleshooting requests.\n\nAgent1 has the following configurations:\n\n• Agent1 uses a base model deployment.\n\n• A safety evaluation pipeline is NOT enabled.\n\n• Tool invocation approval workflows are NOT enabled.\n\n• Conversation memory constraints are NOT configured.\n\nAgent1 interacts with customers by using digital support channels and answers general questions about Contoso products.\n\nProject1 is deployed to an Azure region located in the European Union (EU).\n\nAgent1Dev Team will use Project1 to optimize and maintain Agent1.\n\nProject2\n\n-\n\nProject2 contains a deployed video generation model. The marketing department at Contoso has access to Project2 and plans to use the model to\n\ndevelop a video creation solution.\n\nDevelopment of the solution is incomplete.\n\nData Environment\n\n-\n\nContoso stores product-related information in Azure resources that support AI applications.\n\nThe Azure environment contains an Azure Blob Storage account named storage1 that stores product detail sheets for all the Contoso products.\n\nThe product sheets include specifications, feature descriptions, and product support information that Agent1 can use to answer customer\n\nquestions. The product sheets are stored in the PDF format.\n\nProblem Statements\n\n-\n\nContoso identifies the following issues:\n\n• Agent1 has only general knowledge of the Contoso products.\n\n• A recent chat interaction with Agent1 was analyzed for sentiment. The results of the analysis have NOT been processed yet.\n\n• Agent1 does NOT use the detailed product information in the product sheets stored in storage1 when responding to customer questions.\n\n• The finance department at Contoso reports that vendor invoices must be reviewed manually to ensure that the invoices match the terms defined\n\nin the vendor contracts. The invoices contain tables, logos, and varied layouts that make the documents difficult to process consistently.\n\nRequirements\n\n-\n\nPlanned Changes\n\n-\n\nContoso plans to implement the following changes:\n\n• Implement a solution for Project1 that analyzes the vendor invoices by evaluating both the visual layout and the textual content of the invoices,\n\nso that the invoice details can be verified against the vendor contract terms.\n\n• Update the base model deployment used by Agent1 and standardize the model version to ensure continuity and consistent responses.\n\n• Enable Agent1 to retrieve and use the detailed product information from the product sheets stored in storage1.\n\n• Implement an indexing solution for the product sheets that Agent1 can use to answer customer questions.\n\n• Complete the development of the video creation solution.\n\nTechnical Requirements\n\n-\n\nContoso identifies the following technical requirements:\n\n• The model deployment used by Agent1 must support scalable, high-throughput generative AI workloads and dynamically scale to handle variable\n\ncustomer support traffic, without requiring reserved throughput capacity.\n\n• The product sheets must be processed by using an indexing pipeline that enables semantic and vector search, so that Agent1 can retrieve the\n\nrelevant product information.\n\n• Responses generated by using the product sheet information must be relevant, complete, and accurate.\n\n• Agent1 must be able to use the product sheets to answer natural language questions about product details.\n\n• The model version used by Agent1 must remain consistent to ensure stable responses.\n\n• The data processed by the model must remain within the EU.\n\nSecurity and Compliance Requirements\n\nContoso identifies the following security and compliance requirements:\n\n• API keys must NOT be used to access Foundry-deployed models.\n\n• Access to the Azure resources must follow the principle of least privilege.\n\n• The developers at Contoso must authenticate to Microsoft Foundry resources by using Microsoft Entra authentication.\n\n• Access to Project1 must be assigned to the members of Agent1Dev Team by using a security group named SC_Agent1_Dev.\n\n• Access to Project1 must be assigned to the members of Agent1Test Team by using a security group named SC_Agent1_Test.\n\n• Agent1 must never reveal customer information, even if a document that contains customer data is added erroneously to the product sheet\n\nrepository in storage1.\n\n• The product sheets might contain images that include embedded text. Agent1 must be protected from malicious instructions potentially hidden\n\nwithin the images.\n\nBusiness Requirements\n\n-\n\nContoso identifies the following business requirements:\n\n• Users that interact with Agent1 must have a personalized experience in future interactions, including the ability for Agent1 to retain conversation\n\ncontext and recall relevant information from previous interactions.\n\n• Agent1 must answer questions only about the products sold by Contoso.",
-    "interactions": [
-      {
-        "id": "credential",
-        "prompt": "credential",
-        "type": "dropdown",
-        "options": [
-          {
-            "id": "A",
-            "text": "AzureKeyCredential()",
-            "explanation": "AzureKeyCredential sends a static service key. It does not use the required Microsoft Entra identity and RBAC permissions."
-          },
-          {
-            "id": "B",
-            "text": "DefaultAzureCredential()",
-            "explanation": "DefaultAzureCredential uses the managed identity when deployed in Azure and falls back to developer credentials locally, avoiding stored service keys."
-          },
-          {
-            "id": "C",
-            "text": "None",
-            "explanation": "Passing no credential leaves the SDK unable to authenticate to the protected Foundry project."
-          }
-        ],
-        "correctAnswer": "B"
-      },
-      {
-        "id": "agentMethod",
-        "prompt": "project_client.agents",
-        "type": "dropdown",
-        "options": [
-          {
-            "id": "A",
-            "text": "create_version",
-            "explanation": "create_version publishes a new version of the agent. The code only needs to retrieve the existing Agent1 definition."
-          },
-          {
-            "id": "B",
-            "text": "get",
-            "explanation": "get retrieves the existing agent by name so the application can use Agent1 without creating or selecting a new version."
-          },
-          {
-            "id": "C",
-            "text": "get_version",
-            "explanation": "get_version retrieves a specifically identified version. The shown code has the agent name but no version identifier, so the general get operation is appropriate."
-          }
-        ],
-        "correctAnswer": "B"
-      }
-    ],
     "caseStudy": {
       "id": "contoso-foundry-projects",
       "position": 3,
@@ -2784,17 +2722,35 @@
       "reviewableWithinSection": true,
       "returnAfterLeaving": false
     },
-    "answerTemplate": {
-      "language": "Python",
-      "content": "from azure.identity import DefaultAzureCredential\nfrom azure.ai.projects import AIProjectClient\nfrom azure.core.credentials import AzureKeyCredential\n\nmyEndpoint = \"https://contoso.services.ai.azure.com/api/projects/project1\"\nproject_client = AIProjectClient(\n    endpoint=myEndpoint,\n    credential={{credential}},\n)\nmyAgent = \"Agent1\"\nagent = project_client.agents.{{agentMethod}}(agent_name=myAgent)\n\nprint(f\"Retrieved agent: {agent.name}\")"
-    },
     "communityNotes": {
-      "summary": "DefaultAzureCredential and agents.get are reasonable completions for authenticating and retrieving Agent1, but they do not assign access to Agent1Dev Team.",
-      "caveats": [
-        "The stated goal is to ensure a security group can access Agent1. That requires RBAC/role assignment at the appropriate Foundry scope; neither code blank performs an RBAC assignment. The item is therefore underspecified as written."
-      ],
-      "answerDisputed": true
-    }
+      "summary": "Rewritten to test the actual RBAC requirement in the case. The previous code only authenticated and retrieved Agent1; it never granted the group access.",
+      "answerDisputed": false
+    },
+    "options": [
+      {
+        "id": "A",
+        "text": "Assign the Foundry User role to SC_Agent1_Dev at the Project1 scope.",
+        "explanation": "Foundry User is the least-privilege project role for developers who build, test, and work with agents. Assigning it to the security group at Project1 scope grants the team the required project access without broader subscription-level permissions."
+      },
+      {
+        "id": "B",
+        "text": "Assign the Foundry Agent Consumer role to SC_Agent1_Dev at the Agent1 scope.",
+        "explanation": "Foundry Agent Consumer is intended for principals that only need to interact with agent endpoints. The Dev team must optimize and maintain the agent, so this role is too limited."
+      },
+      {
+        "id": "C",
+        "text": "Assign Contributor to SC_Agent1_Dev at the subscription scope.",
+        "explanation": "Contributor at subscription scope grants much broader control than required and violates least privilege."
+      },
+      {
+        "id": "D",
+        "text": "Use DefaultAzureCredential in the application code.",
+        "explanation": "DefaultAzureCredential authenticates an identity but does not grant the security group authorization to Project1."
+      }
+    ],
+    "correctAnswers": [
+      "A"
+    ]
   },
   {
     "id": 69,
@@ -2870,7 +2826,7 @@
     "id": 71,
     "category": "Implement generative AI and agentic solutions",
     "subcategory": "Build generative applications by using Foundry",
-    "question": "You have a Microsoft Founcy project that contains a Retrieval Augmented Generation (RAG) solution.\n\nYou need to run a pre-production evaluation by using labeled CSV dataset that contains the query, context, response and ground truth. The\n\nevaluation must measure the following:\n\n• Whether responses address the user query\n\n• Whether responses are supported by the provided context\n\n• Whether responses contain sensitive or proprietary information\n\nWhich AI quality evaluation metrics should you use? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
+    "question": "You have a Microsoft Foundry project that contains a Retrieval Augmented Generation (RAG) solution.\n\nYou need to run a pre-production evaluation by using labeled CSV dataset that contains the query, context, response and ground truth. The\n\nevaluation must measure the following:\n\n• Whether responses address the user query\n\n• Whether responses are supported by the provided context\n\n• Whether responses contain sensitive or proprietary information\n\nWhich AI quality evaluation metrics should you use? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
     "type": "dropdown",
     "interactions": [
       {
@@ -2918,8 +2874,8 @@
           },
           {
             "id": "C",
-            "text": "Protected material",
-            "explanation": "Protected material detection looks for known protected text or code that the model may reproduce. It does not generally detect arbitrary confidential, proprietary, or personally identifiable information. Therefore it is only correct if the question's 'sensitive or proprietary information' specifically means protected/copyrighted material."
+            "text": "Sensitive data leakage",
+            "explanation": "The Sensitive data leakage evaluator measures whether an agent exposes sensitive information such as personal identifiers, financial data, or health data. Protected material is instead focused on copyrighted text/code."
           },
           {
             "id": "D",
@@ -2931,11 +2887,8 @@
       }
     ],
     "communityNotes": {
-      "summary": "Groundedness + Relevance is verified for response support. The second half is ambiguous because Protected material detects known protected text/code, not arbitrary sensitive or proprietary information.",
-      "caveats": [
-        "If the intended risk is PII or confidential business data, a PII/data-loss control would be needed; none of the listed alternatives expresses that."
-      ],
-      "answerDisputed": true
+      "summary": "Groundedness + Relevance remain correct for RAG support. The second answer was corrected from Protected material to Sensitive data leakage.",
+      "answerDisputed": false
     }
   },
   {
@@ -2980,27 +2933,27 @@
     "id": 73,
     "category": "Implement generative AI and agentic solutions",
     "subcategory": "Build agents by using Foundry",
-    "question": "You have a Microsoft Foundry project that contains an agent. The agent uses two tools to perform the following actions:\n\n• Use Azure AI Search to retrieve answers from a private product documentation index.\n\n• Use the web search tool to retrieve public information on the internet.\n\nYou need to ensure that for a specific run, the agent deterministically retrieves information only from the internet.\n\nTo what should you set tool_choice?",
+    "question": "You have a Microsoft Foundry project that contains an agent. The agent uses two tools to perform the following actions:\n\n• Use Azure AI Search to retrieve answers from a private product documentation index.\n\n• Use the Grounding with Bing Search tool to retrieve public information on the internet.\n\nYou need to ensure that for a specific run, the agent deterministically retrieves information only from the internet.\n\nTo what should you set tool_choice?",
     "type": "single",
     "options": [
       {
         "id": "A",
-        "text": "{“type”: “bing_grouding”}",
-        "explanation": "The intended Bing grounding tool selects public web retrieval explicitly. The PDF contains the typo `bing_grouding`; the documented tool type is `bing_grounding`. The original option is preserved here so the quiz still matches the source."
+        "text": "{\"type\": \"bing_grounding\"}",
+        "explanation": "A specific tool choice with `type: bing_grounding` deterministically selects the Grounding with Bing Search tool for the run."
       },
       {
         "id": "B",
-        "text": "{“type”: “azure_ai-search”}",
+        "text": "{\"type\": \"azure_ai_search\"}",
         "explanation": "Selecting the Azure AI Search tool would force retrieval from the private product index, which is the opposite of the requirement to use only public internet information for this run."
       },
       {
         "id": "C",
-        "text": "“auto”",
+        "text": "\"auto\"",
         "explanation": "tool_choice=\"auto\" lets the model decide whether to call a tool and which tool to call. The agent can therefore choose Azure AI Search or skip the required Bing lookup."
       },
       {
         "id": "D",
-        "text": "“required”",
+        "text": "\"required\"",
         "explanation": "tool_choice=\"required\" guarantees that at least one available tool is called, but it does not guarantee which tool is selected when the agent has multiple tools. The requirement specifically names internet/Bing retrieval."
       }
     ],
@@ -3008,7 +2961,7 @@
       "A"
     ],
     "communityNotes": {
-      "summary": "The PDF typo `bing_grouding` is preserved in the option. The documented tool type is `bing_grounding`; the intended answer is the Bing grounding option.",
+      "summary": "Corrected the source typo `bing_grouding` to the documented `bing_grounding` tool type.",
       "answerDisputed": false
     }
   },
@@ -3085,18 +3038,18 @@
     "options": [
       {
         "id": "A",
-        "text": "session",
-        "explanation": "A session-specific scope can prevent cross-session memory only when the application supplies a different scope value for every session. The literal value `session` alone would be a shared static partition, which is why the wording is ambiguous."
+        "text": "the same literal value \"session\" for every session",
+        "explanation": "A static scope value would put all sessions in the same memory partition, so history could persist across sessions."
       },
       {
         "id": "B",
-        "text": "{{$conversationId}}",
-        "explanation": "A unique conversation ID would be a suitable scope partition, but `{{$conversationId}}` is not documented as an automatic Foundry Memory placeholder on the referenced Microsoft page. Do not treat this exact token as verified."
+        "text": "a unique session ID supplied by the application",
+        "explanation": "Memory `scope` is an application-chosen partition key. Supplying a different unique scope for each session isolates memory so it does not carry into later sessions."
       },
       {
         "id": "C",
         "text": "{{$userId}}",
-        "explanation": "`{{$userId}}` is the special scope value that Foundry resolves to the end user's identity. It intentionally preserves a user's memory across separate conversations, so it is the opposite of session-only isolation."
+        "explanation": "`{{$userId}}` is the documented automatic per-user scope. It intentionally allows the same user's memory to persist across separate conversations, so it does not meet session-only isolation."
       },
       {
         "id": "D",
@@ -3108,11 +3061,8 @@
       "B"
     ],
     "communityNotes": {
-      "summary": "The source answer is disputed. Foundry Memory uses `scope` as an application-chosen partition key. A unique session or conversation ID would isolate sessions, but Microsoft documents `{{$userId}}` as the automatic placeholder and does not document `{{$conversationId}}` on the referenced Memory page.",
-      "caveats": [
-        "The original answer options and source answer are preserved because replacing option B with explanatory prose would change the exam question."
-      ],
-      "answerDisputed": true
+      "summary": "Replaced the undocumented `{{$conversationId}}` token with the documented behavior: use an application-chosen unique scope value for each session.",
+      "answerDisputed": false
     }
   },
   {
@@ -3556,19 +3506,16 @@
       },
       {
         "id": "D",
-        "text": "Apply a mask-based inpainting edit to the affected part of the video.",
-        "explanation": "This source option describes a localized video edit, but current Microsoft documentation identifies Sora 2 Remix—not a mask-based video-inpainting parameter—as the supported way to make targeted changes to an existing generated video. The source question is therefore outdated even though the intended idea is targeted editing."
+        "text": "Use Sora 2 Remix on the existing generated video and prompt it to remove the watermark.",
+        "explanation": "Sora 2 Remix is the documented capability for targeted changes to an existing generated video while preserving its core structure, instead of regenerating the clip from scratch."
       }
     ],
     "correctAnswers": [
       "D"
     ],
     "communityNotes": {
-      "summary": "The original ExamTopics option is preserved, but current Azure OpenAI documentation uses Sora 2 Remix for targeted edits to an existing generated video.",
-      "caveats": [
-        "Treat the exact mask-based video-inpainting wording as outdated."
-      ],
-      "answerDisputed": true
+      "summary": "Updated from the obsolete mask-based video-inpainting wording to Sora 2 Remix.",
+      "answerDisputed": false
     }
   },
   {
@@ -3643,46 +3590,43 @@
     "id": 91,
     "category": "Plan and manage an Azure AI solution",
     "subcategory": "Set up AI solutions in Foundry",
-    "question": "You have a Microsoft Foundry project that contains an agent and uses a GitHub repository. The repository contains a YAM file named File1 that\n\ndefines the evaluation settings of the agent.\n\nYou need to create a GitHub Actions workflow that runs the evaluation defined in File1 when a pull request (PR) is opened. How should you\n\nconfigure the workflow?",
+    "question": "You have a Microsoft Foundry project that contains an agent and uses a GitHub repository. The repository contains a JSON file named File1 that contains the evaluators and input queries for an agent evaluation.\n\nYou need to create a GitHub Actions workflow that runs the evaluation when a pull request (PR) is opened.\n\nWhich input of `microsoft/ai-agent-evals@v3-beta` should point to File1?",
     "type": "single",
     "options": [
       {
         "id": "A",
-        "text": "Set project-endpoint to the endpoint of the project.",
-        "explanation": "`project-endpoint` is not the current input name for Microsoft's `microsoft/ai-agent-evals@v3-beta` action. Current documentation uses `azure-ai-project-endpoint` for the Foundry project endpoint, so this option is outdated as written."
+        "text": "azure-ai-project-endpoint",
+        "explanation": "`azure-ai-project-endpoint` identifies the Foundry project endpoint, not the evaluation data file."
       },
       {
         "id": "B",
-        "text": "Set evaluation-config to the path of the YAML file.",
-        "explanation": "`evaluation-config` is not a current input for `microsoft/ai-agent-evals@v3-beta`. Current documentation uses `data-path`, which points to a JSON data file containing the evaluators and test queries."
+        "text": "data-path",
+        "explanation": "`data-path` is the documented input that points to the data file containing evaluators and input queries."
       },
       {
         "id": "C",
-        "text": "Set model-deployment-name to the deployed model.",
-        "explanation": "`model-deployment-name` is not the current input name. The current GitHub Action uses `deployment-name` for the model deployment used during evaluation."
+        "text": "deployment-name",
+        "explanation": "`deployment-name` identifies the model deployment used during the evaluation."
       },
       {
         "id": "D",
-        "text": "Set tenant-id to the Microsoft Entra tenant ID",
-        "explanation": "`tenant-id` is used by Azure Login for Microsoft Entra authentication, not as the evaluation action's project/configuration input. The evaluation action itself expects the Foundry endpoint, deployment name, agent IDs, and data path."
+        "text": "agent-ids",
+        "explanation": "`agent-ids` identifies the agent version or versions to evaluate."
       }
     ],
     "correctAnswers": [
-      "A"
+      "B"
     ],
     "communityNotes": {
-      "summary": "The current Microsoft GitHub evaluation action uses `azure-ai-project-endpoint`, `deployment-name`, `agent-ids`, and `data-path`; the listed legacy inputs do not match the current action exactly.",
-      "answerDisputed": true,
-      "caveats": [
-        "No listed answer is fully correct against the current `microsoft/ai-agent-evals@v3-beta` documentation. Do not memorize this item as a current API-syntax question."
-      ]
+      "summary": "Updated to the current `microsoft/ai-agent-evals@v3-beta` input names.",
+      "answerDisputed": false
     }
   },
   {
     "id": 92,
     "category": "Plan and manage an Azure AI solution",
     "subcategory": "Manage, monitor, and secure AI systems",
-    "question": "You have a Microsoft Foundry project that contains an agent.\n\nThe agent uses a stored access key to retrieve secrets from an Azure key vault, which violates a keyless-credentials requirement.\n\nYou need to ensure that the agent can retrieve the secrets. The solution must follow the principle of least privilege.\n\nWhat should you configure? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
+    "question": "You have a Microsoft Foundry project that contains an agent.\n\nThe agent itself must read secret values directly from an Azure Key Vault. It currently uses a stored access key, which violates a keyless-credentials requirement. This is not a bring-your-own Key Vault connection for storing Foundry connection secrets.\n\nYou need to configure keyless access and follow the principle of least privilege.\n\nWhat should you configure? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
     "type": "dropdown",
     "interactions": [
       {
@@ -3733,8 +3677,8 @@
       }
     ],
     "communityNotes": {
-      "summary": "This answer assumes the agent is directly reading Key Vault by using project-managed-identity authentication. Do not confuse that with Microsoft Foundry's bring-your-own Key Vault connection used to store Foundry connection secrets: that documented setup uses the Foundry resource's managed identity and requires Key Vault Secrets Officer (or a broader role), because Foundry must manage connection secrets.",
-      "answerDisputed": true
+      "summary": "The architecture is now explicit: the agent directly reads secret values. In this case the project managed identity plus Key Vault Secrets User is the least-privilege pattern.",
+      "answerDisputed": false
     }
   },
   {
@@ -4149,46 +4093,44 @@
     "id": 102,
     "category": "Plan and manage an Azure AI solution",
     "subcategory": "Set up AI solutions in Foundry",
-    "question": "You have an Azure subscription.\n\nYou plan to build an app that will use the Azure AI DALL-E model.\n\nYou need to deploy the model.\n\nWhat should you use?",
-    "type": "single",
+    "question": "You have an Azure subscription.\n\nYou plan to build an app that will use the `gpt-image-1.5` image-generation model in Microsoft Foundry.\n\nYou need to deploy the model.\n\nWhich two interfaces can you use?",
+    "type": "multiple",
     "options": [
       {
         "id": "A",
-        "text": "the Azure SDK for Python and PowerShell cmdlets.",
-        "explanation": "Azure SDKs and PowerShell can automate supported Azure resources, but they do not make a retired model deployable. DALL-E 3 was retired in Azure on March 4, 2026, so no current deployment method can create a new DALL-E 3 deployment."
+        "text": "Microsoft Foundry portal",
+        "explanation": "Supported models can be deployed from Microsoft Foundry."
       },
       {
         "id": "B",
-        "text": "the Azure SDK for JavaScript and Azure Machine Learning Studio.",
-        "explanation": "Azure Machine Learning Studio is not the current deployment surface for Azure OpenAI image models in this scenario. More importantly, DALL-E 3 is retired and no longer available for new deployments."
+        "text": "Azure CLI",
+        "explanation": "Azure CLI supports model deployments by using `az cognitiveservices account deployment create`."
       },
       {
         "id": "C",
-        "text": "Microsoft Foundry and the Azure Command Line Interface (CLI)",
-        "explanation": "Historically, Microsoft Foundry and Azure CLI could be used in a DALL-E deployment workflow. However, Microsoft retired `dall-e-3` on March 4, 2026; new deployments are unavailable and existing deployments are non-functional. Current image-generation solutions should use a `gpt-image-` series model instead."
+        "text": "Microsoft Graph API",
+        "explanation": "Microsoft Graph is for Microsoft 365 and directory workloads, not Foundry model deployment."
       },
       {
         "id": "D",
-        "text": "the Azure portal and Microsoft Graph API",
-        "explanation": "Microsoft Graph is for Microsoft 365/directory APIs, not Foundry model deployment. The Azure portal also cannot create a new deployment of a model that Microsoft has retired."
+        "text": "Azure Machine Learning Studio only",
+        "explanation": "Azure Machine Learning Studio is not required to deploy Azure OpenAI image models in Microsoft Foundry."
       }
     ],
     "correctAnswers": [
-      "C"
+      "A",
+      "B"
     ],
     "communityNotes": {
-      "summary": "This item is obsolete as a current deployment question. DALL-E 3 was retired in Azure on March 4, 2026; new deployments are unavailable and existing deployments are non-functional.",
-      "answerDisputed": true,
-      "caveats": [
-        "The historical/intended answer was Microsoft Foundry + Azure CLI, but there is no valid current deployment method for DALL-E 3. Microsoft directs new image-generation workloads to the GPT-image series."
-      ]
+      "summary": "Replaced retired DALL-E 3 with current GPT-image generation and current deployment interfaces.",
+      "answerDisputed": false
     }
   },
   {
     "id": 103,
     "category": "Plan and manage an Azure AI solution",
     "subcategory": "Manage, monitor, and secure AI systems",
-    "question": "You have an Azure subscription.\n\nYou need to create a new resource that will generate fictional stores in response to user prompts. The solution must ensure that the resource uses\n\na customer-managed key to protect data.\n\nHow should you complete the script? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
+    "question": "You have an Azure subscription.\n\nYou need to create a standalone Azure OpenAI resource that will generate fictional stories in response to user prompts. The solution must use a customer-managed key in Azure Key Vault to protect data.\n\nHow should you complete the script? To answer, select the appropriate options in the answer area.\n\nNOTE: Each correct selection is worth one point.",
     "type": "dropdown",
     "interactions": [
       {
@@ -4199,7 +4141,7 @@
           {
             "id": "A",
             "text": "AIServices",
-            "explanation": "`AIServices` creates the broader Microsoft Foundry resource kind, which can also expose Azure OpenAI model capabilities together with other Foundry Tools. It is therefore technically capable of generative workloads; `OpenAI` is only uniquely preferable if the question specifically intends a standalone Azure OpenAI resource."
+            "explanation": "`AIServices` creates the broader Microsoft Foundry multi-service resource. The question explicitly requires a standalone Azure OpenAI resource."
           },
           {
             "id": "B",
@@ -4209,7 +4151,7 @@
           {
             "id": "C",
             "text": "OpenAI",
-            "explanation": "`OpenAI` creates a standalone Azure OpenAI resource, which can host generative models for prompt-to-text workloads and supports customer-managed encryption. This is the intended answer if the requirement is specifically to create an Azure OpenAI resource rather than the broader `AIServices` Foundry resource."
+            "explanation": "`OpenAI` creates the standalone Azure OpenAI resource explicitly required by the question."
           }
         ],
         "correctAnswer": "C"
@@ -4240,15 +4182,11 @@
     ],
     "answerTemplate": {
       "language": "Azure CLI",
-      "content": "az cognitiveservices account create -n myresource -g myResourceGroup --kind {{kind}} --sku S -l WestEurope\n\n{{identityOption}} '{\n  \"keySource\": \"Microsoft.KeyVault\",\n  \"keyVaultProperties\": {\n    \"keyName\": \"KeyName\",\n    \"keyVersion\": \"secretVersion\",\n    \"keyVaultUri\": \"https://issue23056kv.vault.azure.net/\"\n  }\n}'"
+      "content": "az cognitiveservices account create -n myresource -g myResourceGroup --kind {{kind}} --sku S0 -l WestEurope \\\n  --assign-identity \\\n  {{identityOption}} '{\n    \"keySource\": \"Microsoft.KeyVault\",\n    \"keyVaultProperties\": {\n      \"keyName\": \"KeyName\",\n      \"keyVersion\": \"secretVersion\",\n      \"keyVaultUri\": \"https://issue23056kv.vault.azure.net/\"\n    }\n  }'"
     },
     "communityNotes": {
-      "summary": "`--encryption` is the parameter that accepts the customer-managed-key JSON; `--assign-identity` separately enables the resource identity used to access Key Vault.",
-      "answerDisputed": false,
-      "caveats": [
-        "The PDF command template omits `--assign-identity`. It is intentionally preserved to match the source; a complete current command also needs a managed identity for Key Vault access.",
-        "The `OpenAI` kind remains the intended standalone Azure OpenAI answer. The broader `AIServices` resource can also expose model capabilities, so the resource-kind wording is architecture-sensitive."
-      ]
+      "summary": "Made the resource type unambiguous and fixed the command template so the resource has a managed identity for Key Vault access in addition to the `--encryption` CMK configuration.",
+      "answerDisputed": false
     }
   },
   {
@@ -4690,8 +4628,8 @@
         "options": [
           {
             "id": "A",
-            "text": "CognitiveServices",
-            "explanation": "`CognitiveServices` is the legacy Azure AI multi-service account kind. It provides one multi-service account that can be used across capabilities such as language sentiment analysis and vision/OCR, matching the option set in this question. Microsoft now recommends the newer `AIServices`/Foundry resource for new solutions, but `CognitiveServices` continues to work."
+            "text": "AIServices",
+            "explanation": "`AIServices` is the current Microsoft Foundry multi-service resource kind. It provides a shared resource for multiple Foundry Tools capabilities and consolidated billing."
           },
           {
             "id": "B",
@@ -4712,10 +4650,7 @@
       "content": "{{httpMethod}} https://management.azure.com/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/RG1/providers/Microsoft.CognitiveServices/accounts/CS1?api-version=2021-04-30\n\n{\n  \"location\": \"West US\",\n  \"kind\": \"{{kind}}\",\n  \"sku\": {\n    \"name\": \"S0\"\n  },\n  \"properties\": {},\n  \"identity\": {\n    \"type\": \"SystemAssigned\"\n  }\n}"
     },
     "communityNotes": {
-      "summary": "Strict review restores `CognitiveServices` because that is the valid legacy multi-service kind present in the offered choices. `AIServices` is the newer recommended Foundry resource kind, not an answer option here.",
-      "caveats": [
-        "Treat this as a legacy-terminology item; new Foundry deployments generally use the newer `AIServices` resource model."
-      ],
+      "summary": "Modernized the legacy `CognitiveServices` multi-service kind to the current `AIServices` Foundry resource kind.",
       "answerDisputed": false
     }
   },
