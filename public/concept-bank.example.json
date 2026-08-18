@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "mastery": {
+    "correctStreak": 3,
+    "minimumAccuracy": 0.7
+  },
+  "groups": [
+    {
+      "id": "unique-group-id",
+      "title": "Group title",
+      "domain": "Domain name",
+      "kind": "concept",
+      "concepts": [
+        {
+          "term": "Concept name",
+          "definition": "What the concept means"
+        }
+      ]
+    }
+  ]
+}

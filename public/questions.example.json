@@ -1,0 +1,518 @@
+[
+  {
+    "id": 1,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Single-answer question text",
+    "type": "single",
+    "options": [
+      {
+        "id": "A",
+        "text": "Answer option A",
+        "explanation": "Why option A is correct or incorrect"
+      },
+      {
+        "id": "B",
+        "text": "Answer option B",
+        "explanation": "Why option B is correct or incorrect"
+      }
+    ],
+    "correctAnswers": [
+      "A"
+    ],
+    "communityNotes": {
+      "summary": "Optional clarification about the answer",
+      "caveats": [
+        "Optional caveat"
+      ],
+      "answerDisputed": false
+    }
+  },
+  {
+    "id": 2,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Multiple-answer question text. Select two answers.",
+    "type": "multiple",
+    "options": [
+      {
+        "id": "A",
+        "text": "Answer option A",
+        "explanation": "Why option A is correct or incorrect"
+      },
+      {
+        "id": "B",
+        "text": "Answer option B",
+        "explanation": "Why option B is correct or incorrect"
+      },
+      {
+        "id": "C",
+        "text": "Answer option C",
+        "explanation": "Why option C is correct or incorrect"
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "C"
+    ]
+  },
+  {
+    "id": 3,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Select the correct value from the dropdown.",
+    "type": "dropdown",
+    "interactions": [
+      {
+        "id": "serviceChoice",
+        "prompt": "Service",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Dropdown option A",
+            "explanation": "Why this dropdown option is correct or incorrect"
+          },
+          {
+            "id": "B",
+            "text": "Dropdown option B",
+            "explanation": "Why this dropdown option is correct or incorrect"
+          }
+        ],
+        "correctAnswer": "A"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "HOTSPOT question with multiple dropdown fields.",
+    "type": "hotspot",
+    "interactions": [
+      {
+        "id": "firstSelection",
+        "prompt": "First selection",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Option A",
+            "explanation": "Explanation for option A"
+          },
+          {
+            "id": "B",
+            "text": "Option B",
+            "explanation": "Explanation for option B"
+          }
+        ],
+        "correctAnswer": "A"
+      },
+      {
+        "id": "secondSelection",
+        "prompt": "Second selection",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "Option A",
+            "explanation": "Explanation for option A"
+          },
+          {
+            "id": "B",
+            "text": "Option B",
+            "explanation": "Explanation for option B"
+          }
+        ],
+        "correctAnswer": "B"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "For each statement, select Yes if it is true. Otherwise, select No.",
+    "type": "yes_no_table",
+    "interactions": [
+      {
+        "id": "statements",
+        "type": "yes_no_table",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Yes"
+          },
+          {
+            "id": "no",
+            "text": "No"
+          }
+        ],
+        "rows": [
+          {
+            "id": "row1",
+            "text": "First statement",
+            "correctAnswer": "yes",
+            "explanation": "Why the first statement is true"
+          },
+          {
+            "id": "row2",
+            "text": "Second statement",
+            "correctAnswer": "no",
+            "explanation": "Why the second statement is false"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Arrange the actions in the correct order.",
+    "type": "drag_drop",
+    "interactions": [
+      {
+        "id": "orderedActions",
+        "type": "drag_drop",
+        "choices": [
+          {
+            "id": "A",
+            "text": "First correct action"
+          },
+          {
+            "id": "B",
+            "text": "Second correct action"
+          },
+          {
+            "id": "C",
+            "text": "Incorrect extra action"
+          }
+        ],
+        "targets": [
+          {
+            "id": "step1",
+            "prompt": "1",
+            "correctAnswer": "First correct action",
+            "explanation": "Why this action is first"
+          },
+          {
+            "id": "step2",
+            "prompt": "2",
+            "correctAnswer": "Second correct action",
+            "explanation": "Why this action is second"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Match each item to the correct description.",
+    "type": "drag_drop",
+    "interactions": [
+      {
+        "id": "matchingItems",
+        "type": "drag_drop",
+        "choices": [
+          {
+            "id": "A",
+            "text": "Description for item one"
+          },
+          {
+            "id": "B",
+            "text": "Description for item two"
+          },
+          {
+            "id": "C",
+            "text": "Incorrect extra description"
+          }
+        ],
+        "targets": [
+          {
+            "id": "item1",
+            "prompt": "Item one",
+            "correctAnswer": "Description for item one",
+            "explanation": "Why this description matches item one"
+          },
+          {
+            "id": "item2",
+            "prompt": "Item two",
+            "correctAnswer": "Description for item two",
+            "explanation": "Why this description matches item two"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Question containing a code block.",
+    "type": "single",
+    "supportingContent": [
+      {
+        "type": "code",
+        "language": "python",
+        "content": "result = client.example_method()\nprint(result)"
+      }
+    ],
+    "options": [
+      {
+        "id": "A",
+        "text": "Answer option A",
+        "explanation": "Explanation for option A"
+      },
+      {
+        "id": "B",
+        "text": "Answer option B",
+        "explanation": "Explanation for option B"
+      }
+    ],
+    "correctAnswers": [
+      "A"
+    ]
+  },
+  {
+    "id": 9,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Question containing a supporting table.",
+    "type": "single",
+    "supportingContent": [
+      {
+        "type": "table",
+        "columns": [
+          "Column one",
+          "Column two"
+        ],
+        "rows": [
+          [
+            "Row 1 value 1",
+            "Row 1 value 2"
+          ],
+          [
+            "Row 2 value 1",
+            "Row 2 value 2"
+          ]
+        ]
+      }
+    ],
+    "options": [
+      {
+        "id": "A",
+        "text": "Answer option A",
+        "explanation": "Explanation for option A"
+      },
+      {
+        "id": "B",
+        "text": "Answer option B",
+        "explanation": "Explanation for option B"
+      }
+    ],
+    "correctAnswers": [
+      "B"
+    ]
+  },
+  {
+    "id": 10,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Question containing an image.",
+    "type": "single",
+    "media": [
+      {
+        "type": "image",
+        "src": "./example-image.png",
+        "alt": "Description of the image"
+      }
+    ],
+    "options": [
+      {
+        "id": "A",
+        "text": "Answer option A",
+        "explanation": "Explanation for option A"
+      },
+      {
+        "id": "B",
+        "text": "Answer option B",
+        "explanation": "Explanation for option B"
+      }
+    ],
+    "correctAnswers": [
+      "A"
+    ]
+  },
+  {
+    "id": 11,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Complete the code or request by selecting inline values.",
+    "type": "dropdown",
+    "interactions": [
+      {
+        "id": "httpMethod",
+        "prompt": "HTTP method",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "GET",
+            "explanation": "Explanation for GET"
+          },
+          {
+            "id": "B",
+            "text": "POST",
+            "explanation": "Explanation for POST"
+          }
+        ],
+        "correctAnswer": "B"
+      },
+      {
+        "id": "apiVersion",
+        "prompt": "API version",
+        "type": "dropdown",
+        "options": [
+          {
+            "id": "A",
+            "text": "v1",
+            "explanation": "Explanation for v1"
+          },
+          {
+            "id": "B",
+            "text": "v2",
+            "explanation": "Explanation for v2"
+          }
+        ],
+        "correctAnswer": "A"
+      }
+    ],
+    "answerTemplate": {
+      "language": "HTTP",
+      "content": "{{httpMethod}} https://example.com/api?api-version={{apiVersion}}"
+    }
+  },
+  {
+    "id": 12,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Case study question one",
+    "type": "single",
+    "context": "Shared case study context shown beside all questions in this case study.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Answer option A",
+        "explanation": "Explanation for option A"
+      },
+      {
+        "id": "B",
+        "text": "Answer option B",
+        "explanation": "Explanation for option B"
+      }
+    ],
+    "correctAnswers": [
+      "A"
+    ],
+    "caseStudy": {
+      "id": "case-study-example",
+      "position": 1,
+      "size": 2,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
+  },
+  {
+    "id": 13,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Case study question two",
+    "type": "single",
+    "context": "Shared case study context shown beside all questions in this case study.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Answer option A",
+        "explanation": "Explanation for option A"
+      },
+      {
+        "id": "B",
+        "text": "Answer option B",
+        "explanation": "Explanation for option B"
+      }
+    ],
+    "correctAnswers": [
+      "B"
+    ],
+    "caseStudy": {
+      "id": "case-study-example",
+      "position": 2,
+      "size": 2,
+      "reviewableWithinSection": true,
+      "returnAfterLeaving": false
+    }
+  },
+  {
+    "id": 14,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Solution-set question one. Does the solution meet the goal?",
+    "type": "single",
+    "context": "Shared scenario for the locked solution set.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Yes",
+        "explanation": "Why the solution meets the goal"
+      },
+      {
+        "id": "B",
+        "text": "No",
+        "explanation": "Why the solution does not meet the goal"
+      }
+    ],
+    "correctAnswers": [
+      "A"
+    ],
+    "examGroup": {
+      "id": "solution-set-example",
+      "position": 1,
+      "size": 2,
+      "locked": true,
+      "reviewable": false
+    }
+  },
+  {
+    "id": 15,
+    "category": "Category name",
+    "subcategory": "Subcategory name",
+    "question": "Solution-set question two. Does the solution meet the goal?",
+    "type": "single",
+    "context": "Shared scenario for the locked solution set.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Yes",
+        "explanation": "Why the solution meets the goal"
+      },
+      {
+        "id": "B",
+        "text": "No",
+        "explanation": "Why the solution does not meet the goal"
+      }
+    ],
+    "correctAnswers": [
+      "B"
+    ],
+    "examGroup": {
+      "id": "solution-set-example",
+      "position": 2,
+      "size": 2,
+      "locked": true,
+      "reviewable": false
+    }
+  }
+]
