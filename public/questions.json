@@ -4932,7 +4932,7 @@
             "explanation": "Table projections store shaped enrichment output as rows and columns in Azure Table Storage. They are appropriate when the downstream representation is tabular, not for unstructured extracted document text."
           }
         ],
-        "correctAnswer": "B"
+        "correctAnswer": "A"
       }
     ],
     "communityNotes": {
