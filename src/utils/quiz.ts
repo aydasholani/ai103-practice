@@ -23,22 +23,57 @@ export function createQuiz(
 
 export function createExamQuiz(questions: Question[], limit = 60) {
   const domainTargets = allocateExamDomains(limit);
-  const selected = Object.entries(domainTargets).flatMap(([domain, count]) =>
-    selectGroupedQuestions(
-      questions.filter((question) => question.category === domain),
-      count,
-    ),
-  );
+  const allBlocks = createQuestionBlocks(questions);
+  const caseBlocks = allBlocks.filter((block) => block[0]?.caseStudy);
+  const eligibleCaseBlocks = caseBlocks.filter((block) => {
+    if (block.length > limit) return false;
+    const blockByDomain = countQuestionsByDomain(block);
+    return Object.entries(blockByDomain).every(([domain, count]) =>
+      count <= (domainTargets[domain] ?? 0),
+    );
+  });
+  const finalCaseBlock = shuffle(eligibleCaseBlocks)[0] ?? [];
+  const regularLimit = limit - finalCaseBlock.length;
+  const regularBlocks = shuffle(allBlocks.filter((block) => !block[0]?.caseStudy));
+  const selectedBlocks: Question[][] = [];
+  const selectedIds = new Set<number>();
+  const selectedByDomain = countQuestionsByDomain(finalCaseBlock);
+  let selectedCount = 0;
 
-  if (selected.length < Math.min(limit, questions.length)) {
-    const used = new Set(selected.map((question) => question.id));
-    selected.push(...selectGroupedQuestions(
-      questions.filter((question) => !used.has(question.id)),
-      limit - selected.length,
-    ));
+  for (const block of regularBlocks) {
+    if (selectedCount + block.length > regularLimit) continue;
+
+    const blockByDomain = countQuestionsByDomain(block);
+    const fitsDomainTargets = Object.entries(blockByDomain).every(([domain, count]) =>
+      (selectedByDomain[domain] ?? 0) + count <= (domainTargets[domain] ?? 0),
+    );
+    if (!fitsDomainTargets) continue;
+
+    selectedBlocks.push(block);
+    block.forEach((question) => selectedIds.add(question.id));
+    Object.entries(blockByDomain).forEach(([domain, count]) => {
+      selectedByDomain[domain] = (selectedByDomain[domain] ?? 0) + count;
+    });
+    selectedCount += block.length;
+    if (selectedCount === regularLimit) break;
   }
 
-  return shuffleGroupedQuestions(selected).slice(0, limit);
+  // This fallback only matters for a custom question bank that cannot satisfy
+  // the domain allocation exactly. Grouped questions still remain atomic.
+  const availableRegularQuestions = regularBlocks.reduce((total, block) => total + block.length, 0);
+  const regularTarget = Math.min(regularLimit, availableRegularQuestions);
+  if (selectedCount < regularTarget) {
+    for (const block of regularBlocks) {
+      if (block.some((question) => selectedIds.has(question.id))) continue;
+      if (selectedCount + block.length > regularTarget) continue;
+      selectedBlocks.push(block);
+      block.forEach((question) => selectedIds.add(question.id));
+      selectedCount += block.length;
+      if (selectedCount === regularTarget) break;
+    }
+  }
+
+  return [...shuffle(selectedBlocks).flat(), ...finalCaseBlock];
 }
 
 // 60 questions at 28.3%, 33.3%, 13.3%, 11.7%, and 13.3% respectively.
@@ -65,6 +100,35 @@ function allocateExamDomains(limit: number) {
   }
 
   return Object.fromEntries(entries.map(({ domain, count }) => [domain, count]));
+}
+
+function createQuestionBlocks(questions: Question[]) {
+  const grouped = new Map<string, Question[]>();
+  const blocks: Question[][] = [];
+
+  for (const question of questions) {
+    const groupId = question.examGroup
+      ? `solution:${question.examGroup.id}`
+      : question.caseStudy
+        ? `case:${question.caseStudy.id}`
+        : null;
+
+    if (!groupId) blocks.push([question]);
+    else grouped.set(groupId, [...(grouped.get(groupId) ?? []), question]);
+  }
+
+  blocks.push(...[...grouped.values()].map((group) => group.sort((a, b) =>
+    (a.examGroup?.position ?? a.caseStudy!.position) -
+    (b.examGroup?.position ?? b.caseStudy!.position))));
+
+  return blocks;
+}
+
+function countQuestionsByDomain(questions: Question[]) {
+  return questions.reduce<Record<string, number>>((counts, question) => {
+    counts[question.category] = (counts[question.category] ?? 0) + 1;
+    return counts;
+  }, {});
 }
 
 function selectGroupedQuestions(questions: Question[], limit: number) {

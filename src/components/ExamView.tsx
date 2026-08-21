@@ -44,6 +44,19 @@ export function ExamView(props: ExamViewProps) {
   const caseIndexes = caseId ? questions.map((item, itemIndex) => item.caseStudy?.id === caseId ? itemIndex : -1).filter((itemIndex) => itemIndex >= 0) : [];
   const caseStart = caseIndexes[0] ?? -1;
   const caseEnd = caseIndexes.at(-1) ?? -1;
+  const nextAccessibleIndex = (() => {
+    let targetIndex = index + 1;
+    while (targetIndex < questions.length) {
+      const target = questions[targetIndex];
+      const completedLockedQuestion = committedLockedIds.includes(target.id);
+      const completedCaseQuestion = Boolean(
+        target.caseStudy && completedCaseIds.includes(target.caseStudy.id),
+      );
+      if (!completedLockedQuestion && !completedCaseQuestion) break;
+      targetIndex += 1;
+    }
+    return targetIndex;
+  })();
 
   const navigate = (targetIndex: number) => {
     const target = questions[targetIndex];
@@ -56,7 +69,17 @@ export function ExamView(props: ExamViewProps) {
       props.onNavigate(targetIndex);
       return;
     }
-    if (target.examGroup?.locked && target.examGroup.position !== 1) return;
+    const targetGroup = target.examGroup;
+    if (targetGroup?.locked && targetGroup.position !== 1) {
+      const earlierGroupQuestions = questions.filter((item) => {
+        const itemGroup = item.examGroup;
+        return itemGroup?.id === targetGroup.id && itemGroup.position < targetGroup.position;
+      });
+      const canResumeLockedGroup = earlierGroupQuestions.length === targetGroup.position - 1
+        && earlierGroupQuestions.every((item) => committedLockedIds.includes(item.id));
+      const isImmediateNextQuestion = targetIndex === index + 1;
+      if (!isImmediateNextQuestion && !canResumeLockedGroup) return;
+    }
     if (target.caseStudy && target.caseStudy.position !== 1 && target.caseStudy.id !== caseId) return;
     setReviewingCase(false);
     props.onNavigate(targetIndex);
@@ -105,7 +128,7 @@ export function ExamView(props: ExamViewProps) {
       </header>
       <div className="progress-track"><span style={{ width: `${((index + 1) / questions.length) * 100}%` }} /></div>
 
-      <div className="exam-layout">
+      <div className={`exam-layout ${caseId ? "case-study-exam-layout" : ""}`}>
         <aside className="exam-navigator">
           <strong>Questions</strong>
           <div className="question-grid">
@@ -140,7 +163,13 @@ export function ExamView(props: ExamViewProps) {
             <span>Question {index + 1} of {questions.length}</span>
           </div>
           <div className={question.caseStudy ? "case-study-question-layout" : ""}>
-          {question.caseStudy && question.context && <CaseStudyPanel context={question.context} />}
+          {question.caseStudy && question.context && (
+            <CaseStudyPanel
+              context={question.context}
+              position={question.caseStudy.position}
+              size={question.caseStudy.size}
+            />
+          )}
           <article className="question-card">
             {question.caseStudy && <div className="case-section-notice"><strong>Case study · Question {question.caseStudy.position} of {question.caseStudy.size}</strong><span>You can review questions in this case until you finish the section. You cannot return after leaving it.</span></div>}
             {reviewingCase && caseId && <section className="case-review-screen"><span className="eyebrow">Case study review</span><h2>Review your answers</h2><p>You can return to any question in this case before finishing the section.</p><div className="case-review-grid">{caseIndexes.map((itemIndex) => {
@@ -192,8 +221,8 @@ export function ExamView(props: ExamViewProps) {
               <button className="secondary-button" disabled={index === 0 || locked || index === caseStart || questions[index - 1]?.examGroup?.reviewable === false} onClick={() => navigate(index - 1)}>← Previous</button>
               {caseId && index === caseEnd
                 ? <button className="primary-button" onClick={() => setReviewingCase(true)}>Review case study →</button>
-                : index < questions.length - 1
-                ? <button className="primary-button" disabled={locked && !isAnswered(question, answers)} onClick={() => navigate(index + 1)}>Next →</button>
+                : nextAccessibleIndex < questions.length
+                ? <button className="primary-button" disabled={locked && !isAnswered(question, answers)} onClick={() => navigate(nextAccessibleIndex)}>Next →</button>
                 : <button className="primary-button" disabled={locked && !isAnswered(question, answers)} onClick={submitExam}>Submit exam</button>}
             </div>
           </article>

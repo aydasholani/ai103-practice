@@ -36,7 +36,7 @@ export function QuizView(props: QuizViewProps) {
         <span style={{ width: `${((index + 1) / total) * 100}%` }} />
       </div>
 
-      <section className="question-wrap">
+      <section className={`question-wrap ${question.caseStudy ? "case-question-wrap" : ""}`}>
         <div className="question-meta">
           <span className={`domain-pill ${DOMAIN_META[question.category]?.tone ?? "blue"}`}>
             {DOMAIN_META[question.category]?.short}
@@ -44,7 +44,13 @@ export function QuizView(props: QuizViewProps) {
           <span>{question.subcategory}</span>
         </div>
         <div className={question.caseStudy ? "case-study-question-layout" : ""}>
-        {question.caseStudy && question.context && <CaseStudyPanel context={question.context} />}
+        {question.caseStudy && question.context && (
+          <CaseStudyPanel
+            context={question.context}
+            position={question.caseStudy.position}
+            size={question.caseStudy.size}
+          />
+        )}
         <article className="question-card">
           {question.examGroup && <div className="locked-section-notice"><strong>Solution set · {question.examGroup.position} of {question.examGroup.size}</strong><span>The questions in this scenario are shown together and in order.</span></div>}
           {question.context && !question.caseStudy && (
